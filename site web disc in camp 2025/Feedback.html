@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camp Feedback Form</title>
+  <script>
+    async function submitFeedback(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const feedback = document.getElementById('feedback').value;
+      
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwwWwSFsNaOI-gY2lAb9JMl_JBYK-0b2QMvZyGpvKQCbko5JtG5D48WeXdUrjTTtDGx/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, feedback })
+      });
+      
+      const result = await response.text();
+      document.getElementById('response').innerText = result;
+      document.getElementById('feedbackForm').reset();
+    }
+  </script>
+</head>
+<body>
+  <h1>Camp Feedback Form</h1>
+  <form id="feedbackForm" onsubmit="submitFeedback(event)">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="feedback">Feedback:</label><br>
+    <textarea id="feedback" name="feedback" required></textarea><br><br>
+    <input type="submit" value="Submit">
+  </form>
+  <p id="response"></p>
+</body>
+</html>

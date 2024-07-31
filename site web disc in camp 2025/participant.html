@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détails du Participant</title>
+  <link rel="stylesheet" href="styles2.css">
+  <style>
+    .carousel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .carousel-inner {
+      display: flex;
+      overflow: hidden;
+      width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    .carousel-item {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+      padding: 20px;
+      transition: transform 0.5s ease-in-out;
+      background-color: #f4f4f4;
+      border-right: 1px solid #ccc;
+    }
+    .carousel-item h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+    .carousel-item ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .carousel-item li {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+    }
+    .carousel-item li.violet {
+      background: violet;
+    }
+    .arrow {
+      cursor: pointer;
+      font-size: 2em;
+      user-select: none;
+    }
+    .arrow-left {
+      margin-right: 10px;
+    }
+    .arrow-right {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="participant-details" class="participant-details"></div>
+
+  <div class="back-button-container">
+    <a href="index.html" class="back-button">DISC IN CAMPERS</a>
+  </div>
+
+  <div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+  </div>
+
+  <div id="schedule-carousel" class="carousel">
+    <span class="arrow arrow-left" onclick="prevDay()">&#9664;</span>
+    <div class="carousel-inner">
+      <div class="carousel-item" id="day-1">
+        <h3 id="day-1-title">Day 1</h3>
+        <ul id="schedule-list-1"></ul>
+      </div>
+      <div class="carousel-item" id="day-2">
+        <h3 id="day-2-title">Day 2</h3>
+        <ul id="schedule-list-2"></ul>
+      </div>
+    </div>
+    <span class="arrow arrow-right" onclick="nextDay()">&#9654;</span>
+  </div>
+
+  <script>
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbx00y0YoQRJzeBwYBbXNAQ9isWvSg-bYkyOdIPUmcbdHEFTfhF3rYtRtiNmJZRxt1jCeQ/exec';
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let currentDayIndex = 0;
+
+    async function fetchParticipantData(id) {
+      try {
+        const response = await fetch(scriptUrl);
+        const data = await response.json();
+        console.log('Received data:', data);
+
+        const participants = data.participants;
+        const participant = participants.find(p => p.Id == id);
+        if (participant) {
+          displayParticipantDetails(participant);
+          displaySchedule(participant.teamAndLevel, data.allEntries);
+        } else {
+          document.getElementById('participant-details').innerText = 'Participant non trouvé';
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+      }
+    }
+
+    function displayParticipantDetails(participant) {
+      let detailsDiv = document.getElementById('participant-details');
+      document.body.style.backgroundColor = getTeamColor(participant.Team);
+      detailsDiv.innerHTML = `
+        <div class="left-column">
+          <img src="${participant.Pictures}" alt="${participant.Name}" class="participant-photo" id="participantImg" style="aspect-ratio: 4 / 3;">
+        </div>
+        <div class="right-column">
+          <h1>${participant.Name}</h1>
+          <p><strong>Level:</strong> ${participant.Level}</p>
+          <p><strong>Gender:</strong> ${participant.Gender}</p>
+          <p><strong>Money:</strong> ${participant.Money} €</p>
+          <p><strong>Crush:</strong> ${participant.Crush}</p>
+          <p><strong>TEAM:</strong> ${participant.teamAndLevel}</p>
+        </div>
+      `;
+
+      const img = document.getElementById('participantImg');
+      const modal = document.getElementById('myModal');
+      const modalImg = document.getElementById('img01');
+      const span = document.getElementsByClassName('close')[0];
+
+      img.onclick = function() {
+        modal.style.display = 'block';
+        modalImg.src = this.src;
+      }
+
+      span.onclick = function() {
+        modal.style.display = 'none';
+      }
+    }
+
+    function displaySchedule(teamAndLevel, allEntries) {
+      const schedules = allEntries[teamAndLevel];
+      if (schedules) {
+        updateScheduleLists(schedules);
+      } else {
+        document.getElementById('schedule-list-1').innerHTML = '<li>No schedule available</li>';
+        document.getElementById('schedule-list-2').innerHTML = '<li>No schedule available</li>';
+      }
+    }
+
+    function updateScheduleLists(schedules) {
+      const day1Index = currentDayIndex % days.length;
+      const day2Index = (currentDayIndex + 1) % days.length;
+      const day1 = days[day1Index];
+      const day2 = days[day2Index];
+
+      document.getElementById('day-1-title').innerText = day1;
+      document.getElementById('day-2-title').innerText = day2;
+
+      const scheduleList1 = document.getElementById('schedule-list-1');
+      const scheduleList2 = document.getElementById('schedule-list-2');
+
+      const scheduleForDay1 = schedules.filter(s => s.Day === day1);
+      const scheduleForDay2 = schedules.filter(s => s.Day === day2);
+
+      scheduleList1.innerHTML = scheduleForDay1.map(entry => `
+        <li class="${entry.Field === 'Restaurant' || entry.Field === 'School' ? 'violet' : ''}">
+          ${entry.Start} - ${entry.Ending}: ${entry.Coach} ( ${entry.Field} )
+        </li>
+      `).join('');
+
+      scheduleList2.innerHTML = scheduleForDay2.map(entry => `
+        <li class="${entry.Field === 'Restaurant' || entry.Field === 'School' ? 'violet' : ''}">
+          ${entry.Start} - ${entry.Ending}: ${entry.Coach} ( ${entry.Field} )
+        </li>
+      `).join('');
+    }
+
+    function nextDay() {
+      currentDayIndex = (currentDayIndex + 2) % days.length;
+      updateScheduleLists(allEntries[currentTeamAndLevel]);
+    }
+
+    function prevDay() {
+      currentDayIndex = (currentDayIndex - 2 + days.length) % days.length;
+      updateScheduleLists(allEntries[currentTeamAndLevel]);
+    }
+
+    function getTeamColor(team) {
+      switch (team.toLowerCase()) {
+        case 'green':
+          return '#8fbc8f';
+        case 'red':
+          return '#f08080';
+        case 'blue':
+          return '#add8e6';
+        case 'yellow':
+          return '#fffacd';
+        default:
+          return '#ffffff';
+      }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const participantId = urlParams.get('id');
+    let currentTeamAndLevel;
+    let allEntries;
+
+    if (participantId) {
+      fetchParticipantData(participantId).then(data => {
+        currentTeamAndLevel = data.participant.teamAndLevel;
+        allEntries = data.allEntries;
+      });
+    } else {
+      document.getElementById('participant-details').innerText = 'ID de participant manquant dans l\'URL';
+    }
+  </script>
+</body>
+</html>

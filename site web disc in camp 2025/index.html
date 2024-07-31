@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DISC IN CAMP 2025</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>DISC IN CAMP 2025</h1>
+  <div class="search-bar">
+    <input type="text" id="searchInput" onkeyup="filterParticipants()" placeholder="Camper name">
+  </div>
+  <div class="filter-bar">
+    <button onclick="filterByColor('all')" class="filter-button">All</button>
+    <button onclick="filterByColor('green')" class="filter-button" style="background-color: #8fbc8f;">Green</button>
+    <button onclick="filterByColor('red')" class="filter-button" style="background-color: #f08080;">Red</button>
+    <button onclick="filterByColor('blue')" class="filter-button" style="background-color: #add8e6;">Blue</button>
+    <button onclick="filterByColor('yellow')" class="filter-button" style="background-color: #fffacd;">Yellow</button>
+  </div>
+  <div id="data" class="participants-grid"></div>
+
+  <script>
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbx00y0YoQRJzeBwYBbXNAQ9isWvSg-bYkyOdIPUmcbdHEFTfhF3rYtRtiNmJZRxt1jCeQ/exec'; // URL de votre web app
+
+    let participants = [];
+
+    async function fetchData() {
+      try {
+        const response = await fetch(scriptUrl);
+        const data = await response.json();
+        participants = data.participants;
+        console.log('Received data:', participants);
+        displayParticipants(participants);
+      } catch (error) {
+        console.error('Erreur:', error);
+      }
+    }
+
+    function displayParticipants(participantsToDisplay) {
+      let dataDiv = document.getElementById('data');
+      dataDiv.innerHTML = '';
+
+      participantsToDisplay.forEach(participant => {
+        let participantDiv = document.createElement('a');
+        participantDiv.href = `participant.html?id=${participant.Id}`;
+        participantDiv.classList.add('participant');
+        participantDiv.style.backgroundColor = getTeamColor(participant.Team);
+        participantDiv.innerHTML = `
+          <img src="${participant.Pictures}" alt="${participant.Name}" class="participant-photo">
+          <h2>${participant.Name}</h2>
+          ${participant.teamAndLevel}</p>
+        `;
+        dataDiv.appendChild(participantDiv);
+      });
+    }
+
+    function filterParticipants() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let filteredParticipants = participants.filter(participant =>
+        participant.Name.toLowerCase().includes(input)
+      );
+      displayParticipants(filteredParticipants);
+    }
+
+    function filterByColor(color) {
+      if (color === 'all') {
+        displayParticipants(participants);
+      } else {
+        let filteredParticipants = participants.filter(participant =>
+          participant.Team.toLowerCase() === color
+        );
+        displayParticipants(filteredParticipants);
+      }
+    }
+
+    function getTeamColor(team) {
+      switch (team.toLowerCase()) {
+        case 'green':
+          return '#8fbc8f'; // Softened green
+        case 'red':
+          return '#f08080'; // Softened red
+        case 'blue':
+          return '#add8e6'; // Softened blue
+        case 'yellow':
+          return '#fffacd'; // Softened yellow
+        default:
+          return '#ffffff'; // Default to white if no match
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>
