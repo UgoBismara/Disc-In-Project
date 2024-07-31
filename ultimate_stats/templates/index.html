@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Speech Recognition</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>Speech Recognition</h1>
+    <button id="start-record-btn">Start Recording</button>
+    <button id="stop-record-btn">Stop Recording</button>
+    <p id="status"></p>
+    <p id="transcription"></p>
+
+    <script>
+      $(document).ready(function() {
+        let recording = false;
+
+        $('#start-record-btn').click(function() {
+          if (!recording) {
+            recording = true;
+            $('#status').text('Recording...');
+            $.post('/start_record', function(data) {
+              if (data.success) {
+                $('#status').text('Recording in progress...');
+              } else {
+                $('#status').text('Error: ' + data.message);
+              }
+            });
+          }
+        });
+
+        $('#stop-record-btn').click(function() {
+          if (recording) {
+            recording = false;
+            $('#status').text('Processing...');
+            $.post('/stop_record', function(data) {
+              $('#status').text('');
+              $('#transcription').text('You said: ' + data.message);
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
