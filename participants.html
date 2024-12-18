@@ -1,19 +1,25 @@
+<!-- Participant Details Page with Clickable Photo -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participant Details</title>
-    <!-- Firebase SDK pour le navigateur -->
+    <link rel="stylesheet" href="styles.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="styles 2.css">
 </head>
 <body>
-    <h1>Participant Details</h1>
-    <div id="participant-info"></div>
+    <div class="container">
+        <div id="participant-info"></div>
+        <div id="modal" class="modal">
+            <span class="close" id="closeModal">&times;</span>
+            <img class="modal-content" id="modalImage">
+        </div>
+    </div>
 
     <script>
-        // Configuration Firebase (ajoutez la même configuration que sur index.html)
         const firebaseConfig = {
             apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
             authDomain: "disc-in-camp.firebaseapp.com",
@@ -25,90 +31,50 @@
             measurementId: "G-Y4KZY16LFF"
         };
 
-        // Initialisation de Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-
-        // Récupérer l'ID du participant depuis localStorage
-        const participantId = localStorage.getItem('participantId');
-
-        // Charger les données du participant
+        const participantId = sessionStorage.getItem('participantId') - 1;
         const participantInfoDiv = document.getElementById('participant-info');
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.getElementById('closeModal');
+
+        closeModal.onclick = () => {
+            modal.style.display = "none";
+        };
+
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
         database.ref(`/${participantId}`).on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 participantInfoDiv.innerHTML = `
-                    <h2>${data.Name}</h2>
-                    <img src="${data.Crush}" alt="Photo of ${data.Name}" style="max-width: 200px; border-radius: 8px;" />
-                    <p><strong>Team:</strong> ${data.Team}</p>
-                    <p><strong>Age:</strong> ${data.Age}</p>
-                    <p><strong>Role:</strong> ${data.Role}</p>
+                    <div class="photo-container">
+                        <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
+                    </div>
+                    <div class="info-container">
+                        <h1>${data.Name}</h1>
+                        <p><strong>Money:</strong> ${data.Money} €</p>
+                      
+                        <ul>
+                            ${(data.Program || []).map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
                 `;
+
+                const participantPhoto = document.getElementById('participantPhoto');
+                participantPhoto.onclick = () => {
+                    modal.style.display = "block";
+                    modalImage.src = data.Picture;
+                };
             } else {
                 participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
             }
         });
     </script>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #b0d5e8;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
-
-    .container {
-        display: flex;
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 80%;
-        max-width: 1000px;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .photo-container img {
-        border-radius: 10px;
-        width: 100%;
-        max-width: 300px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .info-container h1 {
-        font-size: 2rem;
-        margin: 0 0 10px;
-    }
-
-    .info-container p {
-        font-size: 1.2rem;
-        margin: 5px 0;
-    }
-
-    .info-container strong {
-        font-weight: bold;
-    }
-
-    .back-button {
-        display: inline-block;
-        margin-bottom: 15px;
-        color: white;
-        background-color: #007bff;
-        text-decoration: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-
-    .back-button:hover {
-        background-color: #0056b3;
-    }
-</style>
 </body>
 </html>
