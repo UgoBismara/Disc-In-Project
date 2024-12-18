@@ -63,7 +63,8 @@
         const dataContainer = document.getElementById("data");
         dataContainer.innerHTML = '';
         console.log(database.ref("/"));
-        const ref = database.ref("/");
+        const refPlayers = database.ref("/players");
+        const refMonday = database.ref("/monday");
 
         function createCamperCard(id, name, photoUrl, team) {
         let participantDiv = document.createElement('a');
@@ -101,7 +102,7 @@
 
         function fetchData(color) {
     let input = document.getElementById('searchInput').value.toLowerCase();
-    ref.on("value", (snapshot) => {
+    refPlayers.on("value", (snapshot) => {
         console.log("Données Firebase :", snapshot.val());
         const data = snapshot.val();
         dataContainer.innerHTML = ""; // Clear the container

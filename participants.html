@@ -8,16 +8,244 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <link rel="stylesheet" href="styles 2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .participant-info {
+            text-align: center;
+            padding: 1rem;
+        }
+        .participant-info img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .info-container h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+        .photo-container {
+            text-align: center;
+        }
+        .carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .carousel-item h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .session {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .session p {
+            margin: 0;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+        .nav-buttons button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #444;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-buttons button:hover {
+            color: #000;
+        }
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .dots span {
+            width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+        .dots .active {
+            background-color: #444;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        .modal .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div id="participant-info"></div>
-        <div id="modal" class="modal">
-            <span class="close" id="closeModal">&times;</span>
-            <img class="modal-content" id="modalImage">
+
+        <div class="container">
+            <div id="monday-info"></div>
+        </div>
+
+        <div class="container">
+            <div id="tuesday-info"></div>
+        </div>
+
+    <div class="container">
+        <div id="wednesday-info"></div>
+    </div>
+
+    <div class="container">
+        <div id="thursday-info"></div>
+    </div>
+
+    <div class="container">
+        <div id="friday-info"></div>
+    </div>
+
+    <div class="carousel">
+        <div class="carousel-inner">
+            <!-- Lundi -->
+            <div class="carousel-item">
+                <h2>Monday</h2>
+                <div class="session">
+                    <p><strong>12-15H</strong></p>
+                    <p>Rowan</p>
+                    <p>Field 1</p>
+                </div>
+                <div class="session">
+                    <p><strong>12-15H</strong></p>
+                    <p>Valeria</p>
+                    <p>Field 2</p>
+                </div>
+                <div class="session">
+                    <p><strong>12-15H</strong></p>
+                    <p>Valeria</p>
+                    <p>Field 2</p>
+                </div>
+            </div>
+            <!-- Mardi -->
+            <div class="carousel-item">
+                <h2>Tuesday</h2>
+                <div class="session">
+                    <p><strong>10-13H</strong></p>
+                    <p>Pierre</p>
+                    <p>Restaurant</p>
+                </div>
+            </div>
+            <!-- Mercredi -->
+            <div class="carousel-item">
+                <h2>Wednesday</h2>
+                <div class="session">
+                    <p><strong>15-18H</strong></p>
+                    <p>Emma</p>
+                    <p>Field 3</p>
+                </div>
+            </div>
+            <!-- Thursday -->
+            <div class="carousel-item">
+                <h2>Thursday</h2>
+                <div class="session">
+                    <p><strong>15-18H</strong></p>
+                    <p>Emma</p>
+                    <p>Field 3</p>
+                </div>
+            </div>
+            <!-- Friday -->
+            <div class="carousel-item">
+                <h2>Friday</h2>
+                <div class="session">
+                    <p><strong>15-18H</strong></p>
+                    <p>Emma</p>
+                    <p>Field 3</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button id="prev"><i class="fas fa-chevron-left"></i></button>
+            <button id="next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </div>
+
+</div>
+
+    <!-- Modal Structure -->
+    <div id="modal" class="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <img id="modalImage" alt="Participant Image">
+    </div>
+
+
 
     <script>
         const firebaseConfig = {
@@ -35,6 +263,11 @@
         const database = firebase.database();
         const participantId = sessionStorage.getItem('participantId') - 1;
         const participantInfoDiv = document.getElementById('participant-info');
+        const mondayInfoDiv = document.getElementById('monday-info');
+        const tuesdayInfoDiv = document.getElementById('tuesday-info');
+        const wednesdayInfoDiv = document.getElementById('wednesday-info');
+        const thursdayInfoDiv = document.getElementById('thursday-info');
+        const fridayInfoDiv = document.getElementById('friday-info');
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
         const closeModal = document.getElementById('closeModal');
@@ -49,32 +282,192 @@
             }
         };
 
-        database.ref(`/${participantId}`).on('value', (snapshot) => {
+        database.ref(`/players/${participantId}`).on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 participantInfoDiv.innerHTML = `
-                    <div class="photo-container">
-                        <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
-                    </div>
                     <div class="info-container">
                         <h1>${data.Name}</h1>
                         <p><strong>Money:</strong> ${data.Money} €</p>
-                      
-                        <ul>
-                            ${(data.Program || []).map(item => `<li>${item}</li>`).join('')}
-                        </ul>
                     </div>
+                    <div class="photo-container">
+                        <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
+                    </div>
+ 
                 `;
 
                 const participantPhoto = document.getElementById('participantPhoto');
                 participantPhoto.onclick = () => {
-                    modal.style.display = "block";
+                    modal.style.display = "flex";
                     modalImage.src = data.Picture;
                 };
             } else {
                 participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
             }
         });
+
+        database.ref(`/monday/${participantId}`).on('value', (snapshot) => {
+            const monday = snapshot.val();
+            if (monday) {
+                        mondayInfoDiv.innerHTML = `
+                   <div>
+                        <div>
+                            <p><strong>Time practice:</strong> ${monday.trainingTime} </p>    
+                            <p><strong>Field practice:</strong> ${monday.trainingField}</p>
+                            <p><strong>Coach pratice:</strong> ${monday.trainingCoach} </p> 
+                        </div>
+                        <div>
+                            <p><strong>Time game:</strong> ${monday.gameTime} </p>    
+                            <p><strong>Field game:</strong> ${monday.gameField}</p>
+                            <p><strong>Coach game:</strong> ${monday.gameCoach} </p>
+                        </div>
+                        <div>
+                            <p><strong>Presentation Time:</strong> ${monday.presentationTime} </p>    
+                            <p><strong>Presentation place:</strong> ${monday.presentationPlace}</p>
+                            <p><strong>Presentation coach:</strong> ${monday.presentationCoach} </p>
+                        </div>
+                    </div>
+                   
+                `;
+            } else {
+                mondayInfoDiv.innerHTML = '<p>Participant not found!</p>';
+            }
+        });
+
+        database.ref(`/tuesday/${participantId}`).on('value', (snapshot) => {
+            const data2 = snapshot.val();
+            if (data2) {
+                        tuesdayInfoDiv.innerHTML = `
+                   <div>
+                        <div>
+                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
+                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
+                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
+                        </div>
+                        <div>
+                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
+                            <p><strong>Field game:</strong> ${data2.gameField}</p>
+                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
+                        </div>
+                        <div>
+                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
+                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
+                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
+                        </div>
+                    </div>
+                   
+                `;
+            } else {
+                tuesdayInfoDiv.innerHTML = '<p>Participant not found!</p>';
+            }
+        });
+
+        database.ref(`/wednesday/${participantId}`).on('value', (snapshot) => {
+            const data2 = snapshot.val();
+            if (data2) {
+                        wednesdayInfoDiv.innerHTML = `
+                   <div>
+                        <div>
+                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
+                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
+                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
+                        </div>
+                        <div>
+                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
+                            <p><strong>Field game:</strong> ${data2.gameField}</p>
+                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
+                        </div>
+                        <div>
+                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
+                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
+                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
+                        </div>
+                    </div>
+                   
+                `;
+            } else {
+                wednesdayInfoDiv.innerHTML = '<p>Participant not found!</p>';
+            }
+        });
+
+        database.ref(`/thursday/${participantId}`).on('value', (snapshot) => {
+            const data2 = snapshot.val();
+            if (data2) {
+                        thursdayInfoDiv.innerHTML = `
+                   <div>
+                        <div>
+                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
+                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
+                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
+                        </div>
+                        <div>
+                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
+                            <p><strong>Field game:</strong> ${data2.gameField}</p>
+                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
+                        </div>
+                        <div>
+                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
+                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
+                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
+                        </div>
+                    </div>
+                   
+                `;
+            } else {
+                thursdayInfoDiv.innerHTML = '<p>Participant not found!</p>';
+            }
+        });
+
+        database.ref(`/friday/${participantId}`).on('value', (snapshot) => {
+            const data2 = snapshot.val();
+            if (data2) {
+                        fridayInfoDiv.innerHTML = `
+                   <div>
+                        <div>
+                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
+                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
+                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
+                        </div>
+                        <div>
+                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
+                            <p><strong>Field game:</strong> ${data2.gameField}</p>
+                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
+                        </div>
+                        <div>
+                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
+                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
+                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
+                        </div>
+                    </div>
+                   
+                `;
+            } else {
+                fridayInfoDiv.innerHTML = '<p>Participant not found!</p>';
+            }
+        });
+
+        const carouselInner = document.querySelector('.carousel-inner');
+        const dots = document.querySelectorAll('.dot');
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+
+        let index = 0;
+
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        }
+
+        prev.addEventListener('click', () => {
+            index = (index > 0) ? index - 1 : dots.length - 1;
+            updateCarousel();
+        });
+
+        next.addEventListener('click', () => {
+            index = (index < dots.length - 1) ? index + 1 : 0;
+            updateCarousel();
+        });
+
     </script>
 </body>
 </html>

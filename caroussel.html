@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Carrousel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .participant-info {
+            text-align: center;
+            padding: 1rem;
+        }
+        .participant-info img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .participant-info h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .carousel-item h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .session {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .session p {
+            margin: 0;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+        .nav-buttons button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #444;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-buttons button:hover {
+            color: #000;
+        }
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .dots span {
+            width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+        .dots .active {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="participant-info">
+            <img src="/mnt/data/ad.png" alt="Participant">
+            <h1>Lasma Kublicka</h1>
+            <p><strong>45 €</strong></p>
+        </div>
+
+        <div class="carousel">
+            <div class="carousel-inner">
+                <!-- Lundi -->
+                <div class="carousel-item">
+                    <h2>Lundi</h2>
+                    <div class="session">
+                        <p><strong>12-15H</strong></p>
+                        <p>Rowan</p>
+                        <p>Field 1</p>
+                    </div>
+                    <div class="session">
+                        <p><strong>12-15H</strong></p>
+                        <p>Valeria</p>
+                        <p>Field 2</p>
+                    </div>
+                </div>
+                <!-- Mardi -->
+                <div class="carousel-item">
+                    <h2>Mardi</h2>
+                    <div class="session">
+                        <p><strong>10-13H</strong></p>
+                        <p>Pierre</p>
+                        <p>Restaurant</p>
+                    </div>
+                </div>
+                <!-- Mercredi -->
+                <div class="carousel-item">
+                    <h2>Mercredi</h2>
+                    <div class="session">
+                        <p><strong>15-18H</strong></p>
+                        <p>Emma</p>
+                        <p>Field 3</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button id="prev"><i class="fas fa-chevron-left"></i></button>
+                <button id="next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const carouselInner = document.querySelector('.carousel-inner');
+        const dots = document.querySelectorAll('.dot');
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+
+        let index = 0;
+
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        }
+
+        prev.addEventListener('click', () => {
+            index = (index > 0) ? index - 1 : dots.length - 1;
+            updateCarousel();
+        });
+
+        next.addEventListener('click', () => {
+            index = (index < dots.length - 1) ? index + 1 : 0;
+            updateCarousel();
+        });
+    </script>
+</body>
+</html>
