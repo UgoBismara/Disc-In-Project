@@ -354,33 +354,53 @@ document.getElementById('prev').addEventListener('click', () => {
     index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
     updateCarousel();
 });
-// Variables globales pour gérer le swipe
+
+document.getElementById('next').addEventListener('click', () => {
+    index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
+    updateCarousel();
+});
+
+// Variables globales
 let startX = 0;
 let currentX = 0;
 let isSwiping = false;
 
-// Fonction pour réinitialiser les variables après un swipe
+// Fonction pour réinitialiser le swipe
 function resetSwipe() {
     startX = 0;
     currentX = 0;
     isSwiping = false;
 }
 
+// Fonction pour mettre à jour l'affichage du carrousel
+function updateCarousel() {
+    const items = document.querySelectorAll('.carousel-item');
+    const dots = document.querySelectorAll('.dot');
+
+    // Déplacement du carrousel
+    carouselInner.style.transform = `translateX(-${index * carouselInner.offsetWidth}px)`;
+
+    // Mise à jour des indicateurs
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+}
+
 // Détection du début du swipe
 carouselInner.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX; // Position initiale du touch
-    isSwiping = true; // Activation de l'état swipe
-    carouselInner.style.transition = "none"; // Désactiver temporairement les transitions
+    startX = e.touches[0].clientX;
+    isSwiping = true;
+
+    // Désactiver la transition pour un déplacement fluide
+    carouselInner.style.transition = "none";
 });
 
 // Gestion du mouvement du swipe
 carouselInner.addEventListener('touchmove', (e) => {
     if (!isSwiping) return;
 
-    currentX = e.touches[0].clientX; // Position actuelle du touch
-    const diffX = currentX - startX; // Distance parcourue
+    currentX = e.touches[0].clientX;
+    const diffX = currentX - startX;
 
-    // Déplacement visuel de l'élément
+    // Déplacement temporaire de l'élément
     const offset = -index * carouselInner.offsetWidth + diffX;
     carouselInner.style.transform = `translateX(${offset}px)`;
 });
@@ -389,32 +409,30 @@ carouselInner.addEventListener('touchmove', (e) => {
 carouselInner.addEventListener('touchend', () => {
     if (!isSwiping) return;
 
-    const diffX = currentX - startX; // Distance totale du swipe
-    const threshold = 50; // Seuil pour valider un swipe
+    const diffX = currentX - startX;
+    const threshold = 50; // Seuil de déplacement minimum pour valider un swipe
 
-    // Calcul de la direction du swipe
+    // Déterminer la direction du swipe
     if (Math.abs(diffX) > threshold) {
         if (diffX > 0) {
-            // Swipe vers la droite (élément précédent)
+            // Swipe vers la droite
             index = (index > 0) ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
         } else {
-            // Swipe vers la gauche (élément suivant)
+            // Swipe vers la gauche
             index = (index < document.querySelectorAll('.carousel-item').length - 1) ? index + 1 : 0;
         }
     }
 
-    // Réinitialisation de la position
-    carouselInner.style.transition = "transform 0.5s ease"; // Réactiver la transition
-    carouselInner.style.transform = `translateX(-${index * carouselInner.offsetWidth}px)`;
-
-    // Mise à jour des indicateurs (points)
+    // Réinitialisation de la position avec une transition fluide
+    carouselInner.style.transition = "transform 0.5s ease";
     updateCarousel();
 
     // Réinitialisation des variables
     resetSwipe();
 });
 
-
+// Mise à jour initiale du carrousel
+updateCarousel();
 
         closeModal.onclick = () => {
             modal.style.display = "none";
