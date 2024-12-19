@@ -24,7 +24,7 @@
             margin: 0;
         }
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 350px;
             margin: auto;
             background: #fff;
@@ -44,6 +44,7 @@
             margin-bottom: 1rem;
         }
         .info-container {
+            width: 100%;
             text-align: center;
             padding: 1rem;
         }
@@ -213,11 +214,32 @@
             right: 10px; /* Espacement à droite */
             position: absolute;
         }
+        .info-container {
+    position: relative; /* Nécessaire pour positionner la flèche */
+    text-align: center;
+    padding: 1rem;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 10px; /* Ajuste la position verticale */
+    left: 10px; /* Ajuste la position horizontale */
+    font-size: 1.5rem; /* Taille de la flèche */
+    text-decoration: none; /* Supprime le soulignement */
+    color: #444; /* Couleur de la flèche */
+    transition: color 0.3s ease;
+}
+
+.back-arrow:hover {
+    color: #000; /* Change la couleur au survol */
+}
 
     </style>
 </head>
 
 <body>
+
+    
     <div class="container">
         <div id="participant-info"></div>
     </div>
@@ -335,17 +357,20 @@ let startX = 0;
 let currentX = 0;
 let isSwiping = false;
 
+// Détection du début du swipe
 carouselInner.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX; // Enregistre la position de départ du swipe
-    isSwiping = true; // Active l'état de swipe
+    isSwiping = true; // Active l'état swipe
 });
 
+// Gestion du mouvement du swipe
 carouselInner.addEventListener('touchmove', (e) => {
     if (!isSwiping) return;
 
     currentX = e.touches[0].clientX; // Enregistre la position actuelle pendant le swipe
 });
 
+// Gestion de la fin du swipe
 carouselInner.addEventListener('touchend', () => {
     if (!isSwiping) return;
 
@@ -355,21 +380,19 @@ carouselInner.addEventListener('touchend', () => {
     if (Math.abs(diffX) > 50) {
         if (diffX > 0) {
             // Swipe vers la droite (élément précédent)
-            index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
+            index = (index > 0) ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
         } else {
             // Swipe vers la gauche (élément suivant)
-            index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
+            index = (index < document.querySelectorAll('.carousel-item').length - 1) ? index + 1 : 0;
         }
         updateCarousel(); // Met à jour l'affichage du carrousel
     }
 
-    // Réinitialise les valeurs pour le prochain swipe
+    // Réinitialisation des variables
     startX = 0;
     currentX = 0;
     isSwiping = false;
 });
-
-
 
         closeModal.onclick = () => {
             modal.style.display = "none";
@@ -387,8 +410,11 @@ carouselInner.addEventListener('touchend', () => {
 
                 const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
 
+                document.body.style.backgroundColor = '#F5F5DC';
+
                 participantInfoDiv.innerHTML = `
                     <div class="info-container">
+                        <a href="index.html" class="back-arrow">&#8592;</a>
                         <h1>${data.Name}</h1>
                         <div class="money-container">
                             <span>💰</span>
