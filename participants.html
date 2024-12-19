@@ -56,14 +56,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0 auto;
             font-size: 1rem;
             background-color: #f9f9f9;
-            padding: 0.3rem 0.7rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             gap: 0.5rem;
             font-weight: bold;
             color: #444;
+            max-width: 50%;
         }
         .money-container span {
             font-size: 1.2rem;
@@ -234,15 +236,20 @@
     color: #000; /* Change la couleur au survol */
 }
 
+.team-indicator {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; /* Rond */
+    margin-left: 8px; /* Espacement entre le nom et l'indicateur */
+    vertical-align: middle;
+}
+
     </style>
 </head>
 
 <body>
-
-    
-    <div class="container">
-        <div id="participant-info"></div>
-    </div>
+    <div id="participant-info"></div>
 
     <div id="modal" class="modal">
         <span class="close" id="closeModal">&times;</span>
@@ -347,37 +354,39 @@ document.getElementById('prev').addEventListener('click', () => {
     index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
     updateCarousel();
 });
-
-document.getElementById('next').addEventListener('click', () => {
-    index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
-    updateCarousel();
-});
-
+// Variables globales pour gérer le swipe
 let startX = 0;
 let currentX = 0;
 let isSwiping = false;
 
 // Détection du début du swipe
 carouselInner.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX; // Enregistre la position de départ du swipe
-    isSwiping = true; // Active l'état swipe
+    startX = e.touches[0].clientX; // Position initiale du touch
+    isSwiping = true; // Activation de l'état swipe
+    carouselInner.style.transition = "none"; // Désactiver temporairement les transitions
 });
 
 // Gestion du mouvement du swipe
 carouselInner.addEventListener('touchmove', (e) => {
     if (!isSwiping) return;
 
-    currentX = e.touches[0].clientX; // Enregistre la position actuelle pendant le swipe
+    currentX = e.touches[0].clientX; // Position actuelle du touch
+    const diffX = currentX - startX; // Distance parcourue
+
+    // Déplacement visuel de l'élément
+    const offset = -index * carouselInner.offsetWidth + diffX;
+    carouselInner.style.transform = `translateX(${offset}px)`;
 });
 
 // Gestion de la fin du swipe
 carouselInner.addEventListener('touchend', () => {
     if (!isSwiping) return;
 
-    const diffX = currentX - startX; // Calcule la différence entre la position initiale et finale
+    const diffX = currentX - startX; // Distance totale du swipe
+    const threshold = 50; // Seuil pour valider un swipe
 
-    // Seuil pour différencier un swipe d'un simple tap
-    if (Math.abs(diffX) > 50) {
+    // Calcul de la direction du swipe
+    if (Math.abs(diffX) > threshold) {
         if (diffX > 0) {
             // Swipe vers la droite (élément précédent)
             index = (index > 0) ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
@@ -385,14 +394,21 @@ carouselInner.addEventListener('touchend', () => {
             // Swipe vers la gauche (élément suivant)
             index = (index < document.querySelectorAll('.carousel-item').length - 1) ? index + 1 : 0;
         }
-        updateCarousel(); // Met à jour l'affichage du carrousel
     }
+
+    // Réinitialisation de la position
+    carouselInner.style.transition = "transform 0.5s ease"; // Réactiver la transition
+    carouselInner.style.transform = `translateX(-${index * carouselInner.offsetWidth}px)`;
+
+    // Mise à jour des indicateurs (points)
+    updateCarousel();
 
     // Réinitialisation des variables
     startX = 0;
     currentX = 0;
     isSwiping = false;
 });
+
 
         closeModal.onclick = () => {
             modal.style.display = "none";
@@ -410,12 +426,24 @@ carouselInner.addEventListener('touchend', () => {
 
                 const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
 
-                document.body.style.backgroundColor = '#F5F5DC';
+                        // Définir une couleur en fonction de l'équipe
+                const teamColors = {
+                    'Team A': '#FF5733', // Exemple : Orange
+                    'Team B': '#33FF57', // Exemple : Vert
+                    'Team C': '#3357FF'  // Exemple : Bleu
+                };
+
+                const teamColor = teamColors[data.Team] || '#444'; // Couleur par défaut
+
+                document.body.style.backgroundColor = '#f1d9bc';
 
                 participantInfoDiv.innerHTML = `
                     <div class="info-container">
                         <a href="index.html" class="back-arrow">&#8592;</a>
-                        <h1>${data.Name}</h1>
+                        <h1>${data.Name}
+                            <span class="team-indicator" style="background-color: ${teamColor};"></span>
+                        </h1>
+                        
                         <div class="money-container">
                             <span>💰</span>
                             <p>${roundedMoney} €</p>
