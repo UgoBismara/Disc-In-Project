@@ -43,9 +43,18 @@
             margin-bottom: 0.5rem;
             margin-top: 1rem;
         }
-        .photo-container {
-            text-align: center;
+        .photo-container img {
+            width: 300px; /* Réduisez la largeur de l'image */
+            height: 300px; /* Réduisez la hauteur de l'image */
+            object-fit: cover; /* Conserve le rapport d'aspect de l'image */
+            margin: 0 auto; /* Centre l'image dans le conteneur */
         }
+
+        .photo-container {
+            text-align: center; /* Centre l'image horizontalement */
+            margin-top: 1rem; /* Ajoute un peu d'espace entre le nom et la photo */
+        }
+        
         .carousel {
             position: relative;
             overflow: hidden;
@@ -140,104 +149,41 @@
             color: white;
             cursor: pointer;
         }
+
+        .info-container {
+    position: relative;
+    padding: 1rem;
+    text-align: center; /* Centre le nom */
+}
+.info-container h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.money-container {
+    position: absolute;
+    top: 10px; /* Alignement vertical */
+    right: 10px; /* Alignement à droite */
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    padding: 0.3rem 0.7rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    gap: 0.5rem;
+    font-weight: bold;
+    color: #444;
+}
+.money-container span {
+    font-size: 1.2rem; /* Emoji size */
+}
+
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="participant-info"></div>
-
-        <div class="container">
-            <div id="monday-info"></div>
-        </div>
-
-        <div class="container">
-            <div id="tuesday-info"></div>
-        </div>
-
-    <div class="container">
-        <div id="wednesday-info"></div>
-    </div>
-
-    <div class="container">
-        <div id="thursday-info"></div>
-    </div>
-
-    <div class="container">
-        <div id="friday-info"></div>
-    </div>
-
-    <div class="carousel">
-        <div class="carousel-inner">
-            <!-- Lundi -->
-            <div class="carousel-item">
-                <h2>Monday</h2>
-                <div class="session">
-                    <p><strong>12-15H</strong></p>
-                    <p>Rowan</p>
-                    <p>Field 1</p>
-                </div>
-                <div class="session">
-                    <p><strong>12-15H</strong></p>
-                    <p>Valeria</p>
-                    <p>Field 2</p>
-                </div>
-                <div class="session">
-                    <p><strong>12-15H</strong></p>
-                    <p>Valeria</p>
-                    <p>Field 2</p>
-                </div>
-            </div>
-            <!-- Mardi -->
-            <div class="carousel-item">
-                <h2>Tuesday</h2>
-                <div class="session">
-                    <p><strong>10-13H</strong></p>
-                    <p>Pierre</p>
-                    <p>Restaurant</p>
-                </div>
-            </div>
-            <!-- Mercredi -->
-            <div class="carousel-item">
-                <h2>Wednesday</h2>
-                <div class="session">
-                    <p><strong>15-18H</strong></p>
-                    <p>Emma</p>
-                    <p>Field 3</p>
-                </div>
-            </div>
-            <!-- Thursday -->
-            <div class="carousel-item">
-                <h2>Thursday</h2>
-                <div class="session">
-                    <p><strong>15-18H</strong></p>
-                    <p>Emma</p>
-                    <p>Field 3</p>
-                </div>
-            </div>
-            <!-- Friday -->
-            <div class="carousel-item">
-                <h2>Friday</h2>
-                <div class="session">
-                    <p><strong>15-18H</strong></p>
-                    <p>Emma</p>
-                    <p>Field 3</p>
-                </div>
-            </div>
-        </div>
-        <div class="nav-buttons">
-            <button id="prev"><i class="fas fa-chevron-left"></i></button>
-            <button id="next"><i class="fas fa-chevron-right"></i></button>
-        </div>
-        <div class="dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-    </div>
-
-</div>
+        <div id="participant-info"></div>        
 
     <!-- Modal Structure -->
     <div id="modal" class="modal">
@@ -245,6 +191,12 @@
         <img id="modalImage" alt="Participant Image">
     </div>
 
+    <div class="carousel">
+        <div class="carousel-inner"></div>
+        <button id="prev">&#8249;</button>
+        <button id="next">&#8250;</button>
+        <div class="dots"></div>
+    </div>
 
 
     <script>
@@ -271,6 +223,77 @@
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
         const closeModal = document.getElementById('closeModal');
+        const carouselInner = document.querySelector('.carousel-inner');
+        const dotsContainer = document.querySelector('.dots');
+
+const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+function createSessionHTML(data) {
+    console.log(data);
+    return `
+        <div class="session">
+            <p><strong>Time practice:</strong> ${data.trainingTime || "N/A"}</p>
+            <p><strong>Field practice:</strong> ${data.trainingField || "N/A"}</p>
+            <p><strong>Coach practice:</strong> ${data.trainingCoach || "N/A"}</p>
+        </div>
+        <div class="session">
+            <p><strong>Time game:</strong> ${data.gameTime || "N/A"}</p>
+            <p><strong>Field game:</strong> ${data.gameField || "N/A"}</p>
+            <p><strong>Coach game:</strong> ${data.gameCoach || "N/A"}</p>
+        </div>
+        <div class="session">
+            <p><strong>Presentation Time:</strong> ${data.presentationTime || "N/A"}</p>
+            <p><strong>Presentation Place:</strong> ${data.presentationPlace || "N/A"}</p>
+            <p><strong>Presentation Coach:</strong> ${data.presentationCoach || "N/A"}</p>
+        </div>
+    `;
+}
+
+function fetchDayData(day) {
+    console.log('Affiche');
+    database.ref(`/${day.toLowerCase()}/${participantId}`).on('value', (snapshot) => {
+        const dayData = snapshot.val();
+        if (dayData) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'carousel-item';
+            dayElement.innerHTML = `
+                <h2>${day}</h2>
+                ${createSessionHTML(dayData)}
+            `;
+            carouselInner.appendChild(dayElement);
+
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            dotsContainer.appendChild(dot);
+
+            updateCarousel(); // Update carousel for dynamic content
+        }
+    });
+}
+
+// Fetch and display data for all days
+daysOfWeek.forEach(fetchDayData);
+
+// Carousel navigation
+let index = 0;
+
+function updateCarousel() {
+    const items = document.querySelectorAll('.carousel-item');
+    const dots = document.querySelectorAll('.dot');
+    carouselInner.style.transform = `translateX(-${index * 100}%)`;
+
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+}
+
+document.getElementById('prev').addEventListener('click', () => {
+    index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
+    updateCarousel();
+});
+
+document.getElementById('next').addEventListener('click', () => {
+    index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
+    updateCarousel();
+});
 
         closeModal.onclick = () => {
             modal.style.display = "none";
@@ -285,10 +308,16 @@
         database.ref(`/players/${participantId}`).on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
+
+                const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
+
                 participantInfoDiv.innerHTML = `
                     <div class="info-container">
                         <h1>${data.Name}</h1>
-                        <p><strong>Money:</strong> ${data.Money} €</p>
+                        <div class="money-container">
+                            <span>💰</span>
+                            <p>${roundedMoney} €</p>
+                        </div>
                     </div>
                     <div class="photo-container">
                         <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
@@ -304,168 +333,6 @@
             } else {
                 participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
             }
-        });
-
-        database.ref(`/monday/${participantId}`).on('value', (snapshot) => {
-            const monday = snapshot.val();
-            if (monday) {
-                        mondayInfoDiv.innerHTML = `
-                   <div>
-                        <div>
-                            <p><strong>Time practice:</strong> ${monday.trainingTime} </p>    
-                            <p><strong>Field practice:</strong> ${monday.trainingField}</p>
-                            <p><strong>Coach pratice:</strong> ${monday.trainingCoach} </p> 
-                        </div>
-                        <div>
-                            <p><strong>Time game:</strong> ${monday.gameTime} </p>    
-                            <p><strong>Field game:</strong> ${monday.gameField}</p>
-                            <p><strong>Coach game:</strong> ${monday.gameCoach} </p>
-                        </div>
-                        <div>
-                            <p><strong>Presentation Time:</strong> ${monday.presentationTime} </p>    
-                            <p><strong>Presentation place:</strong> ${monday.presentationPlace}</p>
-                            <p><strong>Presentation coach:</strong> ${monday.presentationCoach} </p>
-                        </div>
-                    </div>
-                   
-                `;
-            } else {
-                mondayInfoDiv.innerHTML = '<p>Participant not found!</p>';
-            }
-        });
-
-        database.ref(`/tuesday/${participantId}`).on('value', (snapshot) => {
-            const data2 = snapshot.val();
-            if (data2) {
-                        tuesdayInfoDiv.innerHTML = `
-                   <div>
-                        <div>
-                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
-                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
-                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
-                        </div>
-                        <div>
-                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
-                            <p><strong>Field game:</strong> ${data2.gameField}</p>
-                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
-                        </div>
-                        <div>
-                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
-                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
-                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
-                        </div>
-                    </div>
-                   
-                `;
-            } else {
-                tuesdayInfoDiv.innerHTML = '<p>Participant not found!</p>';
-            }
-        });
-
-        database.ref(`/wednesday/${participantId}`).on('value', (snapshot) => {
-            const data2 = snapshot.val();
-            if (data2) {
-                        wednesdayInfoDiv.innerHTML = `
-                   <div>
-                        <div>
-                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
-                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
-                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
-                        </div>
-                        <div>
-                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
-                            <p><strong>Field game:</strong> ${data2.gameField}</p>
-                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
-                        </div>
-                        <div>
-                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
-                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
-                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
-                        </div>
-                    </div>
-                   
-                `;
-            } else {
-                wednesdayInfoDiv.innerHTML = '<p>Participant not found!</p>';
-            }
-        });
-
-        database.ref(`/thursday/${participantId}`).on('value', (snapshot) => {
-            const data2 = snapshot.val();
-            if (data2) {
-                        thursdayInfoDiv.innerHTML = `
-                   <div>
-                        <div>
-                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
-                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
-                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
-                        </div>
-                        <div>
-                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
-                            <p><strong>Field game:</strong> ${data2.gameField}</p>
-                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
-                        </div>
-                        <div>
-                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
-                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
-                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
-                        </div>
-                    </div>
-                   
-                `;
-            } else {
-                thursdayInfoDiv.innerHTML = '<p>Participant not found!</p>';
-            }
-        });
-
-        database.ref(`/friday/${participantId}`).on('value', (snapshot) => {
-            const data2 = snapshot.val();
-            if (data2) {
-                        fridayInfoDiv.innerHTML = `
-                   <div>
-                        <div>
-                            <p><strong>Time practice:</strong> ${data2.trainingTime} </p>    
-                            <p><strong>Field practice:</strong> ${data2.trainingField}</p>
-                            <p><strong>Coach pratice:</strong> ${data2.trainingCoach} </p> 
-                        </div>
-                        <div>
-                            <p><strong>Time game:</strong> ${data2.gameTime} </p>    
-                            <p><strong>Field game:</strong> ${data2.gameField}</p>
-                            <p><strong>Coach game:</strong> ${data2.gameCoach} </p>
-                        </div>
-                        <div>
-                            <p><strong>Presentation Time:</strong> ${data2.presentationTime} </p>    
-                            <p><strong>Presentation place:</strong> ${data2.presentationPlace}</p>
-                            <p><strong>Presentation coach:</strong> ${data2.presentationCoach} </p>
-                        </div>
-                    </div>
-                   
-                `;
-            } else {
-                fridayInfoDiv.innerHTML = '<p>Participant not found!</p>';
-            }
-        });
-
-        const carouselInner = document.querySelector('.carousel-inner');
-        const dots = document.querySelectorAll('.dot');
-        const prev = document.getElementById('prev');
-        const next = document.getElementById('next');
-
-        let index = 0;
-
-        function updateCarousel() {
-            carouselInner.style.transform = `translateX(-${index * 100}%)`;
-            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-        }
-
-        prev.addEventListener('click', () => {
-            index = (index > 0) ? index - 1 : dots.length - 1;
-            updateCarousel();
-        });
-
-        next.addEventListener('click', () => {
-            index = (index < dots.length - 1) ? index + 1 : 0;
-            updateCarousel();
         });
 
     </script>
