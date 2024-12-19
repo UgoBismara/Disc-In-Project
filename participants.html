@@ -76,12 +76,16 @@
         }
         .carousel {
             position: relative;
+            width: 100%; /* S'adapte à la largeur de .info-container */
+            height: auto; /* Maintient un ratio automatique */
             overflow: hidden;
         }
         .carousel-inner {
             display: flex;
+            width: 100%; /* Correspond à la largeur du carrousel */
             transition: transform 0.5s ease-in-out;
         }
+
         .carousel-item {
             min-width: 100%;
             box-sizing: border-box;
@@ -167,8 +171,52 @@
             color: white;
             cursor: pointer;
         }
+
+        .nav-buttons {
+            position: absolute;
+            top: 505px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            pointer-events: none; /* Pour empêcher le blocage des clics dans les zones inutiles */
+        }
+
+        .nav-buttons button {
+            pointer-events: auto; /* Permettre les clics uniquement sur les boutons */
+            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour contraste */
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-buttons button:hover {
+            background-color: rgba(0, 0, 0, 0.8); /* Accentuation au survol */
+            transform: scale(1.1); /* Agrandissement au survol */
+        }
+
+        #prev {
+            left: 10px; /* Espacement à gauche */
+            position: absolute;
+        }
+
+        #next {
+            right: 10px; /* Espacement à droite */
+            position: absolute;
+        }
+
     </style>
 </head>
+
 <body>
     <div class="container">
         <div id="participant-info"></div>
@@ -181,11 +229,13 @@
 
     <div class="carousel">
         <div class="carousel-inner"></div>
-        <button id="prev">&#8249;</button>
-        <button id="next">&#8250;</button>
         <div class="dots"></div>
     </div>
 
+    <div class="nav-buttons">
+        <button id="prev">&#8249;</button>
+        <button id="next">&#8250;</button>
+    </div>  
 
     <script>
         const firebaseConfig = {
@@ -280,6 +330,38 @@ document.getElementById('next').addEventListener('click', () => {
     index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
     updateCarousel();
 });
+
+let startX = 0;
+let isSwiping = false;
+
+carouselInner.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX; // Enregistre la position de départ du swipe
+    isSwiping = true;
+});
+
+carouselInner.addEventListener('touchmove', (e) => {
+    if (!isSwiping) return;
+
+    const diffX = e.touches[0].clientX - startX;
+
+    // Si le déplacement est significatif, évitez d'effectuer un swipe involontaire
+    if (Math.abs(diffX) > 50) {
+        isSwiping = false; // Évite un swipe multiple
+        if (diffX > 0) {
+            // Swipe à droite (précédent)
+            index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
+        } else {
+            // Swipe à gauche (suivant)
+            index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
+        }
+        updateCarousel(); // Met à jour l'affichage du carrousel
+    }
+});
+
+carouselInner.addEventListener('touchend', () => {
+    isSwiping = false; // Fin du swipe
+});
+
 
         closeModal.onclick = () => {
             modal.style.display = "none";
