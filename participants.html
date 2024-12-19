@@ -332,35 +332,43 @@ document.getElementById('next').addEventListener('click', () => {
 });
 
 let startX = 0;
+let currentX = 0;
 let isSwiping = false;
 
 carouselInner.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX; // Enregistre la position de départ du swipe
-    isSwiping = true;
+    isSwiping = true; // Active l'état de swipe
 });
 
 carouselInner.addEventListener('touchmove', (e) => {
     if (!isSwiping) return;
 
-    const diffX = e.touches[0].clientX - startX;
+    currentX = e.touches[0].clientX; // Enregistre la position actuelle pendant le swipe
+});
 
-    // Si le déplacement est significatif, évitez d'effectuer un swipe involontaire
+carouselInner.addEventListener('touchend', () => {
+    if (!isSwiping) return;
+
+    const diffX = currentX - startX; // Calcule la différence entre la position initiale et finale
+
+    // Seuil pour différencier un swipe d'un simple tap
     if (Math.abs(diffX) > 50) {
-        isSwiping = false; // Évite un swipe multiple
         if (diffX > 0) {
-            // Swipe à droite (précédent)
+            // Swipe vers la droite (élément précédent)
             index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
         } else {
-            // Swipe à gauche (suivant)
+            // Swipe vers la gauche (élément suivant)
             index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
         }
         updateCarousel(); // Met à jour l'affichage du carrousel
     }
+
+    // Réinitialise les valeurs pour le prochain swipe
+    startX = 0;
+    currentX = 0;
+    isSwiping = false;
 });
 
-carouselInner.addEventListener('touchend', () => {
-    isSwiping = false; // Fin du swipe
-});
 
 
         closeModal.onclick = () => {
