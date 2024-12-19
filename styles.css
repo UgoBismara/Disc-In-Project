@@ -105,7 +105,7 @@ h1 {
 }
 
 /* Responsive adjustments */
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 370px) {
   .filter-bar button {
     font-size: 12px;
     padding: 6px;
