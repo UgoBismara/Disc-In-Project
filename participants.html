@@ -359,6 +359,13 @@ let startX = 0;
 let currentX = 0;
 let isSwiping = false;
 
+// Fonction pour réinitialiser les variables après un swipe
+function resetSwipe() {
+    startX = 0;
+    currentX = 0;
+    isSwiping = false;
+}
+
 // Détection du début du swipe
 carouselInner.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX; // Position initiale du touch
@@ -404,10 +411,9 @@ carouselInner.addEventListener('touchend', () => {
     updateCarousel();
 
     // Réinitialisation des variables
-    startX = 0;
-    currentX = 0;
-    isSwiping = false;
+    resetSwipe();
 });
+
 
 
         closeModal.onclick = () => {
