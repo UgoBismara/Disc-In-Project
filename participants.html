@@ -1,9 +1,8 @@
-<!-- Participant Details Page with Clickable Photo -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Participant Details</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -18,10 +17,16 @@
         }
         body {
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
         }
         .container {
-            max-width: 600px;
-            margin: 2rem auto;
+            width: 90%;
+            max-width: 350px;
+            margin: auto;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -32,29 +37,43 @@
             padding: 1rem;
         }
         .participant-info img {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 1rem;
         }
+        .info-container {
+            text-align: center;
+            padding: 1rem;
+        }
         .info-container h1 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             margin-bottom: 0.5rem;
-            margin-top: 1rem;
+        }
+        .money-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            gap: 0.5rem;
+            font-weight: bold;
+            color: #444;
+        }
+        .money-container span {
+            font-size: 1.2rem;
         }
         .photo-container img {
-            width: 300px; /* Réduisez la largeur de l'image */
-            height: 300px; /* Réduisez la hauteur de l'image */
-            object-fit: cover; /* Conserve le rapport d'aspect de l'image */
-            margin: 0 auto; /* Centre l'image dans le conteneur */
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto;
         }
-
-        .photo-container {
-            text-align: center; /* Centre l'image horizontalement */
-            margin-top: 1rem; /* Ajoute un peu d'espace entre le nom et la photo */
-        }
-        
         .carousel {
             position: relative;
             overflow: hidden;
@@ -66,25 +85,26 @@
         .carousel-item {
             min-width: 100%;
             box-sizing: border-box;
-            padding: 1.5rem;
+            padding: 1rem;
             text-align: center;
         }
         .carousel-item h2 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 1rem;
         }
         .session {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             margin: 0.5rem 0;
             padding: 0.75rem;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .session p {
-            margin: 0;
+            margin: 0.2rem 0;
         }
         .nav-buttons {
             display: flex;
@@ -121,8 +141,6 @@
         .dots .active {
             background-color: #444;
         }
-
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -149,43 +167,13 @@
             color: white;
             cursor: pointer;
         }
-
-        .info-container {
-    position: relative;
-    padding: 1rem;
-    text-align: center; /* Centre le nom */
-}
-.info-container h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-.money-container {
-    position: absolute;
-    top: 10px; /* Alignement vertical */
-    right: 10px; /* Alignement à droite */
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    background-color: #f9f9f9;
-    padding: 0.3rem 0.7rem;
-    border-radius: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    gap: 0.5rem;
-    font-weight: bold;
-    color: #444;
-}
-.money-container span {
-    font-size: 1.2rem; /* Emoji size */
-}
-
-
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="participant-info"></div>        
+        <div id="participant-info"></div>
+    </div>
 
-    <!-- Modal Structure -->
     <div id="modal" class="modal">
         <span class="close" id="closeModal">&times;</span>
         <img id="modalImage" alt="Participant Image">
@@ -229,7 +217,6 @@
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 function createSessionHTML(data) {
-    console.log(data);
     return `
         <div class="session">
             <p><strong>Time practice:</strong> ${data.trainingTime || "N/A"}</p>
@@ -250,7 +237,6 @@ function createSessionHTML(data) {
 }
 
 function fetchDayData(day) {
-    console.log('Affiche');
     database.ref(`/${day.toLowerCase()}/${participantId}`).on('value', (snapshot) => {
         const dayData = snapshot.val();
         if (dayData) {

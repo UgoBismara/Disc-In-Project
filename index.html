@@ -62,7 +62,6 @@
         // Récupération des données
         const dataContainer = document.getElementById("data");
         dataContainer.innerHTML = '';
-        console.log(database.ref("/"));
         const refPlayers = database.ref("/players");
         const refMonday = database.ref("/monday");
 
@@ -103,7 +102,6 @@
         function fetchData(color) {
     let input = document.getElementById('searchInput').value.toLowerCase();
     refPlayers.on("value", (snapshot) => {
-        console.log("Données Firebase :", snapshot.val());
         const data = snapshot.val();
         dataContainer.innerHTML = ""; // Clear the container
         
@@ -115,8 +113,6 @@
             // Combine the filters: color (team) and input (name search)
             const matchesColor = (camperTeamLower !== '' && (color.toLowerCase() === camperTeamLower || color.toLowerCase() === 'all'));
             const matchesInput = camperNameLower.includes(input);
-
-            console.log(input, matchesInput, matchesColor);
 
             if (matchesColor && matchesInput) {
                 createCamperCard(camper.Id, camper.Name, camper.Picture, camper.Team);
