@@ -25,7 +25,6 @@
             margin: 0;
             padding: 10px 0; 
             box-sizing: border-box;
-            overflow-x: hidden;
         }
 
         .container {
@@ -57,7 +56,6 @@
         }
 
         .info-container {
-            flex: 1; /* Permet à la section de prendre de l'espace */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -92,7 +90,6 @@
         }
 
         .photo-container {
-            flex: 1; /* Permet à l'image de prendre de l'espace */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -101,7 +98,8 @@
         }
 
         .photo-container img {
-            width: 40%; /* Réduit la largeur uniquement de l'image */
+            width: 40vw; /* Réduit la largeur uniquement de l'image */
+            height:40vw;
             height: auto;
             border-radius: 15px;
             object-fit: cover; /* Garde une belle proportion */
@@ -114,13 +112,16 @@
             width: 100%; /* S'adapte à la largeur de .info-container */
             height: auto; /* Maintient un ratio automatique */
             overflow: hidden;
+            display: flex;
+            align-items: center;
         }
+        
         .carousel-inner {
             display: flex;
             flex-direction: row;
-            width: 100%; /* Correspond à la largeur du carrousel */
             transition: transform 0.5s ease-in-out;
-        }
+            width:100%
+        }  
 
         .carousel-item {
             display: flex;
@@ -154,10 +155,11 @@
             display: flex;
             justify-content: space-between;
             position: absolute;
-            top: 50%;
+            top: 30%;
             width: 100%;
             transform: translateY(-50%);
         }
+        
         .nav-buttons button {
             background: none;
             border: none;
@@ -173,7 +175,13 @@
             display: flex;
             justify-content: center;
             margin: 1rem 0;
+            align-items: center; /* Assure un bon alignement vertical */
+            gap: 0.5rem;
+            margin-top: 1rem;
+            position: relative; /* Permet un positionnement correct */
+            z-index: 10; /* S'assurer que les dots sont au-dessus du carousel */
         }
+
         .dots span {
             width: 10px;
             height: 10px;
@@ -301,7 +309,7 @@
     width: 100%;
     position: relative;
     align-items: center;
-    padding: 1rem;
+    height:100%;
     border-radius: 10px;
     font-size: 1rem;
     font-weight: bold;
@@ -344,7 +352,6 @@
 }
 
 .session-item .details {
-    flex: 1; /* Permet aux détails de s'ajuster */
     display: flex;
     flex-direction: column; /* Place les informations les unes sous les autres */
     text-align: right; /* Aligne les détails à droite */
@@ -354,23 +361,21 @@
     font-size: 0.9rem;
     color: #666;
 }
-
 .carousel-wrapper {
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
+    justify-content: flex-start;
     align-items: center;
-    background-color: #ffffff; /* Couleur de fond pour l'effet carte */
-    border-radius: 15px; /* Coins arrondis pour un style de carte */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Ombre douce pour l'effet de profondeur */
-    padding: 1rem; /* Espacement interne */
-    margin: 1rem auto; /* Centrer et ajouter de l'espace extérieur */
-    height: 55vh; /* Adapte la hauteur à 40% de la hauteur de l'écran */
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     padding: 1rem;
-    width: 90vw; /* Assurez-vous qu'il s'adapte à la taille de son conteneur parent */
-    box-sizing: border-box; /* Inclure le padding dans la largeur */
+    margin: 1rem auto;
+    height: 50vh; /* Ajustement pour inclure les dots */
+    width: 90vw;
+    box-sizing: border-box;
     text-align: center;
-    flex-direction: column;
-    display: flex;
+    overflow: hidden;
 }
 
 @media (max-width: 667px) {
@@ -444,6 +449,9 @@
 
 <body>
     <div id="participant-info"></div>
+    <a href="index.html" class="back-arrow">                    
+        <i class="fas fa-arrow-left"></i>
+    </a>
 
     <div id="modal" class="modal">
         <span class="close" id="closeModal">&times;</span>
@@ -520,6 +528,7 @@ function createSessionHTML(data) {
     `).join('');
 }
 
+// Fonction pour mettre à jour la position des dots
 function fetchDayData(day) {
     database.ref(`/${day.toLowerCase()}/${participantId}`).on('value', (snapshot) => {
         const dayData = snapshot.val();
@@ -530,13 +539,11 @@ function fetchDayData(day) {
                 <h2>${day}</h2>
                 ${createSessionHTML(dayData)}
             `;
-
             carouselInner.appendChild(dayElement);
 
             const dot = document.createElement('span');
             dot.className = 'dot';
-            dotsContainer.appendChild(dot);
-
+            dotsContainer.appendChild(dot); // S'assurer que les dots sont ajoutés correctement
             updateCarousel();
         }
     });
@@ -664,9 +671,6 @@ updateCarousel();
 
         participantInfoDiv.innerHTML = `
             <div class="info-container">
-                <a href="index.html" class="back-arrow">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
                 <h1>${data.Name}</h1>
                 <div class="money-container">
                     <span>💰</span>
