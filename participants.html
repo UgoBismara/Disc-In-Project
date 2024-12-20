@@ -20,20 +20,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            min-height: calc(100vh - 20px);
             margin: 0;
-            padding: 0;
+            padding: 10px 0; 
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         .container {
-            width: 100%;
-            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 90vw;
+            height: 90vh;
             margin: auto;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            text-align: center;
+            box-sizing: border-box;
         }
+
         .participant-info {
             text-align: center;
             padding: 1rem;
@@ -45,10 +55,17 @@
             object-fit: cover;
             margin-bottom: 1rem;
         }
+
         .info-container {
-            width: 100%;
+            flex: 1; /* Permet à la section de prendre de l'espace */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem; /* Espacement réduit */
             text-align: center;
-            padding: 1rem;
+            width: 100%;
+            flex-shrink: 0;
         }
 
         .info-container h1 {
@@ -74,10 +91,19 @@
             font-size: 1.2rem;
         }
 
+        .photo-container {
+            flex: 1; /* Permet à l'image de prendre de l'espace */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
         .photo-container img {
-            width: 80%; /* Réduit la largeur uniquement de l'image */
-            max-width: 200px; /* Limite la largeur maximale de l'image */
-            height: auto; /* Maintient le ratio de l'image */
+            width: 40%; /* Réduit la largeur uniquement de l'image */
+            height: auto;
+            border-radius: 15px;
             object-fit: cover; /* Garde une belle proportion */
             margin: 0 auto; /* Centre l'image */
             display: block; /* Garde l'image centrée */
@@ -91,20 +117,25 @@
         }
         .carousel-inner {
             display: flex;
+            flex-direction: row;
             width: 100%; /* Correspond à la largeur du carrousel */
             transition: transform 0.5s ease-in-out;
         }
 
         .carousel-item {
-            min-width: 100%;
+            display: flex;
+            flex: 0 0 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
             box-sizing: border-box;
             padding: 1rem;
             text-align: center;
+            gap: 1rem;
         }
-        .carousel-item h2 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
+    
         .session {
             display: flex;
             flex-direction: column;
@@ -167,8 +198,8 @@
             align-items: center;
         }
         .modal img {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 90vw;
+            max-height: 90vh;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
@@ -229,16 +260,28 @@
 }
 
 .back-arrow {
-    position: absolute;
-    top: 10px; /* Ajuste la position verticale */
-    left: 10px; /* Ajuste la position horizontale */
-    font-size: 1.5rem; /* Taille de la flèche */
+    position: absolute; /* Positionne la flèche par rapport à l'écran */
+    top: 10px; /* 10px d'espacement depuis le haut */
+    left: 0; /* Position complètement au bord gauche */
+    font-size: 1.5rem; /* Taille de l'icône de la flèche */
+    color: #444; /* Couleur de l'icône */
     text-decoration: none; /* Supprime le soulignement */
-    color: #444; /* Couleur de la flèche */
-    transition: color 0.3s ease;
+    background: #ffffff; /* Ajoute un fond blanc */
+    border: 2px solid #ddd; /* Bordure subtile */
+    border-radius: 50%; /* Forme circulaire */
+    width: 40px; /* Largeur du bouton */
+    height: 40px; /* Hauteur du bouton */
+    display: flex; /* Pour centrer l'icône */
+    align-items: center; /* Centre verticalement */
+    justify-content: center; /* Centre horizontalement */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    z-index: 1000; /* Place la flèche au-dessus des autres éléments */
+    transition: transform 0.2s, background-color 0.2s; /* Transition pour les interactions */
 }
 
 .back-arrow:hover {
+    background: #f4f4f4; /* Change la couleur de fond au survol */
+    transform: scale(1.1); /* Agrandit légèrement au survol */
     color: #000; /* Change la couleur au survol */
 }
 
@@ -255,6 +298,8 @@
 .session-item {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    position: relative;
     align-items: center;
     padding: 1rem;
     border-radius: 10px;
@@ -263,45 +308,69 @@
     color: #444;
 }
 
-.session-item.field1 {
+.session-item.type {
+    position: absolute;
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    font-weight: bold; /* Rend le texte plus visible */
+    width: 100%; /* Prend toute la largeur de la cellule */
+    text-align: center; /* Aligne le texte au centre */
+    margin-top: 0.5rem; /* Espacement si nécessaire */  
+    transform: translate(-50%, -50%); /* Centrage parfait */
+    left: 50%; /* Place horizontalement au centre */
+    top: 50%; /* Place verticalement au centre */
+    white-space: nowrap; /* Empêche le texte de se couper */  
+}    
+
+.session-item.Training {
     background-color: #d3f2e6;
 }
 
-.session-item.field2 {
+.session-item.Game {
     background-color: #fde4c3;
 }
 
-.session-item.restaurant {
+.session-item.Presentation {
     background-color: #f8d1d6;
 }
 
-.session-item .time {
-    font-size: 1.2rem;
+.session-item.time {
+    font-size: 1rem;
     font-weight: bold;
+    flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
+    text-align: left; /* Aligne le temps à gauche */
+    margin-right: 1rem; /* Ajoute un espace à droite du temps */
 }
 
 .session-item .details {
+    flex: 1; /* Permet aux détails de s'ajuster */
     display: flex;
-    flex-direction: column;
-    text-align: right;
+    flex-direction: column; /* Place les informations les unes sous les autres */
+    text-align: right; /* Aligne les détails à droite */
 }
 
-.session-item .details span {
+.session-item.details span {
     font-size: 0.9rem;
     color: #666;
 }
 
 .carousel-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #ffffff; /* Couleur de fond pour l'effet carte */
     border-radius: 15px; /* Coins arrondis pour un style de carte */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Ombre douce pour l'effet de profondeur */
-    padding: 1.5rem; /* Espacement interne */
+    padding: 1rem; /* Espacement interne */
     margin: 1rem auto; /* Centrer et ajouter de l'espace extérieur */
-    max-width: 90%; /* Largeur maximale à 90% de l'écran */
-    min-width: 320px; /* Largeur minimale pour les petits écrans */
-    width: 100%; /* Assurez-vous qu'il s'adapte à la taille de son conteneur parent */
+    height: 55vh; /* Adapte la hauteur à 40% de la hauteur de l'écran */
+    padding: 1rem;
+    width: 90vw; /* Assurez-vous qu'il s'adapte à la taille de son conteneur parent */
     box-sizing: border-box; /* Inclure le padding dans la largeur */
     text-align: center;
+    flex-direction: column;
+    display: flex;
 }
 
 @media (max-width: 667px) {
@@ -312,15 +381,64 @@
     }
 }
 
+@media (max-width: 667px) {
+    .back-arrow {
+        font-size: 1.2rem; /* Réduit la taille de la flèche */
+        width: 35px; /* Taille plus petite */
+        height: 35px; /* Taille plus petite */
+    }
+}
+
 .carousel-item h2 {
+    margin: 0;
+    position: relative;
+    top: -20%;
     font-size: 1.5rem; /* Taille du texte augmentée */
     font-weight: bold; /* Mettre le texte en gras pour plus de visibilité */
     margin-bottom: 1rem; /* Ajouter un espacement en dessous */
     color: #444; /* Couleur sobre */
     text-transform: uppercase; /* Transformer en majuscules pour une meilleure lisibilité */
+    text-align:center;
 }
 
+.feedback-btn {
+    background-color: #f1d9bc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
 
+.feedback-btn:hover {
+    background-color: #e68900;
+}
+
+#feedbackModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
     </style>
 </head>
 
@@ -342,6 +460,17 @@
             <button id="next">&#8250;</button>
         </div>
     </div> 
+
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span id="closeFeedbackModal" class="close">&times;</span>
+            <h2>Envoyez votre Feedback</h2>
+            <form id="feedbackForm">
+                <textarea id="feedbackText" placeholder="Votre feedback ici..." required></textarea>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
 
     <script>
         const firebaseConfig = {
@@ -374,14 +503,15 @@ const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
 
 function createSessionHTML(data) {
     const sessionTypes = [
-        { type: 'Field 1', className: 'field1', name: data.trainingCoach },
-        { type: 'Field 2', className: 'field2', name: data.gameCoach },
-        { type: 'Restaurant', className: 'restaurant', name: data.presentationCoach }
+        { type: data.trainingField, className: 'Training', name: data.trainingCoach },
+        { type: data.gameField, className: 'Game', name: data.gameCoach },
+        { type: data.presentationPlace, className: 'Presentation', name: data.presentationCoach }
     ];
 
     return sessionTypes.map(session => `
         <div class="session-item ${session.className}">
             <span class="time">${data.trainingTime || "N/A"}</span>
+            <span class="type">${session.className}
             <div class="details">
                 <span>${session.name || "N/A"}</span>
                 <span>${session.type}</span>
@@ -400,13 +530,14 @@ function fetchDayData(day) {
                 <h2>${day}</h2>
                 ${createSessionHTML(dayData)}
             `;
+
             carouselInner.appendChild(dayElement);
 
             const dot = document.createElement('span');
             dot.className = 'dot';
             dotsContainer.appendChild(dot);
 
-            updateCarousel(); // Update carousel for dynamic content
+            updateCarousel();
         }
     });
 }
@@ -426,12 +557,12 @@ function updateCarousel() {
 }
 
 document.getElementById('prev').addEventListener('click', () => {
-    index = (index > 0) ? index - 1 : daysOfWeek.length - 1;
+    index = (index > 0) ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
     updateCarousel();
 });
 
 document.getElementById('next').addEventListener('click', () => {
-    index = (index < daysOfWeek.length - 1) ? index + 1 : 0;
+    index = (index < document.querySelectorAll('.carousel-item').length - 1) ? index + 1 : 0;
     updateCarousel();
 });
 
@@ -453,7 +584,7 @@ function updateCarousel() {
     const dots = document.querySelectorAll('.dot');
 
     // Déplacement du carrousel
-    carouselInner.style.transform = `translateX(-${index * carouselInner.offsetWidth}px)`;
+    carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
     // Mise à jour des indicateurs
     dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
@@ -519,40 +650,84 @@ updateCarousel();
             }
         };
 
+        let participantData = null;
+
+        const feedbackRef = database.ref('feedback');
+
         database.ref(`/players/${participantId}`).on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
+    const data = snapshot.val();
+    if (data) {
+        const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
 
-                const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
+        participantData = data;
+        document.body.style.backgroundColor = '#f1d9bc';
 
-                document.body.style.backgroundColor = '#f1d9bc';
+        participantInfoDiv.innerHTML = `
+            <div class="info-container">
+                <a href="index.html" class="back-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1>${data.Name}</h1>
+                <div class="money-container">
+                    <span>💰</span>
+                    <p>${roundedMoney} €</p>
+                    <button id="feedbackButton" class="feedback-btn">Feedback</button>
+                </div>
+            </div>
+            <div class="photo-container">
+                <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
+            </div>
+        `;
 
-                participantInfoDiv.innerHTML = `
-                    <div class="info-container">
-                        <a href="index.html" class="back-arrow">&#8592;</a>
-                        <h1>${data.Name}
-                        </h1>
-                        
-                        <div class="money-container">
-                            <span>💰</span>
-                            <p>${roundedMoney} €</p>
-                        </div>
-                    </div>
-                    <div class="photo-container">
-                        <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
-                    </div>
- 
-                `;
+        // Ajouter l'événement après la création de l'élément
+        const feedbackButton = document.getElementById('feedbackButton');
+        if (feedbackButton) {
+            feedbackButton.addEventListener('click', () => {
+                const feedbackModal = document.getElementById('feedbackModal');
+                feedbackModal.style.display = 'flex';
+            });
+        }
 
-                const participantPhoto = document.getElementById('participantPhoto');
-                participantPhoto.onclick = () => {
-                    modal.style.display = "flex";
-                    modalImage.src = data.Picture;
-                };
-            } else {
-                participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
-            }
+        const participantPhoto = document.getElementById('participantPhoto');
+        participantPhoto.onclick = () => {
+            modal.style.display = "flex";
+            modalImage.src = data.Picture;
+        };
+    } else {
+        participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
+    }
+});
+
+// Ajouter l'événement pour fermer la modal
+document.getElementById('closeFeedbackModal').addEventListener('click', () => {
+    const feedbackModal = document.getElementById('feedbackModal');
+    feedbackModal.style.display = 'none';
+});
+
+document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const feedbackText = document.getElementById('feedbackText').value;
+    const participantName = participantData.Name;
+
+    const feedbackData = {
+        participant: participantName,
+        feedback: feedbackText,
+        timestamp: new Date().toISOString()
+    };
+
+    // Envoyer le feedback vers Firebase
+    feedbackRef.push(feedbackData)
+        .then(() => {
+            alert('Feedback envoyé avec succès vers Firebase !');
+            // Réinitialiser le formulaire et fermer la modal
+            document.getElementById('feedbackForm').reset();
+            document.getElementById('feedbackModal').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi du feedback à Firebase :', error);
+            alert('Une erreur est survenue. Veuillez réessayer.');
         });
+});
 
     </script>
 </body>
