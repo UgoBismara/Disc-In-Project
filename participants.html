@@ -48,9 +48,10 @@
             padding: 1rem;
         }
         .participant-info img {
-            width: 120px;
-            height: 120px;
+            width: 30vw;
+            height: 30vw;
             border-radius: 50%;
+            align-items: center;
             object-fit: cover;
             margin-bottom: 1rem;
         }
@@ -94,13 +95,13 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+            height:30%;
             flex-shrink: 0;
         }
 
         .photo-container img {
             width: 40vw; /* Réduit la largeur uniquement de l'image */
             height:40vw;
-            height: auto;
             border-radius: 15px;
             object-fit: cover; /* Garde une belle proportion */
             margin: 0 auto; /* Centre l'image */
@@ -154,15 +155,17 @@
         .nav-buttons {
             display: flex;
             justify-content: space-between;
-            position: absolute;
-            top: 30%;
             width: 100%;
-            transform: translateY(-50%);
+            height:10%;
+            margin-top: 10px; /* Ajoute un espacement entre le carrousel et les boutons */
+            pointer-events: auto; /* Permet les clics sur les boutons */
+            position: relative; /* Supprime l'absolutisme */
         }
         
         .nav-buttons button {
             background: none;
             border: none;
+            height:10%;
             font-size: 1.5rem;
             color: #444;
             cursor: pointer;
@@ -453,21 +456,23 @@
         <i class="fas fa-arrow-left"></i>
     </a>
 
-    <div id="modal" class="modal">
-        <span class="close" id="closeModal">&times;</span>
-        <img id="modalImage" alt="Participant Image">
-    </div>
-
     <div class="carousel-wrapper">
         <div class="carousel">
             <div class="carousel-inner"></div>
-            <div class="dots"></div>
         </div>
+        <div class="dots"></div>
         <div class="nav-buttons">
             <button id="prev">&#8249;</button>
             <button id="next">&#8250;</button>
         </div>
     </div> 
+
+    <div id="modal" class="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <img id="modalImage" alt="Participant Image">
+    </div>
+
+
 
     <div id="feedbackModal" class="modal">
         <div class="modal-content">
@@ -585,18 +590,6 @@ function resetSwipe() {
     isSwiping = false;
 }
 
-// Fonction pour mettre à jour l'affichage du carrousel
-function updateCarousel() {
-    const items = document.querySelectorAll('.carousel-item');
-    const dots = document.querySelectorAll('.dot');
-
-    // Déplacement du carrousel
-    carouselInner.style.transform = `translateX(-${index * 100}%)`;
-
-    // Mise à jour des indicateurs
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-}
-
 // Détection du début du swipe
 carouselInner.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX;
@@ -670,18 +663,17 @@ updateCarousel();
         document.body.style.backgroundColor = '#f1d9bc';
 
         participantInfoDiv.innerHTML = `
-            <div class="info-container">
-                <h1>${data.Name}</h1>
-                <div class="money-container">
-                    <span>💰</span>
-                    <p>${roundedMoney} €</p>
-                    <button id="feedbackButton" class="feedback-btn">Feedback</button>
-                </div>
-            </div>
-            <div class="photo-container">
-                <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
-            </div>
-        `;
+<div class="info-container">
+    <h1>${data.Name}</h1>
+    <div class="money-container">
+        <span>💰</span>
+        <p>${roundedMoney} €</p>
+        <button id="feedbackButton" class="feedback-btn">Feedback</button>
+    </div>
+    <div class="photo-container">
+    <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
+    </div>
+</div> `
 
         // Ajouter l'événement après la création de l'élément
         const feedbackButton = document.getElementById('feedbackButton');
