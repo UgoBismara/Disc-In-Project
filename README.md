@@ -1,6 +1,8 @@
 # Disc-In-Project
 
 # TODO-LIST :
+- Régler le problème d'ordre des jours
+- Régler le problème des horaires
 - Rendre plus responsive la partie carousel-wrapper
 - Faire une page avec le récapitulatif des dépenses
 - Faire une page avec les différents feedbacks reçu en base de données et avoir la possibilité de rajouter ceux des coachs
