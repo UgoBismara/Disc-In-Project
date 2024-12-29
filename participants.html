@@ -115,7 +115,6 @@
             position: relative;
             width: 100%; /* S'adapte à la largeur de .info-container */
             height: 90%; /* Maintient un ratio automatique */
-            overflow: hidden;
             display: flex;
             align-items: center;
         }
@@ -234,20 +233,22 @@
             justify-content: center;
             align-items: center;
             position: absolute;
-            top: 67%; /* Centre verticalement */
+            top: 58%; /* Centre verticalement */
             transform: translateY(-50%); /* Ajustement pour le centrer */
             z-index: 10; /* Place les boutons au-dessus du contenu */
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         #prev {
-            left: 5%; /* Décalage du bord gauche */
+            position: absolute;
+            left:  -10px;
             height : 25px;
             width:25px;
         }
 
         #next {
-            right: 5%; /* Décalage du bord droit */
+            position: absolute;
+            right: -10px;
             height : 25px;
             width:25px;
         }
@@ -425,11 +426,12 @@
     <div class="carousel-wrapper">
         <div class="carousel">
             <div class="carousel-inner"></div>
-        </div>
+        
         <div class="nav-buttons">
             <button id="prev">&#8249;</button>
             <button id="next">&#8250;</button>
         </div>
+    </div>
         <div class="dots"></div>
     </div> 
 
@@ -480,41 +482,65 @@
 
 const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
 
-function createSessionHTML(data) {
-    const sessionTypes = [
-        { type: data.trainingField, className: 'Training', name: data.trainingCoach },
-        { type: data.gameField, className: 'Game', name: data.gameCoach },
-        { type: data.presentationPlace, className: 'Presentation', name: data.presentationCoach }
+function createSessionHTML(dayData, day) {
+    const sessions = [
+    {
+                time: dayData[`${day.toLowerCase()}TrainingTime`],
+                field: `Field ${dayData[`${day.toLowerCase()}TrainingField`] || "N/A"}`,
+                coach: dayData[`${day.toLowerCase()}TrainingCoach`] || "N/A",
+                type: "Training",
+            },
+            {
+                time: dayData[`${day.toLowerCase()}GameTime`],
+                field: `Field ${dayData[`${day.toLowerCase()}GameField`] || "N/A"}`,
+                coach: dayData[`${day.toLowerCase()}GameCoach`] || "N/A",
+                type: "Game",
+            },
+            {
+                time: dayData[`${day.toLowerCase()}PresentationTime`],
+                field: dayData[`${day.toLowerCase()}PresentationPlace`] || "N/A",
+                coach: dayData[`${day.toLowerCase()}PresentationCoach`] || "N/A",
+                type: "Presentation",
+        },
     ];
 
-    return sessionTypes.map(session => `
-        <div class="session-item ${session.className}">
-            <span class="time">${data.trainingTime || "N/A"}</span>
-            <span class="type">${session.className}
-            <div class="details">
-                <span>${session.name || "N/A"}</span>
-                <span>${session.type}</span>
-            </div>
-        </div>
-    `).join('');
+    const sortedSessions = sessions.sort((a, b) => {
+    // Comparer les heures (time) pour trier
+    if (a.time < b.time) return -1;
+    if (a.time > b.time) return 1;
+    return 0; // Si égalité
+    });
+
+    return sortedSessions
+        .map(
+            (session) => `
+            <div class="session-item ${session.type}">
+                <span class="time">${session.time || "N/A"}</span>
+                <div class="details">
+                    <span>${session.coach}</span>
+                    <span>${session.field}</span>
+                    <span>${session.type}</span>
+                </div>
+            </div>`
+        )
+        .join("");
 }
 
-// Fonction pour mettre à jour la position des dots
 function fetchDayData(day) {
-    database.ref(`/${day.toLowerCase()}/${participantId}`).on('value', (snapshot) => {
+    database.ref(`/players/${participantId}`).on("value", (snapshot) => {
         const dayData = snapshot.val();
         if (dayData) {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'carousel-item';
+            const dayElement = document.createElement("div");
+            dayElement.className = "carousel-item";
             dayElement.innerHTML = `
                 <h2>${day}</h2>
-                ${createSessionHTML(dayData)}
+                ${createSessionHTML(dayData, day)}
             `;
             carouselInner.appendChild(dayElement);
 
-            const dot = document.createElement('span');
-            dot.className = 'dot';
-            dotsContainer.appendChild(dot); // S'assurer que les dots sont ajoutés correctement
+            const dot = document.createElement("span");
+            dot.className = "dot";
+            dotsContainer.appendChild(dot);
             updateCarousel();
         }
     });
