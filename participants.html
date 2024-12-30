@@ -394,26 +394,106 @@
 }
 
 #feedbackModal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    width: 30vw;
-    height: 30vh;
-    background-color: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
-}
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                animation: fadeIn 0.3s ease;
+            }
 
-.modal-content {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-}
+            .modal-content {
+                background-color: #ffffff;
+                padding: 2rem;
+                border-radius: 15px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                position: relative;
+                animation: scaleIn 0.3s ease;
+            }
+
+            .modal-content h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+                color: #444;
+                font-weight: bold;
+            }
+
+            .modal-content textarea {
+                width: 100%;
+                min-height: 100px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 0.8rem;
+                font-size: 1rem;
+                resize: none;
+                margin-bottom: 1rem;
+                box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+                transition: border-color 0.3s ease;
+            }
+
+            .modal-content textarea:focus {
+                border-color: #f1d9bc;
+                outline: none;
+            }
+
+            .modal-content button {
+                background-color: #f1d9bc;
+                color: #ffffff;
+                border: none;
+                border-radius: 10px;
+                padding: 0.8rem 1.5rem;
+                cursor: pointer;
+                font-size: 1rem;
+                font-weight: bold;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .modal-content button:hover {
+                background-color: #e68900;
+                transform: scale(1.05);
+            }
+
+            .modal-content .close {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 1.5rem;
+                color: #444;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .modal-content .close:hover {
+                color: #e68900;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes scaleIn {
+                from {
+                    transform: scale(0.8);
+                }
+                to {
+                    transform: scale(1);
+                }
+            }
     </style>
 </head>
 
@@ -440,15 +520,13 @@
         <img id="modalImage" alt="Participant Image">
     </div>
 
-
-
     <div id="feedbackModal" class="modal">
         <div class="modal-content">
             <span id="closeFeedbackModal" class="close">&times;</span>
-            <h2>Envoyez votre Feedback</h2>
+            <h2>SEND YOUR FEEDBACK</h2>
             <form id="feedbackForm">
-                <textarea id="feedbackText" placeholder="Votre feedback ici..." required></textarea>
-                <button type="submit">Envoyer</button>
+                <textarea id="feedbackText" placeholder="Enter your feedback here..." required></textarea>
+                <button type="submit">Send</button>
             </form>
         </div>
     </div>
@@ -706,7 +784,7 @@ document.getElementById('feedbackForm').addEventListener('submit', (e) => {
     // Envoyer le feedback vers Firebase
     feedbackRef.push(feedbackData)
         .then(() => {
-            alert('Feedback envoyé avec succès vers Firebase !');
+            alert('Feedback sent !');
             // Réinitialiser le formulaire et fermer la modal
             document.getElementById('feedbackForm').reset();
             document.getElementById('feedbackModal').style.display = 'none';
