@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
         }
         body {
-            background-color: #f4f4f4;
+            background-color: #f1d9bc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -403,7 +403,6 @@
                 width: 100%;
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.5);
-                display: flex;
                 justify-content: center;
                 align-items: center;
                 animation: fadeIn 0.3s ease;
@@ -720,39 +719,31 @@ updateCarousel();
             }
         };
 
-        let participantData = null;
-
         const feedbackRef = database.ref('feedback');
 
         database.ref(`/players/${participantId}`).on('value', (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
+        const data = snapshot.val();
+        if (data) {
         const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
-
-        participantData = data;
-        document.body.style.backgroundColor = '#f1d9bc';
-
         participantInfoDiv.innerHTML = `
-<div class="info-container">
-    <h1>${data.Name}</h1>
-    <div class="money-container">
-        <span>💰</span>
-        <p>${roundedMoney} €</p>
-        <button id="feedbackButton" class="feedback-btn">Feedback</button>
-    </div>
-    <div class="photo-container">
-    <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
-    </div>
-</div> `
+            <div class="info-container">
+                <h1>${data.Name}</h1>
+                <div class="money-container">
+                    <span>💰</span>
+                    <p>${roundedMoney} €</p>
+                    <button id="feedbackButton" class="feedback-btn">Feedback</button>
+                </div>
+                <div class="photo-container">
+                <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
+                </div>
+            </div> `
 
         // Ajouter l'événement après la création de l'élément
         const feedbackButton = document.getElementById('feedbackButton');
-        if (feedbackButton) {
-            feedbackButton.addEventListener('click', () => {
-                const feedbackModal = document.getElementById('feedbackModal');
-                feedbackModal.style.display = 'flex';
-            });
-        }
+        feedbackButton.addEventListener('click', () => {
+            const feedbackModal = document.getElementById('feedbackModal');
+            feedbackModal.style.display = 'flex';
+        });
 
         const participantPhoto = document.getElementById('participantPhoto');
         participantPhoto.onclick = () => {
@@ -764,11 +755,18 @@ updateCarousel();
     }
 });
 
-// Ajouter l'événement pour fermer la modal
-document.getElementById('closeFeedbackModal').addEventListener('click', () => {
-    const feedbackModal = document.getElementById('feedbackModal');
-    feedbackModal.style.display = 'none';
-});
+    // Ajouter l'événement pour fermer la modal
+    document.getElementById('closeFeedbackModal').addEventListener('click', () => {
+        const feedbackModal = document.getElementById('feedbackModal');
+        feedbackModal.style.display = 'none';
+    });
+
+    // Fermer la modal au clic en dehors du contenu
+    window.addEventListener('click', (event) => {
+        if (event.target === feedbackModal) {
+            feedbackModal.style.display = 'none';
+        }
+    });
 
 document.getElementById('feedbackForm').addEventListener('submit', (e) => {
     e.preventDefault();
