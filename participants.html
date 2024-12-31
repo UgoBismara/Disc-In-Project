@@ -493,6 +493,47 @@
                     transform: scale(1);
                 }
             }
+
+            .popup {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 0, 0, 0.9);
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: fadeIn 1s ease, fadeOut 2s ease 1s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
     </style>
 </head>
 
@@ -530,6 +571,10 @@
         </div>
     </div>
 
+    <div id="crushPopup" class="popup">
+        ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
+    </div>
+ 
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
@@ -719,10 +764,23 @@ updateCarousel();
             }
         };
 
+        function showCrushPopup() {
+            const popup = document.getElementById('crushPopup');
+            popup.style.display = 'block';
+
+            // Masquer le pop-up après 4 secondes
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2500);
+        }
+
         const feedbackRef = database.ref('feedback');
 
         database.ref(`/players/${participantId}`).on('value', (snapshot) => {
         const data = snapshot.val();
+        if (data && data.Crush && data.Crush.trim() !== '') {
+        showCrushPopup();
+        }
         if (data) {
         const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
         participantInfoDiv.innerHTML = `
