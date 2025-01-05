@@ -90,7 +90,7 @@
         }
 
         .money-container span {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .photo-container {
@@ -137,7 +137,7 @@
             box-sizing: border-box;
             padding: 1rem;
             text-align: center;
-            gap: 1rem;
+            gap: 1vh;        
         }
     
         .session {
@@ -256,15 +256,15 @@
 .back-arrow {
     position: absolute; /* Positionne la flèche par rapport à l'écran */
     top: 10px; /* 10px d'espacement depuis le haut */
-    left: 0; /* Position complètement au bord gauche */
-    font-size: 1.5rem; /* Taille de l'icône de la flèche */
+    left: 2vw; /* Position complètement au bord gauche */
+    font-size: 1rem; /* Taille de l'icône de la flèche */
     color: #444; /* Couleur de l'icône */
     text-decoration: none; /* Supprime le soulignement */
     background: #ffffff; /* Ajoute un fond blanc */
     border: 2px solid #ddd; /* Bordure subtile */
     border-radius: 50%; /* Forme circulaire */
-    width: 40px; /* Largeur du bouton */
-    height: 40px; /* Hauteur du bouton */
+    width: 30px; /* Largeur du bouton */
+    height: 30px; /* Hauteur du bouton */
     display: flex; /* Pour centrer l'icône */
     align-items: center; /* Centre verticalement */
     justify-content: center; /* Centre horizontalement */
@@ -295,11 +295,15 @@
     width: 100%;
     position: relative;
     align-items: center;
-    height:100%;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: bold;
+    border: 1px solid #ccc;
+    height: 6vh;
+    font-size: 80%;
     color: #444;
+}
+
+.session-item span {
+    flex: 1; /* Chaque élément occupe une part égale */
+    text-align: center; /* Centrer le texte dans chaque colonne */
 }
 
 .session-item.type {
@@ -307,7 +311,6 @@
     display: flex;
     justify-content: center; /* Centre horizontalement */
     align-items: center; /* Centre verticalement */
-    font-weight: bold; /* Rend le texte plus visible */
     width: 100%; /* Prend toute la largeur de la cellule */
     text-align: center; /* Aligne le texte au centre */
     margin-top: 0.5rem; /* Espacement si nécessaire */  
@@ -315,7 +318,14 @@
     left: 50%; /* Place horizontalement au centre */
     top: 50%; /* Place verticalement au centre */
     white-space: nowrap; /* Empêche le texte de se couper */  
-}    
+}  
+
+.session-wrapper {
+    margin-bottom: 5px; /* Espacement entre les sessions */
+    width: 100%;
+    height:100%;
+    justify-content: space-between;
+}
 
 .session-item.Training {
     background-color: #d3f2e6;
@@ -329,24 +339,38 @@
     background-color: #f8d1d6;
 }
 
-.session-item.time {
-    font-size: 1rem;
+span.Presentation {
+    color: #d18a92;
+}
+
+.session-item.Presentation {
+    justify-content: flex-start;
+}
+
+span.Training {
+    color: #8bb9a4;
+}
+
+span.Game {
+    color: #d1a869;
+}
+
+span.time {
     font-weight: bold;
+}
+
+.session-type {
+    text-align: left;
+    font-weight: bold;
+}
+
+.session-item.time {
     flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
     text-align: left; /* Aligne le temps à gauche */
     margin-right: 1rem; /* Ajoute un espace à droite du temps */
 }
 
-.session-item .details {
-    display: flex;
-    flex-direction: column; /* Place les informations les unes sous les autres */
-    text-align: right; /* Aligne les détails à droite */
-}
 
-.session-item.details span {
-    font-size: 0.9rem;
-    color: #666;
-}
 .carousel-wrapper {
     display: flex;
     flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
@@ -358,7 +382,6 @@
     padding: 1rem;
     margin: 1rem auto;
     height: 50vh; /* Ajustement pour inclure les dots */
-    max-height: (400px + 3vh);
     width: 90vw;
     max-width : 1000px;
     margin-top:5vh;
@@ -368,12 +391,12 @@
 }
 
 .carousel-item h2 {
-    font-size: 1.5rem; /* Taille du texte augmentée */
+    font-size: 1.4rem; /* Taille du texte augmentée */
     font-weight: bold; /* Mettre le texte en gras pour plus de visibilité */
     color: #444; /* Couleur sobre */
     text-transform: uppercase; /* Transformer en majuscules pour une meilleure lisibilité */
     text-align:center;
-    align-items: center;
+    align-items: center;    
 }
 
 .feedback-btn {
@@ -636,14 +659,16 @@ function createSessionHTML(dayData, day) {
     return sortedSessions
         .map(
             (session) => `
+        <div class="session-wrapper">
+            <div class="session-type">
+                <span class=${session.type}>${session.type}</span>
+            </div>
             <div class="session-item ${session.type}">
                 <span class="time">${session.time || "N/A"}</span>
-                <div class="details">
-                    <span>${session.coach}</span>
-                    <span>${session.field}</span>
-                    <span>${session.type}</span>
-                </div>
-            </div>`
+                <span class="coach">${session.coach}</span>
+                <span class="field">${session.field}</span>
+            </div>
+        </div>`
         )
         .join("");
 }
@@ -785,7 +810,7 @@ updateCarousel();
         const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
         participantInfoDiv.innerHTML = `
             <div class="info-container">
-                <h1>${data.Name}</h1>
+                <h1>${data.Name} ${data.Crush ? '❤️' : ''}</h1>
                 <div class="money-container">
                     <span>💰</span>
                     <p>${roundedMoney} €</p>
