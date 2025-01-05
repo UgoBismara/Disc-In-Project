@@ -7,4 +7,4 @@
 - Trouver un principe pour le système de points
 - Créer une page semblable à l'index pour les commandes de boisson
 - Trouver une idée pour rendre le principe de crush marrant
-- Mettre le type de practice au milieu de la session-item
+- Mettre le type de practice au-dessus de la session-item
