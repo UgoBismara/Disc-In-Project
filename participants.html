@@ -251,6 +251,8 @@ updateCarousel();
         }
 
         const feedbackRef = database.ref('feedback');
+        let data = null; // Variable globale pour stocker les données du participant
+
 
         database.ref(`/players/${participantId}`).on('value', (snapshot) => {
         const data = snapshot.val();
@@ -287,7 +289,6 @@ updateCarousel();
     } else {
         participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
     }
-});
 
     // Ajouter l'événement pour fermer la modal
     document.getElementById('closeFeedbackModal').addEventListener('click', () => {
@@ -305,7 +306,7 @@ updateCarousel();
 document.getElementById('feedbackForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const feedbackText = document.getElementById('feedbackText').value;
-    const participantName = participantData.Name;
+    const participantName = data.Name;
 
     const feedbackData = {
         participant: participantName,
@@ -325,6 +326,7 @@ document.getElementById('feedbackForm').addEventListener('submit', (e) => {
             console.error('Erreur lors de l\'envoi du feedback à Firebase :', error);
             alert('Une erreur est survenue. Veuillez réessayer.');
         });
+});
 });
 
     </script>
