@@ -10,3 +10,5 @@
 - Mettre le type de practice au-dessus de la session-item
 
 Lien avec toutes les idées : https://docs.google.com/document/d/1dlb9HRLkr07jGaDoJwW8RmBbQNpJQv98zNI8AzquVvg/edit?tab=t.0
+
+Réfléchir au moyen de faire une fonctionnalité de login
