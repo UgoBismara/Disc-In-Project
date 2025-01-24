@@ -11,4 +11,6 @@
 
 Lien avec toutes les idées : https://docs.google.com/document/d/1dlb9HRLkr07jGaDoJwW8RmBbQNpJQv98zNI8AzquVvg/edit?tab=t.0
 
+Lien faire le Figma : https://www.figma.com/design/yP2rYzRTFIBn8834DVMhIF/Disc-In-App?node-id=7-2&t=ndCYF3oFgz9pIzlW-0
+
 Réfléchir au moyen de faire une fonctionnalité de login
