@@ -1,0 +1,52 @@
+body {
+  font-family: Blinker;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ff7f50;
+  padding: 1vh 0;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-item:hover {
+  color: white;
+}
+
+.navbar-item img {
+  width: 3vh;
+  height: 3vh;
+  margin-bottom: 5px;
+}
+
+.logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.logo img {
+  width: 5vh;
+  height: 5vh;
+  z-index: 1000;
+}

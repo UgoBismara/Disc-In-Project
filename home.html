@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <a href="#" class="login-button">
+      Login
+      <div class="icon"></div>
+    </a>
+    <div class="logo">
+      <img src="image/DiscInLogo.png" alt="Logo" />
+    </div>
+    <div class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-slide">
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 1" />
+          <div class="carousel-caption">DISC IN CAMP 2025</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 2" />
+          <div class="carousel-caption">DISC IN CAMP 2025</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 3" />
+          <div class="carousel-caption">DISC IN CAMP 2025</div>
+        </div>
+      </div>
+      <div class="carousel-buttons">
+        <button id="prev">&#8249;</button>
+        <button id="next">&#8250;</button>
+      </div>
+    </div>
+    <div class="navbar">
+      <a href="#" class="navbar-item">
+        <img src="image/house.svg" alt="Home" />
+        HOME
+      </a>
+      <a href="#" class="navbar-item">
+        <img src="image/people.svg" alt="Players" />
+        PLAYERS
+      </a>
+      <a href="#" class="navbar-item">
+        <img src="image/trophy.svg" alt="Results" />
+        RESULTS
+      </a>
+      <a href="#" class="navbar-item">
+        <img src="image/calendar.png" alt="Schedule" />
+        SCHEDULE
+      </a>
+      <a href="#" class="navbar-item">
+        <img src="image/newspaper.png" alt="News" />
+        NEWS
+      </a>
+    </div>
+
+    <script>
+      const track = document.querySelector(".carousel-track");
+      const slides = Array.from(track.children);
+      const prevButton = document.getElementById("prev");
+      const nextButton = document.getElementById("next");
+
+      let currentIndex = 0;
+
+      function updateCarousel(index) {
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        track.style.transform = `translateX(-${index * slideWidth}px)`;
+      }
+
+      nextButton.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateCarousel(currentIndex);
+      });
+
+      prevButton.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateCarousel(currentIndex);
+      });
+    </script>
+  </body>
+</html>
