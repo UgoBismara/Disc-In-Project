@@ -20,8 +20,8 @@
 
 .login-button .icon {
   margin-left: 10px;
-  width: 24px;
-  height: 24px;
+  width: 2vh;
+  height: 2vh;
   background-image: url("image/Login.png");
   background-size: cover;
   background-position: center;
@@ -32,7 +32,7 @@
 .carousel {
   position: relative;
   width: 100vw;
-  height: 30vh;
+  height: 25vh;
   overflow: hidden;
 }
 
@@ -75,7 +75,7 @@
 .carousel-buttons button {
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
-  color: white;
+  color: rgba(255, 250, 247, 0.769);
   padding: 2%;
   cursor: pointer;
   border-radius: 50%;

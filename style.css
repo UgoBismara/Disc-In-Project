@@ -50,3 +50,13 @@ body {
   height: 5vh;
   z-index: 1000;
 }
+
+.feedback-icon {
+  position: fixed;
+  bottom: 9vh;
+  right: 3VW;
+}
+
+.feedback-icon img {
+  height: 8VH;
+}
