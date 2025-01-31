@@ -3,60 +3,86 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homepage</title>
+    <title>Disc In Camp | Home</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="home.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!--Header-->
     <a href="#" class="login-button">
-      Login
-      <div class="icon"></div>
+      <p class="log-option">Login</p>
+      <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+      </svg>
     </a>
-    <div class="logo">
+    <a class="logo" href="home.html">
       <img src="image/DiscInLogo.png" alt="Logo" />
-    </div>
+    </a>
     <div class="carousel">
+      <div class="carousel-caption">DISC IN CAMP 2025</div>
       <div class="carousel-track">
         <div class="carousel-slide">
-          <img src="image/DiscInImageHomePage.jpg" alt="Slide 1" />
-          <div class="carousel-caption">DISC IN CAMP 2025</div>
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 1"/>
         </div>
         <div class="carousel-slide">
-          <img src="image/DiscInImageHomePage.jpg" alt="Slide 2" />
-          <div class="carousel-caption">DISC IN CAMP 2025</div>
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 2"/>
         </div>
         <div class="carousel-slide">
-          <img src="image/DiscInImageHomePage.jpg" alt="Slide 3" />
-          <div class="carousel-caption">DISC IN CAMP 2025</div>
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 3"/>
         </div>
-      </div>
-      <div class="carousel-buttons">
-        <button id="prev">&#8249;</button>
-        <button id="next">&#8250;</button>
       </div>
     </div>
+       <!--Main content-->
+    <main>
+      <section>
+        <h1>NEWS & GOSSIPS</h1>
+        <p class="center">Check out the first selection of players for the 2025 edition!</p>
+        <div></div>
+        <a class="link" href="#">And many more <svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+          <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+        </svg></a>
+      </section>
+      <section class="middle">
+        <h1>ABOUT LAST EDITION</h1>
+        <p class="center">Where Ultimate frisbee meets creativity, community, and unforgettable festival vibes! </p>
+        <iframe src="https://www.youtube.com/embed/eYpc70vezGY" title="Disc In Camp - European u24 ultimate camp" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <button><a class="bouton" href="https://docs.google.com/forms/d/e/1FAIpQLSfHSQOQw_HSIlLUaKsuNDeVkY9YPttY1o1WufoFwAX9onzo6A/viewform" target="_blank">REGISTER NOW <svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+          <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+        </svg></a></button>
+      </section>
+    </main>
+       <!--Footer-->
     <div class="feedback-icon">
       <img src="image/feedback.svg" alt="Feedback Icon" />
     </div>
     <div class="navbar">
       <a href="#" class="navbar-item">
-        <img src="image/house.svg" alt="Home" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+        </svg>
         HOME
       </a>
       <a href="#" class="navbar-item">
-        <img src="image/people.svg" alt="Players" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+        </svg>
         PLAYERS
       </a>
       <a href="#" class="navbar-item">
-        <img src="image/trophy.svg" alt="Results" />
-        RESULTS
-      </a>
-      <a href="#" class="navbar-item">
-        <img src="image/calendar.png" alt="Schedule" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+        </svg>
         SCHEDULE
       </a>
       <a href="#" class="navbar-item">
-        <img src="image/newspaper.png" alt="News" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
+          <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
+          <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
+        </svg>
         NEWS
       </a>
     </div>
@@ -64,25 +90,34 @@
     <script>
       const track = document.querySelector(".carousel-track");
       const slides = Array.from(track.children);
-      const prevButton = document.getElementById("prev");
-      const nextButton = document.getElementById("next");
-
+      const firstSlideClone = slides[0].cloneNode(true); // Clone du premier slide
+      track.appendChild(firstSlideClone); // Ajout du clone à la fin
+    
       let currentIndex = 0;
-
-      function updateCarousel(index) {
+      const totalSlides = slides.length + 1; // +1 à cause du clone
+    
+      function updateCarousel(index, withTransition = true) {
         const slideWidth = slides[0].getBoundingClientRect().width;
+        track.style.transition = withTransition ? "transform 0.5s ease-in-out" : "none";
         track.style.transform = `translateX(-${index * slideWidth}px)`;
       }
-
-      nextButton.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % slides.length;
+    
+      function autoSlide() {
+        currentIndex++;
+    
+        if (currentIndex === totalSlides) {
+          // Désactiver la transition pour éviter l'effet de retour brusque
+          setTimeout(() => {
+            track.style.transition = "none";
+            currentIndex = 0;
+            updateCarousel(currentIndex, false);
+          }, 500); // Attendre la fin de l'animation avant de réinitialiser
+        }
+    
         updateCarousel(currentIndex);
-      });
-
-      prevButton.addEventListener("click", () => {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        updateCarousel(currentIndex);
-      });
+      }
+    
+      setInterval(autoSlide, 3000); // Change de slide toutes les 3 secondes
     </script>
   </body>
 </html>
