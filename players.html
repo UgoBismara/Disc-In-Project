@@ -31,20 +31,22 @@
             <img src="image/DiscInLogo.png" alt="Logo" />
         </a>
     </section>
-    <h1>DISC IN CAMP 2025</h1>
 
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Camper name">
-    </div>
-    <div class="filter-bar">
-        <button onclick="applyFilters('all')" class="filter-button">All</button>
-        <button onclick="applyFilters('green')" class="filter-button" style="background-color: #8fbc8f;">Green</button>
-        <button onclick="applyFilters('red')" class="filter-button" style="background-color: #f08080;">Red</button>
-        <button onclick="applyFilters('blue')" class="filter-button" style="background-color: #add8e6;">Blue</button>
-        <button onclick="applyFilters('yellow')" class="filter-button" style="background-color: #fffacd;">Yellow</button>
-    </div>
-    <div id="data" class="participants-grid"></div>
-
+    <main>
+        <h1>PLAYERS</h1>
+        <p class="center">Here’s the list of all 2025 <span class="orange">campers</span>!</br>Search by names or filter by team.</br>Click on the player you have a <span class="orange">crush</span> on and let them know <span class="orange">anonymously</span> or send them a <span class="orange">message</span>!</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search a camper ...">
+        </div>
+        <div class="filter-bar">
+            <button onclick="applyFilters('all')" class="filter-button" style="background-color: #e78052;">All</button>
+            <button onclick="applyFilters('green')" class="filter-button" style="background-color: #379c52;">Green</button>
+            <button onclick="applyFilters('red')" class="filter-button" style="background-color: #d12c2c;">Red</button>
+            <button onclick="applyFilters('blue')" class="filter-button" style="background-color: #0e78a7;">Blue</button>
+            <button onclick="applyFilters('yellow')" class="filter-button" style="background-color: #ddc32b;">Yellow</button>
+        </div>
+        <div id="data" class="participants-grid"></div>
+    </main>
            <!--Footer-->
            <a class="feedback-icon" href="feedback.html">
             <img src="image/feedback.svg" alt="Feedback Icon" />

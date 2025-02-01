@@ -2,7 +2,7 @@
   .carousel {
     position: relative;
     width: 100vw;
-    height: 25vh;
+    height: 50vh;
     overflow: hidden;
     z-index: -1;
   }
@@ -21,45 +21,28 @@
   .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
     display: block;
   }
 
   .carousel-caption {
     position: absolute;
-    top: 80%; 
+    top: 85%; 
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fffaf7;
-    font-size: 2rem;
+    font-size: 4rem;
     width: 100%;
     text-align: center;
     z-index: 1000;
     bottom: 5%;
   }
 
-  .carousel-buttons {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    width: 100%;
-    top: 50%;
-  }
-
-  .carousel-buttons button {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: none;
-    color: rgba(255, 250, 247, 0.769);
-    padding: 2%;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-
-  .carousel-buttons button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
   /*main*/
+.menu-index {
+  margin: 2vh 5vw 15vh 5vw !important;
+}
+
   .link {
     text-decoration: none;
     color: #e78052;
@@ -80,5 +63,32 @@
   }
 
   iframe {
-    padding-bottom: 6vw;
+    padding-bottom: 2vw;
+    width: 560px;
+    height: 315px;
+  }
+
+  @media (max-width: 768px) {
+    .menu-index {
+      margin: 2vh 20px 8vh 20px !important;
+    }
+
+    iframe {
+      width: 280px;
+      height: 157.5px;
+      padding-bottom: 6vw;
+    }
+
+    .carousel {
+      height: 20vh;
+    }
+
+    .carousel-slide img {
+      object-fit: fill;
+    }
+
+    .carousel-caption {
+      top: 80%;
+      font-size: 2rem;
+    }
   }
