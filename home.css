@@ -1,11 +1,11 @@
-  /*header*/
-  .carousel {
-    position: relative;
-    width: 100vw;
-    height: 50vh;
-    overflow: hidden;
-    z-index: -1;
-  }
+/*header*/
+.carousel {
+  position: relative;
+  width: 100vw;
+  height: 50vh;
+  overflow: hidden;
+  z-index: -1;
+}
 
 .carousel-track {
   display: flex;
@@ -18,12 +18,12 @@
   height: 100%;
 }
 
-  .carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
   .carousel-caption {
     position: absolute;
@@ -79,16 +79,16 @@
     margin-top: -40px;
   }
 
-  /*main*/
+/*main*/
 .menu-index {
   margin: 2vh 5vw 15vh 5vw !important;
 }
 
-  .link {
-    text-decoration: none;
-    color: #e78052;
-    font-size: 0.8rem;
-  }
+.link {
+  text-decoration: none;
+  color: #e78052;
+  font-size: 0.8rem;
+}
 
 .link:hover {
   text-decoration: underline;
@@ -103,30 +103,30 @@
   align-items: center;
 }
 
-  iframe {
-    padding-bottom: 2vw;
-    width: 560px;
-    height: 315px;
+iframe {
+  padding-bottom: 2vw;
+  width: 560px;
+  height: 315px;
+}
+
+@media (max-width: 768px) {
+  .menu-index {
+    margin: 2vh 20px 8vh 20px !important;
   }
 
-  @media (max-width: 768px) {
-    .menu-index {
-      margin: 2vh 20px 8vh 20px !important;
-    }
+  iframe {
+    width: 280px;
+    height: 157.5px;
+    padding-bottom: 6vw;
+  }
 
-    iframe {
-      width: 280px;
-      height: 157.5px;
-      padding-bottom: 6vw;
-    }
+  .carousel {
+    height: 20vh;
+  }
 
-    .carousel {
-      height: 20vh;
-    }
-
-    .carousel-slide img {
-      object-fit: fill;
-    }
+  .carousel-slide img {
+    object-fit: fill;
+  }
 
     .carousel-caption {
       top: 80%;
