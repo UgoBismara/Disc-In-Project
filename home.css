@@ -41,23 +41,19 @@
   /*Participants*/
   .participants-grid {
     display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(120px, 1fr)
-    ); /* Fully responsive grid */
-    gap: 10px;
-    width: 90%; /* Full width of the screen minus padding */
-    max-width: 400px; /* Limit grid width */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2vw;
+    width: 90%;
     padding: 10px;
     box-sizing: border-box;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto; 
+    justify-content: center;
   }
-  
+
   .participant {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-decoration: none;
@@ -71,17 +67,16 @@
   
   .participant-photo {
     width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4;
+    height: 100%;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 10px;
   }
   
   .participant h2 {
-    font-size: 16px;
-    margin: 10px 0;
-    color: #333;
+    font-size: 1rem;
+    color: #fffaf7;
+    z-index: -1000;
+    margin-top: -40px;
   }
 
   /*main*/
@@ -136,5 +131,11 @@
     .carousel-caption {
       top: 80%;
       font-size: 2rem;
+    }
+
+    .participants-grid {
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 2vw;
+      width: 100%;
     }
   }
