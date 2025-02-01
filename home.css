@@ -102,7 +102,7 @@ iframe {
   ); /* Fully responsive grid */
   gap: 10px;
   width: 90%; /* Full width of the screen minus padding */
-  max-width: 400px; /* Limit grid width */
+  max-width: 600px; /* Limit grid width */
   padding: 10px;
   box-sizing: border-box;
   margin: 0 auto; /* Center horizontally */
