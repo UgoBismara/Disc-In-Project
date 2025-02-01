@@ -1,86 +1,84 @@
-/*header*/
-.carousel {
-  position: relative;
-  width: 100vw;
-  height: 25vh;
-  overflow: hidden;
-  z-index: -1;
-}
+  /*header*/
+  .carousel {
+    position: relative;
+    width: 100vw;
+    height: 25vh;
+    overflow: hidden;
+    z-index: -1;
+  }
 
-.carousel-track {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  height: 100%;
-}
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+  }
 
-.carousel-slide {
-  min-width: 100%;
-  height: 100%;
-}
+  .carousel-slide {
+    min-width: 100%;
+    height: 100%;
+  }
 
-.carousel-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  display: block;
-}
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+  }
 
-.carousel-caption {
-  position: absolute;
-  top: 80%; 
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fffaf7;
-  font-size: 2rem;
-  width: 100%;
-  text-align: center;
-  z-index: 1000;
-  bottom: 5%;
-}
+  .carousel-caption {
+    position: absolute;
+    top: 80%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fffaf7;
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+    bottom: 5%;
+  }
 
-.carousel-buttons {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  width: 100%;
-  top: 50%;
-}
+  .carousel-buttons {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+  }
 
-.carousel-buttons button {
-  background-color: rgba(0, 0, 0, 0.5);
-  border: none;
-  color: rgba(255, 250, 247, 0.769);
-  padding: 2%;
-  cursor: pointer;
-  border-radius: 50%;
-}
+  .carousel-buttons button {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: rgba(255, 250, 247, 0.769);
+    padding: 2%;
+    cursor: pointer;
+    border-radius: 50%;
+  }
 
-.carousel-buttons button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
+  .carousel-buttons button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 
-/*main*/
-.link {
-  text-decoration: none;
-  color: #e78052;
-  font-size: 0.8rem;
-}
+  /*main*/
+  .link {
+    text-decoration: none;
+    color: #e78052;
+    font-size: 0.8rem;
+  }
 
-.link:hover {
-  text-decoration: underline;
-  color: #1a1a1a;
-  font-size: 0.8rem;
-}
+  .link:hover {
+    text-decoration: underline;
+    color: #1a1a1a;
+    font-size: 0.8rem;
+  }
 
-.middle {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-}
+  .middle {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
 
-iframe {
-  width: 100%;
-  height: auto;
-  padding-bottom: 4vw;
-}
+  iframe {
+    padding-bottom: 6vw;
+  }
