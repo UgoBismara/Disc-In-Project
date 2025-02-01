@@ -1,114 +1,133 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>Participant Details</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css" />
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="participants.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="participants.css" />
+  </head>
 
-<body>
+  <body>
     <div id="participant-info"></div>
-    <a href="index.html" class="back-arrow">                    
-        <i class="fas fa-arrow-left"></i>
+    <a href="index.html" class="back-arrow">
+      <i class="fas fa-arrow-left"></i>
     </a>
 
     <div class="carousel-wrapper">
-        <div class="carousel">
-            <div class="carousel-inner"></div>
-        
+      <div class="carousel">
+        <div class="carousel-inner"></div>
+
         <div class="nav-buttons">
-            <button id="prev">&#8249;</button>
-            <button id="next">&#8250;</button>
+          <button id="prev">&#8249;</button>
+          <button id="next">&#8250;</button>
         </div>
+      </div>
+      <div class="dots"></div>
     </div>
-        <div class="dots"></div>
-    </div> 
 
     <div id="modal" class="modal">
-        <span class="close" id="closeModal">&times;</span>
-        <img id="modalImage" alt="Participant Image">
+      <span class="close" id="closeModal">&times;</span>
+      <img id="modalImage" alt="Participant Image" />
     </div>
 
     <div id="feedbackModal" class="modal">
-        <div class="modal-content">
-            <span id="closeFeedbackModal" class="close">&times;</span>
-            <h2>SEND YOUR FEEDBACK</h2>
-            <form id="feedbackForm">
-                <textarea id="feedbackText" placeholder="Enter your feedback here..." required></textarea>
-                <button type="submit">Send</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span id="closeFeedbackModal" class="close">&times;</span>
+        <h2>SEND YOUR FEEDBACK</h2>
+        <form id="feedbackForm">
+          <textarea
+            id="feedbackText"
+            placeholder="Enter your feedback here..."
+            required
+          ></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </div>
 
     <div id="crushPopup" class="popup">
-        ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
+      ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
     </div>
- 
+
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
-            authDomain: "disc-in-camp.firebaseapp.com",
-            databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "disc-in-camp",
-            storageBucket: "disc-in-camp.appspot.com",
-            messagingSenderId: "128937547779",
-            appId: "1:128937547779:web:22677cb4478cffaf1a1636",
-            measurementId: "G-Y4KZY16LFF"
-        };
+      const firebaseConfig = {
+        apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+        authDomain: "disc-in-camp.firebaseapp.com",
+        databaseURL:
+          "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "disc-in-camp",
+        storageBucket: "disc-in-camp.appspot.com",
+        messagingSenderId: "128937547779",
+        appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+        measurementId: "G-Y4KZY16LFF",
+      };
 
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const participantId = sessionStorage.getItem('participantId') - 1;
-        const participantInfoDiv = document.getElementById('participant-info');
-        const mondayInfoDiv = document.getElementById('monday-info');
-        const tuesdayInfoDiv = document.getElementById('tuesday-info');
-        const wednesdayInfoDiv = document.getElementById('wednesday-info');
-        const thursdayInfoDiv = document.getElementById('thursday-info');
-        const fridayInfoDiv = document.getElementById('friday-info');
-        const modal = document.getElementById('modal');
-        const modalImage = document.getElementById('modalImage');
-        const closeModal = document.getElementById('closeModal');
-        const carouselInner = document.querySelector('.carousel-inner');
-        const dotsContainer = document.querySelector('.dots');
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+      const participantId = sessionStorage.getItem("participantId") - 1;
+      const participantInfoDiv = document.getElementById("participant-info");
+      const mondayInfoDiv = document.getElementById("monday-info");
+      const tuesdayInfoDiv = document.getElementById("tuesday-info");
+      const wednesdayInfoDiv = document.getElementById("wednesday-info");
+      const thursdayInfoDiv = document.getElementById("thursday-info");
+      const fridayInfoDiv = document.getElementById("friday-info");
+      const modal = document.getElementById("modal");
+      const modalImage = document.getElementById("modalImage");
+      const closeModal = document.getElementById("closeModal");
+      const carouselInner = document.querySelector(".carousel-inner");
+      const dotsContainer = document.querySelector(".dots");
 
-const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
+      const daysOfWeek = [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+      ];
 
-function createSessionHTML(dayData, day) {
-    const sessions = [
-    {
-                time: dayData[`${day.toLowerCase()}TrainingTime`],
-                field: `Field ${dayData[`${day.toLowerCase()}TrainingField`] || "N/A"}`,
-                coach: dayData[`${day.toLowerCase()}TrainingCoach`] || "N/A",
-                type: "Training",
-            },
-            {
-                time: dayData[`${day.toLowerCase()}GameTime`],
-                field: `Field ${dayData[`${day.toLowerCase()}GameField`] || "N/A"}`,
-                coach: dayData[`${day.toLowerCase()}GameCoach`] || "N/A",
-                type: "Game",
-            },
-            {
-                time: dayData[`${day.toLowerCase()}PresentationTime`],
-                field: dayData[`${day.toLowerCase()}PresentationPlace`] || "N/A",
-                coach: dayData[`${day.toLowerCase()}PresentationCoach`] || "N/A",
-                type: "Presentation",
-        },
-    ];
+      function createSessionHTML(dayData, day) {
+        const sessions = [
+          {
+            time: dayData[`${day.toLowerCase()}TrainingTime`],
+            field: `Field ${
+              dayData[`${day.toLowerCase()}TrainingField`] || "N/A"
+            }`,
+            coach: dayData[`${day.toLowerCase()}TrainingCoach`] || "N/A",
+            type: "Training",
+          },
+          {
+            time: dayData[`${day.toLowerCase()}GameTime`],
+            field: `Field ${dayData[`${day.toLowerCase()}GameField`] || "N/A"}`,
+            coach: dayData[`${day.toLowerCase()}GameCoach`] || "N/A",
+            type: "Game",
+          },
+          {
+            time: dayData[`${day.toLowerCase()}PresentationTime`],
+            field: dayData[`${day.toLowerCase()}PresentationPlace`] || "N/A",
+            coach: dayData[`${day.toLowerCase()}PresentationCoach`] || "N/A",
+            type: "Presentation",
+          },
+        ];
 
-    const sortedSessions = sessions.sort((a, b) => {
-    // Comparer les heures (time) pour trier
-    if (a.time < b.time) return -1;
-    if (a.time > b.time) return 1;
-    return 0; // Si égalité
-    });
+        const sortedSessions = sessions.sort((a, b) => {
+          // Comparer les heures (time) pour trier
+          if (a.time < b.time) return -1;
+          if (a.time > b.time) return 1;
+          return 0; // Si égalité
+        });
 
-    return sortedSessions
-        .map(
+        return sortedSessions
+          .map(
             (session) => `
         <div class="session-wrapper">
             <div class="session-type">
@@ -120,14 +139,14 @@ function createSessionHTML(dayData, day) {
                 <span class="field">${session.field}</span>
             </div>
         </div>`
-        )
-        .join("");
-}
+          )
+          .join("");
+      }
 
-function fetchDayData(day) {
-    database.ref(`/players/${participantId}`).on("value", (snapshot) => {
-        const dayData = snapshot.val();
-        if (dayData) {
+      function fetchDayData(day) {
+        database.ref(`/players/${participantId}`).on("value", (snapshot) => {
+          const dayData = snapshot.val();
+          if (dayData) {
             const dayElement = document.createElement("div");
             dayElement.className = "carousel-item";
             dayElement.innerHTML = `
@@ -140,195 +159,215 @@ function fetchDayData(day) {
             dot.className = "dot";
             dotsContainer.appendChild(dot);
             updateCarousel();
-        }
-    });
-}
+          }
+        });
+      }
 
-// Fetch and display data for all days
-daysOfWeek.forEach(fetchDayData);
+      // Fetch and display data for all days
+      daysOfWeek.forEach(fetchDayData);
 
-// Carousel navigation
-let index = 0;
+      // Carousel navigation
+      let index = 0;
 
-function updateCarousel() {
-    const items = document.querySelectorAll('.carousel-item');
-    const dots = document.querySelectorAll('.dot');
-    carouselInner.style.transform = `translateX(-${index * 100}%)`;
+      function updateCarousel() {
+        const items = document.querySelectorAll(".carousel-item");
+        const dots = document.querySelectorAll(".dot");
+        carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-}
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+      }
 
-document.getElementById('prev').addEventListener('click', () => {
-    index = (index > 0) ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
-    updateCarousel();
-});
+      document.getElementById("prev").addEventListener("click", () => {
+        index =
+          index > 0
+            ? index - 1
+            : document.querySelectorAll(".carousel-item").length - 1;
+        updateCarousel();
+      });
 
-document.getElementById('next').addEventListener('click', () => {
-    index = (index < document.querySelectorAll('.carousel-item').length - 1) ? index + 1 : 0;
-    updateCarousel();
-});
+      document.getElementById("next").addEventListener("click", () => {
+        index =
+          index < document.querySelectorAll(".carousel-item").length - 1
+            ? index + 1
+            : 0;
+        updateCarousel();
+      });
 
-// Variables globales
-let startX = 0;
-let currentX = 0;
-let isSwiping = false;
+      // Variables globales
+      let startX = 0;
+      let currentX = 0;
+      let isSwiping = false;
 
-// Fonction pour réinitialiser le swipe
-function resetSwipe() {
-    startX = 0;
-    currentX = 0;
-    isSwiping = false;
-}
+      // Fonction pour réinitialiser le swipe
+      function resetSwipe() {
+        startX = 0;
+        currentX = 0;
+        isSwiping = false;
+      }
 
-// Détection du début du swipe
-carouselInner.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    isSwiping = true;
+      // Détection du début du swipe
+      carouselInner.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+        isSwiping = true;
 
-    // Désactiver la transition pour un déplacement fluide
-    carouselInner.style.transition = "none";
-});
+        // Désactiver la transition pour un déplacement fluide
+        carouselInner.style.transition = "none";
+      });
 
-// Gestion du mouvement du swipe
-carouselInner.addEventListener('touchmove', (e) => {
-    if (!isSwiping) return;
+      // Gestion du mouvement du swipe
+      carouselInner.addEventListener("touchmove", (e) => {
+        if (!isSwiping) return;
 
-    currentX = e.touches[0].clientX;
-    const diffX = currentX - startX;
+        currentX = e.touches[0].clientX;
+        const diffX = currentX - startX;
 
-    // Déplacement temporaire de l'élément
-    const offset = -index * carouselInner.offsetWidth + diffX;
-    carouselInner.style.transform = `translateX(${offset}px)`;
-});
+        // Déplacement temporaire de l'élément
+        const offset = -index * carouselInner.offsetWidth + diffX;
+        carouselInner.style.transform = `translateX(${offset}px)`;
+      });
 
-// Gestion de la fin du swipe
-carouselInner.addEventListener('touchend', () => {
-    if (!isSwiping) return;
+      // Gestion de la fin du swipe
+      carouselInner.addEventListener("touchend", () => {
+        if (!isSwiping) return;
 
-    const diffX = currentX - startX;
-    const threshold = 50; // Seuil de déplacement minimum pour valider un swipe
+        const diffX = currentX - startX;
+        const threshold = 50; // Seuil de déplacement minimum pour valider un swipe
 
-    // Déterminer la direction du swipe
-    if (Math.abs(diffX) > threshold) {
-        if (diffX > 0) {
+        // Déterminer la direction du swipe
+        if (Math.abs(diffX) > threshold) {
+          if (diffX > 0) {
             // Swipe vers la droite
-            index = (index > 0) ? index - 1 : document.querySelectorAll('.carousel-item').length - 1;
-        } else {
+            index =
+              index > 0
+                ? index - 1
+                : document.querySelectorAll(".carousel-item").length - 1;
+          } else {
             // Swipe vers la gauche
-            index = (index < document.querySelectorAll('.carousel-item').length - 1) ? index + 1 : 0;
-        }
-    }
-
-    // Réinitialisation de la position avec une transition fluide
-    carouselInner.style.transition = "transform 0.5s ease";
-    updateCarousel();
-
-    // Réinitialisation des variables
-    resetSwipe();
-});
-
-// Mise à jour initiale du carrousel
-updateCarousel();
-
-        closeModal.onclick = () => {
-            modal.style.display = "none";
-        };
-
-        window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
-
-        function showCrushPopup() {
-            const popup = document.getElementById('crushPopup');
-            popup.style.display = 'block';
-
-            // Masquer le pop-up après 4 secondes
-            setTimeout(() => {
-                popup.style.display = 'none';
-            }, 2500);
+            index =
+              index < document.querySelectorAll(".carousel-item").length - 1
+                ? index + 1
+                : 0;
+          }
         }
 
-        const feedbackRef = database.ref('feedback');
-        let data = null; // Variable globale pour stocker les données du participant
+        // Réinitialisation de la position avec une transition fluide
+        carouselInner.style.transition = "transform 0.5s ease";
+        updateCarousel();
 
+        // Réinitialisation des variables
+        resetSwipe();
+      });
 
-        database.ref(`/players/${participantId}`).on('value', (snapshot) => {
+      // Mise à jour initiale du carrousel
+      updateCarousel();
+
+      closeModal.onclick = () => {
+        modal.style.display = "none";
+      };
+
+      window.onclick = (event) => {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      function showCrushPopup() {
+        const popup = document.getElementById("crushPopup");
+        popup.style.display = "block";
+
+        // Masquer le pop-up après 4 secondes
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 2500);
+      }
+
+      const feedbackRef = database.ref("feedback");
+      let data = null; // Variable globale pour stocker les données du participant
+
+      database.ref(`/players/${participantId}`).on("value", (snapshot) => {
         const data = snapshot.val();
-        if (data && data.Crush && data.Crush.trim() !== '') {
-        showCrushPopup();
+        if (data && data.Crush && data.Crush.trim() !== "") {
+          showCrushPopup();
         }
         if (data) {
-        const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
-        participantInfoDiv.innerHTML = `
+          const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
+          participantInfoDiv.innerHTML = `
             <div class="info-container">
-                <h1>${data.Name} ${data.Crush ? '❤️' : ''}</h1>
+                <h1>${data.Name} ${data.Crush ? "❤️" : ""}</h1>
                 <div class="money-container">
                     <span>💰</span>
                     <p>${roundedMoney} €</p>
                     <button id="feedbackButton" class="feedback-btn">Feedback</button>
                 </div>
                 <div class="photo-container">
-                <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
+                <img src="${data.Picture}" alt="Photo of ${
+            data.Name
+          }" id="participantPhoto">
                 </div>
-            </div> `
+            </div> `;
 
-        // Ajouter l'événement après la création de l'élément
-        const feedbackButton = document.getElementById('feedbackButton');
-        feedbackButton.addEventListener('click', () => {
-            const feedbackModal = document.getElementById('feedbackModal');
-            feedbackModal.style.display = 'flex';
-        });
+          // Ajouter l'événement après la création de l'élément
+          const feedbackButton = document.getElementById("feedbackButton");
+          feedbackButton.addEventListener("click", () => {
+            const feedbackModal = document.getElementById("feedbackModal");
+            feedbackModal.style.display = "flex";
+          });
 
-        const participantPhoto = document.getElementById('participantPhoto');
-        participantPhoto.onclick = () => {
+          const participantPhoto = document.getElementById("participantPhoto");
+          participantPhoto.onclick = () => {
             modal.style.display = "flex";
             modalImage.src = data.Picture;
-        };
-    } else {
-        participantInfoDiv.innerHTML = '<p>Participant not found!</p>';
-    }
-
-    // Ajouter l'événement pour fermer la modal
-    document.getElementById('closeFeedbackModal').addEventListener('click', () => {
-        const feedbackModal = document.getElementById('feedbackModal');
-        feedbackModal.style.display = 'none';
-    });
-
-    // Fermer la modal au clic en dehors du contenu
-    window.addEventListener('click', (event) => {
-        if (event.target === feedbackModal) {
-            feedbackModal.style.display = 'none';
+          };
+        } else {
+          participantInfoDiv.innerHTML = "<p>Participant not found!</p>";
         }
-    });
 
-document.getElementById('feedbackForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const feedbackText = document.getElementById('feedbackText').value;
-    const participantName = data.Name;
+        // Ajouter l'événement pour fermer la modal
+        document
+          .getElementById("closeFeedbackModal")
+          .addEventListener("click", () => {
+            const feedbackModal = document.getElementById("feedbackModal");
+            feedbackModal.style.display = "none";
+          });
 
-    const feedbackData = {
-        participant: participantName,
-        feedback: feedbackText,
-        timestamp: new Date().toISOString()
-    };
-
-    // Envoyer le feedback vers Firebase
-    feedbackRef.push(feedbackData)
-        .then(() => {
-            alert('Feedback sent !');
-            // Réinitialiser le formulaire et fermer la modal
-            document.getElementById('feedbackForm').reset();
-            document.getElementById('feedbackModal').style.display = 'none';
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'envoi du feedback à Firebase :', error);
-            alert('Une erreur est survenue. Veuillez réessayer.');
+        // Fermer la modal au clic en dehors du contenu
+        window.addEventListener("click", (event) => {
+          if (event.target === feedbackModal) {
+            feedbackModal.style.display = "none";
+          }
         });
-});
-});
 
+        document
+          .getElementById("feedbackForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            const feedbackText = document.getElementById("feedbackText").value;
+            const participantName = data.Name;
+
+            const feedbackData = {
+              participant: participantName,
+              feedback: feedbackText,
+              timestamp: new Date().toISOString(),
+            };
+
+            // Envoyer le feedback vers Firebase
+            feedbackRef
+              .push(feedbackData)
+              .then(() => {
+                alert("Feedback sent !");
+                // Réinitialiser le formulaire et fermer la modal
+                document.getElementById("feedbackForm").reset();
+                document.getElementById("feedbackModal").style.display = "none";
+              })
+              .catch((error) => {
+                console.error(
+                  "Erreur lors de l'envoi du feedback à Firebase :",
+                  error
+                );
+                alert("Une erreur est survenue. Veuillez réessayer.");
+              });
+          });
+      });
     </script>
-</body>
+  </body>
 </html>

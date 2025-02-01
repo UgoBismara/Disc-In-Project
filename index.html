@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <link rel="icon" type="image/x-icon" href="image/DiscInLogo.png"/>
-    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara"/>
-    <meta name="description" content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."/>
-    <meta name="keywords" content="ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"/>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <link rel="icon" type="image/x-icon" href="image/DiscInLogo.png" />
+    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara" />
+    <meta
+      name="description"
+      content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."
+    />
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <meta
+      name="keywords"
+      content="ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"
+    />
     <title>Disc In Camp | Home</title>
-    <link rel="stylesheet" href="style.css"/>
-    <link rel="stylesheet" href="home.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!--Header-->
     <a href="login.html" class="login-button">
       <p class="log-option">Login</p>
-      <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="bi bi-person-circle"
+        viewBox="0 0 16 16"
+      >
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+        <path
+          fill-rule="evenodd"
+          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+        />
       </svg>
     </a>
     <a class="logo" href="index.html">
@@ -31,85 +52,280 @@
       <div class="carousel-caption">DISC IN CAMP 2025</div>
       <div class="carousel-track">
         <div class="carousel-slide">
-          <img src="image/DiscInImageHomePage.jpg" alt="Slide 1"/>
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 1" />
         </div>
         <div class="carousel-slide">
-          <img src="image/DiscInImageHomePage.jpg" alt="Slide 2"/>
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 2" />
         </div>
         <div class="carousel-slide">
-          <img src="image/DiscInImageHomePage.jpg" alt="Slide 3"/>
+          <img src="image/DiscInImageHomePage.jpg" alt="Slide 3" />
         </div>
       </div>
     </div>
-       <!--Main content-->
+    <!--Main content-->
     <main>
       <section>
         <h1>NEWS & GOSSIPS</h1>
-        <p class="center">Check out the first selection of players for the 2025 edition!</p>
-        <div></div>
-        <a class="link" href="#">And many more <svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-          <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-        </svg></a>
+        <p class="center">
+          Check out the first selection of players for the 2025 edition!
+        </p>
+        <div id="data" class="participants-grid"></div>
+        <a class="link" href="#"
+          >And many more
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="0.8rem"
+            height="0.8rem"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg>
+        </a>
       </section>
       <section class="middle">
         <h1>ABOUT LAST EDITION</h1>
-        <p class="center">Where Ultimate frisbee meets creativity, community, and unforgettable festival vibes! </p>
-        <iframe width="280" height="157.5" src="https://www.youtube.com/embed/eYpc70vezGY?si=BvMqxY4iRXHiOmbo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <button class="official"><a class="bouton" href="https://docs.google.com/forms/d/e/1FAIpQLSfHSQOQw_HSIlLUaKsuNDeVkY9YPttY1o1WufoFwAX9onzo6A/viewform" target="_blank">REGISTER NOW <svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-          <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-        </svg></a></button>
+        <p class="center">
+          Where Ultimate frisbee meets creativity, community, and unforgettable
+          festival vibes! 
+        </p>
+        <iframe
+          width="280"
+          height="157.5"
+          src="https://www.youtube.com/embed/eYpc70vezGY?si=BvMqxY4iRXHiOmbo"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+        <button class="official">
+          <a
+            class="bouton"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfHSQOQw_HSIlLUaKsuNDeVkY9YPttY1o1WufoFwAX9onzo6A/viewform"
+            target="_blank"
+            >REGISTER NOW
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="0.8rem"
+              height="0.8rem"
+              fill="currentColor"
+              class="bi bi-caret-right-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+              />
+            </svg>
+          </a>
+        </button>
       </section>
     </main>
-       <!--Footer-->
+    <!--Footer-->
     <a class="feedback-icon" href="feedback.html">
       <img src="image/feedback.svg" alt="Feedback Icon" />
     </a>
     <div class="navbar">
       <a href="index.html" class="navbar-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-house"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"
+          />
         </svg>
         HOME
       </a>
       <a href="players.html" class="navbar-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
-          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-people"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"
+          />
         </svg>
         PLAYERS
       </a>
       <a href="schedule.html" class="navbar-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-calendar"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+          />
         </svg>
         SCHEDULE
       </a>
       <a href="news.html" class="navbar-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
-          <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
-          <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-newspaper"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"
+          />
+          <path
+            d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"
+          />
         </svg>
         NEWS
       </a>
     </div>
 
     <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+        authDomain: "disc-in-camp.firebaseapp.com",
+        databaseURL:
+          "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "disc-in-camp",
+        storageBucket: "disc-in-camp.appspot.com",
+        messagingSenderId: "128937547779",
+        appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+        measurementId: "G-Y4KZY16LFF",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+
+      const dataContainer = document.getElementById("data");
+
+      function createCamperCard({ Id, Name, Picture, Team }) {
+        const card = document.createElement("a");
+        card.className = "participant";
+        card.dataset.color = Team;
+
+        const img = document.createElement("img");
+        img.src = Picture;
+        img.alt = `${Name}'s photo`;
+        img.className = "participant-photo";
+
+        const nameElement = document.createElement("h2");
+        nameElement.innerText = Name;
+
+        card.addEventListener("click", () => {
+          sessionStorage.setItem("participantId", Id);
+          window.location.href = "participants.html";
+        });
+
+        card.appendChild(img);
+        card.appendChild(nameElement);
+        return card;
+      }
+
+      function updateUI(filteredData) {
+        // Clear existing data
+        dataContainer.innerHTML = "";
+
+        const fragment = document.createDocumentFragment();
+        filteredData.forEach((camper) => {
+          const card = createCamperCard(camper);
+          fragment.appendChild(card);
+        });
+
+        dataContainer.appendChild(fragment);
+      }
+
+      function applyFilters(color = "all") {
+        const searchValue = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+
+        const filteredData = cachedData.filter((camper) => {
+          const matchesColor =
+            color === "all" ||
+            camper.Team.toLowerCase() === color.toLowerCase();
+          const matchesSearch = camper.Name.toLowerCase().includes(searchValue);
+          return matchesColor && matchesSearch;
+        });
+
+        updateUI(filteredData);
+      }
+
+      function fetchData() {
+        const refPlayers = database.ref("/players");
+        refPlayers.once(
+          "value",
+          (snapshot) => {
+            const data = snapshot.val();
+            if (!data) {
+              console.error("Aucune donnée trouvée");
+              return;
+            }
+
+            let dataArray = Object.keys(data).map((key) => data[key]); // Convertir en tableau
+
+            // Sélectionner aléatoirement 3 éléments
+            let randomSelection = [];
+            if (dataArray.length > 4) {
+              while (randomSelection.length < 4) {
+                let randomIndex = Math.floor(Math.random() * 62); //dataArray.length);
+                let selectedItem = dataArray[randomIndex];
+
+                // Vérifier si l'élément est déjà sélectionné
+                if (!randomSelection.includes(selectedItem)) {
+                  randomSelection.push(selectedItem);
+                }
+              }
+            } else {
+              randomSelection = dataArray; // Si moins de 3 éléments, on les prend tous
+            }
+
+            cachedData = randomSelection; // Mise en cache des données
+            updateUI(cachedData); // Mettre à jour l'interface utilisateur
+          },
+          (error) => {
+            console.error("Erreur de récupération :", error);
+          }
+        );
+      }
+
+      // Attach search event
+
+      // Fetch data on load
+      fetchData();
+
       const track = document.querySelector(".carousel-track");
       const slides = Array.from(track.children);
       const firstSlideClone = slides[0].cloneNode(true); // Clone du premier slide
       track.appendChild(firstSlideClone); // Ajout du clone à la fin
-    
+
       let currentIndex = 0;
       const totalSlides = slides.length + 1; // +1 à cause du clone
-    
+
       function updateCarousel(index, withTransition = true) {
         const slideWidth = slides[0].getBoundingClientRect().width;
-        track.style.transition = withTransition ? "transform 0.5s ease-in-out" : "none";
+        track.style.transition = withTransition
+          ? "transform 0.5s ease-in-out"
+          : "none";
         track.style.transform = `translateX(-${index * slideWidth}px)`;
       }
-    
+
       function autoSlide() {
         currentIndex++;
-    
+
         if (currentIndex === totalSlides) {
           // Désactiver la transition pour éviter l'effet de retour brusque
           setTimeout(() => {
@@ -118,10 +334,10 @@
             updateCarousel(currentIndex, false);
           }, 500); // Attendre la fin de l'animation avant de réinitialiser
         }
-    
+
         updateCarousel(currentIndex);
       }
-    
+
       setInterval(autoSlide, 3000); // Change de slide toutes les 3 secondes
     </script>
   </body>
