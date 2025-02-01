@@ -111,7 +111,7 @@ iframe {
 
 @media (max-width: 768px) {
   .menu-index {
-    margin: 2vh 20px 8vh 20px !important;
+    margin: 2vh 20px 90px 20px !important;
   }
 
   iframe {
@@ -134,8 +134,11 @@ iframe {
     }
 
     .participants-grid {
-      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Exactement 3 colonnes */
       gap: 2vw;
       width: 100%;
-    }
+      max-width: 900px; /* Ajuste pour éviter que les cartes ne s'étirent trop */
+      margin: 0 auto; /* Centre la grille */
+  }
   }
