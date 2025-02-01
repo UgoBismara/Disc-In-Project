@@ -21,6 +21,13 @@ h1 {
   font-weight: normal;
   margin: 0 auto;
   text-align: center;
+  color: #1a1a1a;
+  font-size: 4rem;
+}
+
+p {
+  color: #1a1a1a;
+  font-size: 1rem;
 }
 
 .bouton {
@@ -60,6 +67,7 @@ main {
 .log-option {
   font-size: 1rem;
   font-weight: 600;
+  color: #e78052;
   transition: color 0.3s ease;
   padding-right: 1vw;
 }
@@ -75,11 +83,12 @@ main {
   fill: #fffaf7;
 }
 
-.login-button:hover {
+.log-option:hover {
   color: #fffaf7;
+  text-decoration: underline;
 }
 
-.login-button {
+a.login-button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -93,10 +102,6 @@ main {
   cursor: pointer;
   text-decoration: none;
   z-index: 1000;
-}
-
-.login-button:hover {
-  text-decoration: underline;
 }
 
 .navbar {
@@ -284,6 +289,14 @@ form select {
 
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
   .login-button {
     position: absolute;
     top: 5px;
@@ -306,7 +319,7 @@ form select {
   }
 
   .feedback-icon {
-    bottom: 10vh;
+    bottom: 9vh;
   }
 
   .logo {

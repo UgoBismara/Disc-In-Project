@@ -1,25 +1,42 @@
 <!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
-    />
-    <title>Participant Details</title>
-    <link rel="stylesheet" href="index.css" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="icon" type="image/x-icon" href="image/DiscInLogo.png"/>
+    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara"/>
+    <meta name="description" content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."/>
+    <meta name="keywords" content="ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"/>
+    <title>Disc In Camp | Players</title>
+    <!-- Firebase SDK pour le navigateur -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="participants.css" />
+    <link rel="stylesheet" href="participants.css">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
   </head>
-
   <body>
+    <!--Header-->
+    <section class="header">
+        <a href="login.html" class="login-button">
+            <p class="log-option">Login</p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+            </svg>
+        </a>
+        <a class="logo" href="index.html">
+            <img src="image/DiscInLogo.png" alt="Logo" />
+        </a>
+    </section>
+
+    <!--Main-->
+    <main>
     <div id="participant-info"></div>
-    <a href="index.html" class="back-arrow">
+    <a href="players.html" class="back-arrow">
       <i class="fas fa-arrow-left"></i>
     </a>
 
@@ -40,25 +57,42 @@
       <img id="modalImage" alt="Participant Image" />
     </div>
 
-    <div id="feedbackModal" class="modal">
-      <div class="modal-content">
-        <span id="closeFeedbackModal" class="close">&times;</span>
-        <h2>SEND YOUR FEEDBACK</h2>
-        <form id="feedbackForm">
-          <textarea
-            id="feedbackText"
-            placeholder="Enter your feedback here..."
-            required
-          ></textarea>
-          <button type="submit">Send</button>
-        </form>
-      </div>
-    </div>
-
     <div id="crushPopup" class="popup">
       ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
     </div>
 
+    </main>
+     <!--Footer-->
+     <a class="feedback-icon" href="feedback.html">
+      <img src="image/feedback.svg" alt="Feedback Icon" />
+      </a>
+      <div class="navbar">
+      <a href="index.html" class="navbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+          </svg>
+          HOME
+      </a>
+      <a href="players.html" class="navbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+          </svg>
+          PLAYERS
+      </a>
+      <a href="schedule.html" class="navbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+          </svg>
+          SCHEDULE
+      </a>
+      <a href="news.html" class="navbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
+          <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
+          <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
+          </svg>
+          NEWS
+      </a>
+      </div>
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",

@@ -6,15 +6,10 @@ body, html {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100%;
-  background-color: #f1d9bc;
-  box-sizing: border-box;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+main {
+  width: 100%;
 }
 
 /* Container for the search and filter bar */
@@ -27,7 +22,7 @@ h1 {
   max-width: 100%; /* Ensure the container is fully responsive */
   box-sizing: border-box;
   margin: 0 auto;
-  padding-top: 4vw;
+  padding-top: 2vw;
 }
 
 .filter-bar {
@@ -37,15 +32,15 @@ h1 {
   width: 100%;
   max-width: 100%; /* Ensure the container is fully responsive */
   box-sizing: border-box;
-  padding-bottom: 4vw;
+  padding-bottom: 2vw;
 }
 
 /* Styling the input box for the search bar */
 .search-bar input {
   width: 90%; /* Full width of the container minus margins */
   max-width: 400px; /* Optional max width for larger screens */
-  padding: 2vw;
-  font-size: 0.8rem !important;
+  padding: 0.5vw 1vw;
+  font-size: 1rem !important;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
@@ -55,9 +50,9 @@ h1 {
 
 /* Styling filter buttons */
 .filter-bar button {
-  width: 45px;
+  width: 60px;
   padding: 1vw auto;
-  font-size: 0.7rem !important;
+  font-size: 1rem !important;
   margin: 0.5vw;
   border: none;
   border-radius: 5px;
@@ -75,23 +70,19 @@ h1 {
 /* Participants grid */
 .participants-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Fully responsive grid */
-  gap: 10px;
-  width: 100%; /* Full width of the screen minus padding */
-  max-width: 400px; /* Limit grid width */
-  padding: 10px;
-  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Fully responsive grid */
+  gap: 2vw;
+  width: 100%;
 }
 
 .participant {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-decoration: none;
-  color: black;
+  color: #1a1a1a;
   transition: all 0.3s ease;
 }
 
@@ -101,35 +92,43 @@ h1 {
 
 .participant-photo {
   width: 100%;
-  height: auto;
-  aspect-ratio: 3 / 4;
+  height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 10px;
 }
 
 .participant h2 {
-  font-size: 16px;
-  margin: 10px 0;
-  color: #333;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 370px) {
-  .filter-bar button {
-    font-size: 12px;
-    padding: 6px;
-    max-width: 60px;
-  }
-
-  .search-bar input {
-    font-size: 14px;
-    padding: 8px;
-  }
+  font-size: 1rem;
+  color: #fffaf7;
+  z-index: -1000;
+  margin-top: -45px;
 }
 
 @media (max-width: 600px) {
   .participants-grid {
     grid-template-columns: repeat(2, 1fr); /* Two columns for smaller screens */
+  }
+
+  main {
+    width: 80%;
+  }
+
+  .search-bar {
+    padding-top : 6vw;
+  }
+
+  .filter-bar {
+    padding-bottom: 8vw;
+  }
+
+  .filter-bar button {
+    font-size: 0.8rem !important;
+    padding: 0.5vw;
+    width: 45px;
+  }
+
+  .search-bar input {
+    font-size: 0.7rem  !important;
+    padding: 2vw 3vw;
   }
 }

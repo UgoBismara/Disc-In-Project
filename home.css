@@ -57,7 +57,7 @@
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-decoration: none;
-  color: black;
+  color: #1a1a1a;
   transition: all 0.3s ease;
 }
 
@@ -141,6 +141,11 @@ iframe {
     max-width: 900px; /* Empêche les cartes de s'étirer trop */
     margin: 0 auto; /* Centre la grille */
     overflow: hidden; /* Cache le dépassement si nécessaire */
+  }
+
+  .participant h2 {
+    font-size: 0.8rem;
+    font-weight: 400;
   }
 
   .participant:nth-child(n+4) {
