@@ -95,6 +95,7 @@ iframe {
   max-width: 400px; /* Limit grid width */
   padding: 10px;
   box-sizing: border-box;
+  margin: 0 auto; /* Center horizontally */
 }
 
 .participant {
