@@ -333,19 +333,19 @@ form select {
   }
 
   .forms {
-    padding: 4vw 0vw;
+    padding: 3vw 0vw;
     margin-right: 20px;
   }
 
   form label {
-    margin-bottom: 2vw;
+    margin-bottom: 1vw;
   }
 
   form input,
   form textarea,
   form select {
     padding: 2vw;
-    margin-bottom: 8vw;
+    margin-bottom: 6vw;
   }
 
   button.official {
