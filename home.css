@@ -41,9 +41,9 @@
 /*Participants*/
 .participants-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   gap: 2vw;
-  width: 90%;
+  width: 100%;
   padding: 10px;
   box-sizing: border-box;
   margin: 0 auto;
@@ -134,8 +134,16 @@ iframe {
   }
 
   .participants-grid {
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Max 3 cartes par ligne */
     gap: 2vw;
     width: 100%;
+    max-width: 900px; /* Empêche les cartes de s'étirer trop */
+    margin: 0 auto; /* Centre la grille */
+    overflow: hidden; /* Cache le dépassement si nécessaire */
+  }
+
+  .participant:nth-child(n+4) {
+    display: none; /* Cache toutes les cartes au-delà de la 3ème */
   }
 }
