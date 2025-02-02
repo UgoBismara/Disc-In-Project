@@ -64,12 +64,34 @@ main {
   margin: 15vh 50px;
 }
 
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  text-decoration: none;
+  color: #e78052;
+  transition: color 0.3s ease;
+}
+
+.login-button:hover {
+  color: #1a1a1a;
+}
+
+.login-button:hover .log-option {
+  color: #1a1a1a;
+  text-decoration: underline;
+}
+
+.login-button svg {
+  fill: currentColor; /* Utilise la couleur du parent (.login-button) */
+  transition: fill 0.3s ease;
+}
+
 .log-option {
   font-size: 1rem;
   font-weight: 600;
   color: #e78052;
   transition: color 0.3s ease;
-  padding-right: 1vw;
 }
 
 .bi-person-circle {
@@ -77,15 +99,6 @@ main {
   height: 2vw;
   fill: #e78052;
   transition: color 0.3s ease;
-}
-
-.bi-person-circle:hover {
-  fill: #fffaf7;
-}
-
-.log-option:hover {
-  color: #fffaf7;
-  text-decoration: underline;
 }
 
 a.login-button {
