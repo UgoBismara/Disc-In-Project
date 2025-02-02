@@ -22,7 +22,7 @@ main {
   max-width: 100%; /* Ensure the container is fully responsive */
   box-sizing: border-box;
   margin: 0 auto;
-  padding-top: 2vw;
+  padding-top: 1vw;
 }
 
 .filter-bar {
@@ -41,7 +41,7 @@ main {
   max-width: 400px; /* Optional max width for larger screens */
   padding: 0.5vw 1vw;
   font-size: 1rem !important;
-  margin-bottom: 10px;
+  margin-bottom: 0.8vw;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   border-radius: 10vw;
@@ -135,7 +135,7 @@ main {
   }
 
   .search-bar {
-    padding-top : 6vw;
+    padding-top : 3vw;
   }
 
   .filter-bar {
@@ -151,5 +151,6 @@ main {
   .search-bar input {
     font-size: 0.7rem  !important;
     padding: 2vw 3vw;
+    margin-bottom: 3vw;
   }
 }
