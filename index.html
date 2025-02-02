@@ -212,23 +212,47 @@
 
       const dataContainer = document.getElementById("data");
 
-      function createCamperCard({ Id, Name, Picture, Team }) {
-        const card = document.createElement("a");
-        card.className = "participant";
-        card.dataset.color = Team;
+      function getTeamOverlay(team) {
+        const validTeams = ["green", "red", "blue", "yellow"];
+    if (!team || !validTeams.includes(team.toLowerCase())) {
+        return "filters/grey.png"; // Si l'équipe n'est pas reconnue, filtre gris
+    }
+        return `filters/${team.toLowerCase()}.png`; // Chemin de l'image d'overlay
+}
 
-        const img = document.createElement("img");
-        img.src = Picture;
-        img.alt = `${Name}'s photo`;
-        img.className = "participant-photo";
+function createCamperCard({ Id, Name, Picture, Team }) {
+    const card = document.createElement("a");
+    card.className = "participant";
+    card.dataset.color = Team;
 
-        const nameElement = document.createElement("h2");
-        nameElement.innerText = Name;
+    // Photo du participant
+    const img = document.createElement("img");
+    img.src = Picture;
+    img.alt = `${Name}'s photo`;
+    img.className = "participant-photo";
 
-        card.appendChild(img);
-        card.appendChild(nameElement);
-        return card;
-      }
+    // Overlay avec l'image PNG de l'équipe
+    const overlay = document.createElement("div");
+    overlay.className = "team-overlay";
+    overlay.style.backgroundImage = `url('${getTeamOverlay(Team)}')`;
+
+    // Nom du participant
+    const nameElement = document.createElement("h2");
+    nameElement.innerText = Name;
+
+    // Redirection sur clic
+    card.addEventListener("click", () => {
+        sessionStorage.setItem("participantId", Id);
+        window.location.href = "participants.html";
+    });
+
+    // Ajouter les éléments à la carte
+    card.appendChild(img);
+    card.appendChild(overlay); // Ajoute l'overlay après l'image
+    card.appendChild(nameElement); // Ajoute le texte au-dessus de tout
+
+    return card;
+}
 
       function updateUI(filteredData) {
         // Clear existing data

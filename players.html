@@ -117,39 +117,47 @@
       let cachedData = [];
       const dataContainer = document.getElementById("data");
 
-      function getTeamColor(team) {
-        const colors = {
-          Green: "#8fbc8f",
-          Red: "#f08080",
-          Blue: "#add8e6",
-          Yellow: "#fffacd",
-        };
-        return colors[team] || "#ffffff";
-      }
+      function getTeamOverlay(team) {
+        const validTeams = ["green", "red", "blue", "yellow"];
+    if (!team || !validTeams.includes(team.toLowerCase())) {
+        return "filters/grey.png"; // Si l'équipe n'est pas reconnue, filtre gris
+    }
+        return `filters/${team.toLowerCase()}.png`; // Chemin de l'image d'overlay
+}
 
-      function createCamperCard({ Id, Name, Picture, Team }) {
-        const card = document.createElement("a");
-        card.className = "participant";
-        card.style.backgroundColor = getTeamColor(Team);
-        card.dataset.color = Team;
+function createCamperCard({ Id, Name, Picture, Team }) {
+    const card = document.createElement("a");
+    card.className = "participant";
+    card.dataset.color = Team;
 
-        const img = document.createElement("img");
-        img.src = Picture;
-        img.alt = `${Name}'s photo`;
-        img.className = "participant-photo";
+    // Photo du participant
+    const img = document.createElement("img");
+    img.src = Picture;
+    img.alt = `${Name}'s photo`;
+    img.className = "participant-photo";
 
-        const nameElement = document.createElement("h2");
-        nameElement.innerText = Name;
+    // Overlay avec l'image PNG de l'équipe
+    const overlay = document.createElement("div");
+    overlay.className = "team-overlay";
+    overlay.style.backgroundImage = `url('${getTeamOverlay(Team)}')`;
 
-        card.addEventListener("click", () => {
-          sessionStorage.setItem("participantId", Id);
-          window.location.href = "participants.html";
-        });
+    // Nom du participant
+    const nameElement = document.createElement("h2");
+    nameElement.innerText = Name;
 
-        card.appendChild(img);
-        card.appendChild(nameElement);
-        return card;
-      }
+    // Redirection sur clic
+    card.addEventListener("click", () => {
+        sessionStorage.setItem("participantId", Id);
+        window.location.href = "participants.html";
+    });
+
+    // Ajouter les éléments à la carte
+    card.appendChild(img);
+    card.appendChild(overlay); // Ajoute l'overlay après l'image
+    card.appendChild(nameElement); // Ajoute le texte au-dessus de tout
+
+    return card;
+}
 
       function updateUI(filteredData) {
         // Clear existing data
