@@ -1,0 +1,20 @@
+{
+    "name": "Disc In Camp 2025",
+    "short_name": "DiscIn",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fffaf7",
+    "theme_color": "#e78052",
+    "icons": [
+      {
+        "src": "/image/DiscInLogo.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/image/DiscInLogo.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }

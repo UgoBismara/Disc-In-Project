@@ -7,6 +7,7 @@
       http-equiv="Cache-Control"
       content="no-cache, no-store, must-revalidate"
     />
+    <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/x-icon" href="image/DiscInLogo.png" />
     <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara" />
     <meta
@@ -324,6 +325,14 @@ function createCamperCard({ Id, Name, Picture, Team }) {
       }
 
       setInterval(autoSlide, 3000); // Change de slide toutes les 3 secondes
-    </script>
+   
+   //Mettre en app mobile - fonction sans réseau //
+   if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js")
+    .then(() => console.log("Service Worker enregistré !"))
+    .catch(error => console.log("Erreur Service Worker :", error));
+}
+   
+   </script>
   </body>
 </html>

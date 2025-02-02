@@ -7,7 +7,7 @@
 .carousel {
     display: flex;
     gap: 10px;
-    animation: slide 10s infinite linear;
+    animation: slide 20s infinite linear;
 }
 
 .carousel img {
