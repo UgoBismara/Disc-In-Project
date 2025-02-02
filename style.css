@@ -149,17 +149,6 @@ a.login-button {
   height: 4vw;
   z-index: 1000;
 }
-
-.feedback-icon {
-  position: fixed;
-  bottom: 12vh;
-  right: 3vw;
-}
-
-.feedback-icon img {
-  height: 8vh;
-}
-
 /* Pour les pages pas finies */
 .work {
   display: flex;
@@ -316,10 +305,6 @@ form select {
   .navbar-item svg {
     width: 8vw;
     height: 8vw;
-  }
-
-  .feedback-icon {
-    bottom: 9vh;
   }
 
   .logo {
