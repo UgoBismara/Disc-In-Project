@@ -31,6 +31,7 @@
     />
   </head>
   <body>
+    <button id="install-btn" style="display:none;">Install App</button>
     <!--Header-->
     <section class="header">
       <a href="login.html" class="login-button">
@@ -333,6 +334,31 @@ function createCamperCard({ Id, Name, Picture, Team }) {
     .catch(error => console.log("Erreur Service Worker :", error));
 }
    
+let installPrompt;
+
+// 📌 Capture l'événement pour déclencher l'installation plus tard
+window.addEventListener("beforeinstallprompt", event => {
+    event.preventDefault();
+    installPrompt = event;
+
+    // Afficher un bouton personnalisé pour proposer l'installation
+    document.getElementById("install-btn").style.display = "block";
+});
+
+// 📌 Quand l'utilisateur clique sur "Installer"
+document.getElementById("install-btn").addEventListener("click", () => {
+    if (installPrompt) {
+        installPrompt.prompt();
+        installPrompt.userChoice.then(choice => {
+            if (choice.outcome === "accepted") {
+                console.log("L'utilisateur a installé l'app !");
+            } else {
+                console.log("L'utilisateur a annulé l'installation.");
+            }
+            installPrompt = null;
+        });
+    }
+});
    </script>
   </body>
 </html>
