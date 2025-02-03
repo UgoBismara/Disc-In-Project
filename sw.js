@@ -3,20 +3,20 @@ self.addEventListener("install", event => {
       caches.open("v1").then(cache => {
         return cache.addAll([
           "/",
-          "/index.html",
-          "/style.css",
-          "/home.css",
-          "/participants.css",
-          "/players.css",
-          "/home.css",
-          "/feedback.html",
-          "/login.html",
-          "/my-profile.html",
-          "/news.html",
-          "/participants.html",
-          "/players.html",
-          "/schedule.html",
-          "/image/DiscInLogo.png"
+          "index.html",
+          "style.css",
+          "home.css",
+          "participants.css",
+          "players.css",
+          "home.css",
+          "feedback.html",
+          "login.html",
+          "my-profile.html",
+          "news.html",
+          "participants.html",
+          "players.html",
+          "schedule.html",
+          "image/DiscInLogo.png"
         ]);
       })
     );
