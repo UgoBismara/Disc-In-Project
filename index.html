@@ -31,7 +31,12 @@
     />
   </head>
   <body>
-    <button id="install-btn" style="display:none;">Install App</button>
+    <div id="install-banner" class="install-banner">
+      <p>Install our app for a better experience !</p>
+      <button class="official" id="install-btn">INSTALL</button>
+      <span id="close-banner">✖</span>
+  </div>
+  
     <!--Header-->
     <section class="header">
       <a href="login.html" class="login-button">
@@ -333,16 +338,17 @@ function createCamperCard({ Id, Name, Picture, Team }) {
     .then(() => console.log("Service Worker enregistré !"))
     .catch(error => console.log("Erreur Service Worker :", error));
 }
-   
+ 
+// pop-up d'installation de l'app //
 let installPrompt;
 
-// 📌 Capture l'événement pour déclencher l'installation plus tard
+// 📌 Capture l'événement beforeinstallprompt pour afficher la bannière
 window.addEventListener("beforeinstallprompt", event => {
     event.preventDefault();
     installPrompt = event;
 
-    // Afficher un bouton personnalisé pour proposer l'installation
-    document.getElementById("install-btn").style.display = "block";
+    // Affiche la bannière flottante
+    document.getElementById("install-banner").style.display = "flex";
 });
 
 // 📌 Quand l'utilisateur clique sur "Installer"
@@ -351,13 +357,21 @@ document.getElementById("install-btn").addEventListener("click", () => {
         installPrompt.prompt();
         installPrompt.userChoice.then(choice => {
             if (choice.outcome === "accepted") {
-                console.log("L'utilisateur a installé l'app !");
+                console.log("L'utilisateur a installé l'application !");
             } else {
-                console.log("L'utilisateur a annulé l'installation.");
+                console.log("L'utilisateur a refusé l'installation.");
             }
             installPrompt = null;
         });
     }
+
+    // Masquer la bannière après le clic
+    document.getElementById("install-banner").style.display = "none";
+});
+
+// 📌 Fermer la bannière si l'utilisateur ne veut pas installer
+document.getElementById("close-banner").addEventListener("click", () => {
+    document.getElementById("install-banner").style.display = "none";
 });
    </script>
   </body>
