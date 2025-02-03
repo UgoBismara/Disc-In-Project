@@ -50,6 +50,5 @@ self.addEventListener("fetch", event => {
 
 // 📌 Permettre l’affichage du bouton d’installation de la PWA
 self.addEventListener("beforeinstallprompt", event => {
-    event.preventDefault(); // Empêche la bannière auto, pour la gérer manuellement
-    window.deferredPrompt = event; // Stocke l'événement pour l'afficher plus tard
+    event.preventDefault();
 });
