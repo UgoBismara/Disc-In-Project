@@ -37,6 +37,12 @@
     <main>
         <h1>LOGIN</h1>
         <div class="work">Work in progress...</div>
+
+          <input type="email" id="email" placeholder="Email">
+          <input type="password" id="password" placeholder="Mot de passe">
+          <button class="official" onclick="register()">Register</button>
+          <p id="error-message" style="color: red;"></p>
+      </div>
     </main>
 
    <!--Footer-->
@@ -74,5 +80,21 @@
       NEWS
     </a>
   </div>
+  <script>
+    function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const errorMessage = document.getElementById("error-message");
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            alert("Compte créé avec succès !");
+            window.location.href = "index.html";
+        })
+        .catch((error) => {
+            errorMessage.textContent = "Erreur : " + error.message;
+        });
+}
+  </script>
   </body>
 </html>
