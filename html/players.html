@@ -124,9 +124,9 @@
       function getTeamOverlay(team) {
         const validTeams = ["green", "red", "blue", "yellow"];
     if (!team || !validTeams.includes(team.toLowerCase())) {
-        return "filters/grey.png"; // Si l'équipe n'est pas reconnue, filtre gris
+        return "../filters/grey.png"; // Si l'équipe n'est pas reconnue, filtre gris
     }
-        return `filters/${team.toLowerCase()}.png`; // Chemin de l'image d'overlay
+        return `../filters/${team.toLowerCase()}.png`; // Chemin de l'image d'overlay
 }
 
 function createCamperCard({ Id, Name, Picture, Team }) {
@@ -215,9 +215,6 @@ function createCamperCard({ Id, Name, Picture, Team }) {
       // Fetch data on load
       fetchData();
 
-      function goToHome() {
-        window.location.href = "home.html"; // Remplacez 'index.html' par l'URL exacte de votre page d'accueil si nécessaire
-      }
     </script>
   </body>
 </html>
