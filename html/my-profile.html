@@ -1,14 +1,59 @@
-<div id="feedbackModal" class="modal">
-    <div class="modal-content">
-      <span id="closeFeedbackModal" class="close">&times;</span>
-      <h2>SEND YOUR FEEDBACK</h2>
-      <form id="feedbackForm">
-        <textarea
-          id="feedbackText"
-          placeholder="Enter your feedback here..."
-          required
-        ></textarea>
-        <button type="submit">Send</button>
-      </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="my-profile.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MY PROFILE</h1>
+        <div class="profile-card">
+            <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
+            <h2 class="name">Moby ESPITTA</h2>
+            <p class="role">Handler</p>
+            <div class="info">
+                <p><strong>Age:</strong> 24 years old</p>
+                <p><strong>Country:</strong> France</p>
+                <p><strong>Ultimate Years:</strong> 10 years</p>
+                <p><strong>Team:</strong> Yellow</p>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-button">Schedule</button>
+            <button class="tab-button">Spends</button>
+            <button class="tab-button">Feedbacks</button>
+        </div>
+
+        <h3>Next Activities</h3>
+        <div class="schedule">
+            <div class="activity">
+                <p><strong>Presentation</strong></p>
+                <p>10:00 - 11:30</p>
+                <p>Orée du Bois</p>
+                <p>Leila</p>
+            </div>
+            <div class="activity">
+                <p><strong>Lunch</strong></p>
+                <p>11:30 - 13:00</p>
+                <p>Fields</p>
+                <p>Players</p>
+            </div>
+            <div class="activity">
+                <p><strong>Game</strong></p>
+                <p>13:00 - 14:30</p>
+                <p>Field 2</p>
+                <p>David + Toby</p>
+            </div>
+            <div class="activity">
+                <p><strong>Practice</strong></p>
+                <p>15:00 - 17:00</p>
+                <p>Field 3</p>
+                <p>Connor + Denis</p>
+            </div>
+        </div>
     </div>
-  </div>
+</body>
+</html>
