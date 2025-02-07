@@ -42,12 +42,10 @@
 .participants-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  gap: 2vw;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
-  margin: 0 auto;
-  justify-content: center;
+  justify-items: center;
 }
 
 .participant:hover {
@@ -99,13 +97,15 @@
 .link {
   text-decoration: none;
   color: #e78052;
-  font-size: 0.8rem;
+  font-size: 1rem;
+  display: block;
+  text-align: center;
+  padding-top: 2vw;
 }
 
 .link:hover {
   text-decoration: underline;
   color: #1a1a1a;
-  font-size: 0.8rem;
 }
 
 .middle {
@@ -124,6 +124,10 @@ iframe {
 @media (max-width: 768px) {
   .menu-index {
     margin: 2vh 20px 90px 20px !important;
+  }
+
+  .link {
+    font-size: 0.8rem;
   }
 
   iframe {
