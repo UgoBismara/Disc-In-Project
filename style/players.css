@@ -73,6 +73,7 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Fully responsive grid */
   gap: 2vw;
   width: 100%;
+  justify-items: center;
 }
 
 .participant:hover {
