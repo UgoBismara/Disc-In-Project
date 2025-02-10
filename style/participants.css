@@ -1,18 +1,9 @@
-.participant-info {
-    text-align: center;
-    padding: 1rem;
-    width: 30vw;
-    height: 30vh;
+.mg-btm {
+    margin-bottom: 0;
+    padding-bottom: 1vw;
 }
 
-.participant-info img {
-    width: 50%;
-    height: 50%;
-    border-radius: 50%;
-    align-items: center;
-    object-fit: cover;
-}
-
+/* Information of the player*/
 .container {
     display: flex;
     flex-direction: row;
@@ -97,13 +88,6 @@
     justify-content: space-between;
 }
 
-.buttons-grid {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-around;
-}
-
 .badge {
     display: flex;
     flex-direction: column;
@@ -113,6 +97,7 @@
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+
 .badge p, .badge h5, .badge img {
     margin: 0 auto;
     padding: 0.5rem 0;
@@ -120,6 +105,15 @@
 
 img.badge {
     width: 16px;
+}
+
+/*Buttons like and message*/
+.buttons-grid {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    padding-bottom: 5vw;
 }
 
 button {
@@ -136,18 +130,18 @@ button {
     justify-content: center;
     transition: 0.5s;
     border: none;
-  }
-  
-  button:active {
+}
+
+button:active {
     scale: 1.2;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     width: 180px;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0);
-  }
-  
-  button::before {
+}
+
+button::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -155,13 +149,13 @@ button {
     background: linear-gradient(45deg, var(--i), var(--j));
     opacity: 0;
     transition: 0.5s;
-  }
-  
-  button:hover::before {
+}
+
+button:hover::before {
     opacity: 1;
-  }
-  
-  button::after {
+}
+
+button::after {
     content: '';
     position: absolute;
     top: 10px;
@@ -173,31 +167,31 @@ button {
     transition: 0.5s;
     z-index: -1;
     opacity: 0;
-  }
-  
-  button:hover::after {
+}
+
+button:hover::after {
     opacity: 0.5;
-  }
-  
-  button svg {
+}
+
+button svg {
     color: #777;
     width: auto;
     height: 30px;
     transition: 0.5s;
     transition-delay: 0.25s;
-  }
-  
-  button:hover svg {
+}
+
+button:hover svg {
     transform: scale(0);
     color: #fff;
     transition-delay: 0s;
-  }
-  
-  button span {
+}
+
+button span {
     position: absolute;
-  }
-  
-  button .title {
+}
+
+button .title {
     color: #fff;
     font-size: 1.3em;
     text-transform: uppercase;
@@ -206,17 +200,18 @@ button {
     transition: 0.5s;
     transition-delay: 0s;
     font-weight: 600;
-  }
-  
-  button:hover .title {
+}
+
+button:hover .title {
     transform: scale(1);
     transition-delay: 0.25s;
-  }
+}
 
+/* Carrousel Schedule */
 .carousel {
     position: relative;
-    width: 100%; /* S'adapte à la largeur de .info-container */
-    height: 90%; /* Maintient un ratio automatique */
+    width: 100%; 
+    height: 90%; 
     display: flex;
     align-items: center;
 }
@@ -257,9 +252,6 @@ button {
     margin: 0.2rem 0;
 }
 
-.nav-buttons button:hover {
-    color: #000;
-}
 .dots {
     display: flex;
     justify-content: center;
@@ -279,9 +271,12 @@ button {
     margin: 0 5px;
     transition: background-color 0.3s;
 }
+
 .dots .active {
     background-color: #444;
 }
+
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -294,12 +289,14 @@ button {
     justify-content: center;
     align-items: center;
 }
+
 .modal img {
     max-width: 90vw;
     max-height: 90vh;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
+
 .modal .close {
     position: absolute;
     top: 10px;
@@ -311,7 +308,7 @@ button {
 
 .nav-buttons {
     position: absolute;
-    top: 0; /* Prenez toute la hauteur du carousel-wrapper */
+    top: 0; 
     left: 0;
     width: 100%;
     height: 100%;
@@ -322,159 +319,133 @@ button {
 }
 
 .nav-buttons button {
-    pointer-events: auto; /* Permettre les clics sur les boutons */
-    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour contraste */
+    pointer-events: auto; 
     border: none;
-    color: white;
-    font-size: 1.5rem; /* Taille du texte/flèche */
-    width: 40px; /* Largeur du bouton */
-    height: 40px; /* Hauteur du bouton */
-    border-radius: 50%; /* Forme circulaire */
+    color: #1a1a1a;
+    font-size: 1.5rem; 
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 58%; /* Centre verticalement */
-    transform: translateY(-50%); /* Ajustement pour le centrer */
-    z-index: 4; /* Place les boutons au-dessus du contenu */
+    top: 10.5%; 
+    transform: translateY(-50%); 
+    z-index: 4; 
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #prev {
     position: absolute;
-    left:  -10px;
-    height : 25px;
-    width:25px;
+    background-color: #fffaf7 !important;
+    box-shadow: none;
+    left:  80px;
+    height: 25px;
+    width: 25px;
 }
 
 #next {
     position: absolute;
-    right: -10px;
-    height : 25px;
-    width:25px;
+    background-color: #fffaf7 !important;
+    box-shadow: none;
+    right: 80px;
+    height: 25px;
+    width: 25px;
 }
 
 .schedule-container {
-display: flex;
-flex-direction: column;
-gap: 1rem;
-padding: 1rem;
-background-color: #fff;
-border-radius: 10px;
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .session-item {
-display: flex;
-justify-content: space-between;
-width: 100%;
-position: relative;
-align-items: center;
-border: 1px solid #ccc;
-height: 6vh;
-font-size: 80%;
-color: #444;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    align-items: flex-start;
+}
+
+.session-info {
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    align-items: center;
+    font-size: 80%;
+    color: #444;
 }
 
 .session-item span {
-flex: 1; /* Chaque élément occupe une part égale */
-text-align: center; /* Centrer le texte dans chaque colonne */
+    flex: 1; /* Chaque élément occupe une part égale */
+    text-align: center; /* Centrer le texte dans chaque colonne */
 }
 
 .session-item.type {
-position: absolute;
-display: flex;
-justify-content: center; /* Centre horizontalement */
-align-items: center; /* Centre verticalement */
-width: 100%; /* Prend toute la largeur de la cellule */
-text-align: center; /* Aligne le texte au centre */
-margin-top: 0.5rem; /* Espacement si nécessaire */  
-transform: translate(-50%, -50%); /* Centrage parfait */
-left: 50%; /* Place horizontalement au centre */
-top: 50%; /* Place verticalement au centre */
-white-space: nowrap; /* Empêche le texte de se couper */  
+    position: absolute;
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    width: 100%; /* Prend toute la largeur de la cellule */
+    text-align: center; /* Aligne le texte au centre */
+    margin-top: 0.5rem; /* Espacement si nécessaire */  
+    transform: translate(-50%, -50%); /* Centrage parfait */
+    left: 50%; /* Place horizontalement au centre */
+    top: 50%; /* Place verticalement au centre */
+    white-space: nowrap; /* Empêche le texte de se couper */  
 }  
 
 .session-wrapper {
-margin-bottom: 5px; /* Espacement entre les sessions */
-width: 100%;
-height:100%;
-justify-content: space-between;
-}
-
-.session-item.Training {
-background-color: #d3f2e6;
-}
-
-.session-item.Game {
-background-color: #fde4c3;
-}
-
-.session-item.Presentation {
-background-color: #f8d1d6;
-}
-
-span.Presentation {
-color: #d18a92;
-}
-
-.session-item.Presentation {
-justify-content: flex-start;
-}
-
-span.Training {
-color: #8bb9a4;
-}
-
-span.Game {
-color: #d1a869;
+    margin-bottom: 5px; /* Espacement entre les sessions */
+    width: 100%;
+    height:100%;
+    justify-content: space-between;
 }
 
 span.time {
-font-weight: bold;
-}
-
-.session-type {
-text-align: left;
-font-weight: bold;
+    font-weight: bold;
 }
 
 .session-item.time {
-flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
-text-align: left; /* Aligne le temps à gauche */
-margin-right: 1rem; /* Ajoute un espace à droite du temps */
+    flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
+    text-align: left; /* Aligne le temps à gauche */
+    margin-right: 1rem; /* Ajoute un espace à droite du temps */
 }
 
 
 .carousel-wrapper {
-display: flex;
-flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
-justify-content: flex-start;
-align-items: center;
-background-color: #ffffff;
-border-radius: 15px;
-box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-padding: 1rem;
-margin: 1rem auto;
-height: 50vh; /* Ajustement pour inclure les dots */
-width: 90vw;
-max-width : 1000px;
-margin-top:5vh;
-box-sizing: border-box;
-text-align: center;
-overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
+    justify-content: flex-start;
+    align-items: center;
+    height: 50vh; /* Ajustement pour inclure les dots */
+    width: 90vw;
+    max-width : 1000px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
 }
 
-.carousel-item h2 {
-font-size: 1.4rem; /* Taille du texte augmentée */
-font-weight: bold; /* Mettre le texte en gras pour plus de visibilité */
-color: #444; /* Couleur sobre */
-text-transform: uppercase; /* Transformer en majuscules pour une meilleure lisibilité */
-text-align:center;
-align-items: center;    
+.carousel-item h5 {
+    padding: 0.5rem;
+    background-color: #e78052;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);;
+    color: #1a1a1a;
+    text-transform: uppercase; 
+    text-align:center;
+    align-items: center;    
+    margin-top: 0;
 }
-    .popup {
+
+.popup {
     display: none; /* Masqué par défaut */
     position: fixed;
     top: 50%;
@@ -490,26 +461,28 @@ align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     z-index: 5;
     animation: fadeIn 1s ease, fadeOut 2s ease 1s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
     }
 
-    @keyframes fadeIn {
-    from {
-    opacity: 0;
-    transform: translate(-50%, -60%);
-    }
     to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
+        opacity: 1;
+        transform: translate(-50%, -50%);
     }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
     }
 
-    @keyframes fadeOut {
-    from {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-    }
     to {
-    opacity: 0;
-    transform: translate(-50%, -60%);
+        opacity: 0;
+        transform: translate(-50%, -60%);
     }
 }

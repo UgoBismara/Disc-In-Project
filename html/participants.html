@@ -37,7 +37,7 @@
     <main>
     <div id="participant-info"></div>
     
-    <h4>SCHEDULE</h4>
+    <h4 class="mg-btm">SCHEDULE</h4>
     <div class="carousel-wrapper">
       <div class="carousel">
         <div class="carousel-inner"></div>
@@ -174,13 +174,15 @@
           .map(
             (session) => `
         <div class="session-wrapper">
-            <div class="session-type">
-                <span class=${session.type}>${session.type}</span>
-            </div>
-            <div class="session-item ${session.type}">
+            <div class="session-item">
+              <div class="session-type">
+                <span>${session.type}</span>
+              </div>
+              <div class="session-info">
                 <span class="time">${session.time || "N/A"}</span>
                 <span class="coach">${session.coach}</span>
                 <span class="field">${session.field}</span>
+              </div>
             </div>
         </div>`
           )
@@ -194,7 +196,7 @@
             const dayElement = document.createElement("div");
             dayElement.className = "carousel-item";
             dayElement.innerHTML = `
-                <h2>${day}</h2>
+                <h5>${day}</h5>
                 ${createSessionHTML(dayData, day)}
             `;
             carouselInner.appendChild(dayElement);
@@ -350,7 +352,7 @@
             <div class="name-overlay">${data.Crush ? "❤️" : ""}</div>
         </div>
         <div class="data-container">
-          <h4>INFORMATIONS</h4>
+          <h4 class="mg-btm">INFORMATIONS</h4>
           <p><b>AGE:</b> ${data.Age} years old</p>
           <p><b>COUNTRY:</b> ${data.Nationality}</p>
           <p><b>ROLE:</b> ${data.Position}</p>
