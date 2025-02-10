@@ -211,16 +211,24 @@ button:hover .title {
 .carousel {
     position: relative;
     width: 100%; 
-    height: 90%; 
+    height: 65%; 
     display: flex;
     align-items: center;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.badge-section {
+    z-index: 1;
+    position: relative;
+    top: -6vw;
 }
 
 .carousel-inner {
     display: flex;
     flex-direction: row;
     transition: transform 0.5s ease-in-out;
-    width:100%
+    width:100%;
 }  
 
 .carousel-item {
@@ -329,7 +337,7 @@ button:hover .title {
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 20%; 
+    top: 10%; 
     transform: translateY(-50%); 
     z-index: 4; 
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -339,7 +347,7 @@ button:hover .title {
     position: absolute;
     background-color: #fffaf7 !important;
     box-shadow: none;
-    left: 25vw;
+    left: 22vw;
     height: 25px;
     width: 25px;
 }
@@ -348,7 +356,7 @@ button:hover .title {
     position: absolute;
     background-color: #fffaf7 !important;
     box-shadow: none;
-    right: 25vw;
+    right: 22vw;
     height: 25px;
     width: 25px;
 }
@@ -487,5 +495,39 @@ span.time {
     to {
         opacity: 0;
         transform: translate(-50%, -60%);
+    }
+}
+
+@media (max-width: 600px) {
+    .carousel {
+        position: relative;
+        width: 100%; 
+        height: 85%; 
+        display: flex;
+        align-items: center;
+        z-index: -1;
+        overflow: hidden;
+    }
+    
+    .badge-section {
+        z-index: 1;
+        position: relative;
+        top: -6vw;
+    }
+
+    .nav-buttons button {
+        top: 8%; 
+    }
+    
+    #prev {
+        left: 25vw;
+        height: 25px;
+        width: 25px;
+    }
+    
+    #next {
+        right: 25vw;
+        height: 25px;
+        width: 25px;
     }
 }
