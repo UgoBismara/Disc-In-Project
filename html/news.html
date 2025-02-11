@@ -33,22 +33,9 @@
 
 <!--Main-->
     <main>
-        <h1>NEWS & GOSSIPS</h1>
-        
-  <div class="container my-3">
-    <!-- Post Creation Box -->
-    <div class="post-container">
-      <h5>Share to the community</h5>
-      <textarea id="postInput" class="form-control" rows="3" placeholder="Give us your hottest gossip!"></textarea>
-      <div class="text-end mt-2">
-        <button id="postButton" class="official">Post</button>
-      </div>
-    </div>
+        <h1>NEWS</h1>
 
-    <!-- Posts Feed -->
-     <h5 class="my-3">Gossips</h5>
     <div id="postsFeed" class="my-3"></div>
-  </div>
     </main>
  
  <!--Footer-->
@@ -87,36 +74,55 @@
   </a>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- JavaScript -->
 <script>
-  // Post Button Functionality
-  const postButton = document.getElementById('postButton');
-  const postInput = document.getElementById('postInput');
-  const postsFeed = document.getElementById('postsFeed');
+   const firebaseConfig = {
+        apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+        authDomain: "disc-in-camp.firebaseapp.com",
+        databaseURL:
+          "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "disc-in-camp",
+        storageBucket: "disc-in-camp.appspot.com",
+        messagingSenderId: "128937547779",
+        appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+        measurementId: "G-Y4KZY16LFF",
+      };
+      
+  // Référence à la base de données Firebase (section "news")
+  const newsRef = firebase.database().ref("news");
 
-  postButton.addEventListener('click', () => {
-    const content = postInput.value.trim();
-    if (content) {
-      // Create Post Element
-      const postElement = document.createElement('div');
-      postElement.classList.add('post');
-      postElement.innerHTML = `
-        <h5>Anonymous</h5>
-        <p>${content}</p>
-        <small class="text-muted">Just now</small>
-      `;
+  // Fonction pour formater la date
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString(); // Formate la date/heure selon la locale
+  }
 
-      // Add Post to Feed
-      postsFeed.prepend(postElement);
+  // Écoute les mises à jour des actualités dans Firebase
+  newsRef.on("value", (snapshot) => {
+    const postsFeed = document.getElementById("postsFeed");
+    postsFeed.innerHTML = ""; // Vide le conteneur avant d'ajouter les nouvelles données
 
-      // Clear Input
-      postInput.value = '';
+    const newsData = snapshot.val();
+    if (newsData) {
+      Object.keys(newsData).forEach((key) => {
+        const newsItem = newsData[key];
+
+        // Création d'un élément HTML pour chaque actualité
+        const postDiv = document.createElement("div");
+        postDiv.className = "post mb-3 p-3 border rounded";
+
+        postDiv.innerHTML = `
+          <h5 class="writer text-primary">${newsItem.writer}</h5>
+          <p class="message">${newsItem.message}</p>
+          <small class="timestamp text-muted">${formatDate(newsItem.timestamp)}</small>
+        `;
+
+        postsFeed.appendChild(postDiv);
+      });
     } else {
-      alert('Please write something before posting!');
+      postsFeed.innerHTML = "<p class='text-muted'>Aucune actualité pour le moment.</p>";
     }
   });
 </script>
+
 </body>
 </html>
