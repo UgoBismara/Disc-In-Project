@@ -126,15 +126,10 @@ img.badge {
 }
 
 /*Buttons like and message*/
-.buttons-grid {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 5vw;
-    justify-content: space-around;
-    padding-bottom: 5vw;
+#participant-buttons {
+    justify-items: center;
+    padding-bottom: 2vw;
 }
-
 button {
     background-color: #fff;
     position: relative;
@@ -528,6 +523,10 @@ span.time {
 @media (max-width: 600px) {
     .hide {
         display: block !important;
+    }
+
+    #participant-buttons {
+        padding-bottom: 6vw;
     }
 
     .carousel {
