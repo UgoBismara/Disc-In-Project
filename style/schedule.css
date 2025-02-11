@@ -1,0 +1,179 @@
+/* Carrousel Schedule */
+.carousel {
+    position: relative;
+    flex-direction: column-reverse;
+    width: 100%; 
+    height: 100%; 
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    flex-direction: row;
+    transition: transform 0.5s ease-in-out;
+    width:100%;
+}  
+
+.carousel-item {
+    display: flex;
+    flex: 0 0 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    text-align: center;
+    gap: 1vh;        
+} 
+.session-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    align-items: flex-start;
+}
+
+.session-info {
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-between !important;
+    width: 100%;
+    position: relative;
+    align-items: center;
+    font-size: 80%;
+    color: #444;
+}
+
+.session-item span {
+    flex: 1; /* Chaque élément occupe une part égale */
+    text-align: center; /* Centrer le texte dans chaque colonne */
+}
+
+.session-item.type {
+    position: absolute;
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    width: 100%; /* Prend toute la largeur de la cellule */
+    text-align: center; /* Aligne le texte au centre */
+    margin-top: 0.5rem; /* Espacement si nécessaire */  
+    transform: translate(-50%, -50%); /* Centrage parfait */
+    left: 50%; /* Place horizontalement au centre */
+    top: 50%; /* Place verticalement au centre */
+    white-space: nowrap; /* Empêche le texte de se couper */  
+}  
+
+.session-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    margin-bottom: 5px; /* Espacement entre les sessions */
+    width: 100%;
+    height:100%;
+    justify-content: space-between;
+}
+
+span.time {
+    font-weight: bold;
+}
+
+.session-item.time {
+    flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
+    text-align: left; /* Aligne le temps à gauche */
+    margin-right: 1rem; /* Ajoute un espace à droite du temps */
+}
+
+
+.carousel-wrapper {
+    display: flex;
+    flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh; /* Ajustement pour inclure les dots */
+    width: 90vw;
+    max-width : 1000px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.carousel-item h5 {
+    padding: 0.5rem;
+    background-color: #e78052;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);;
+    color: #1a1a1a;
+    text-transform: uppercase; 
+    text-align:center;
+    align-items: center;    
+    margin-top: 0;
+    z-index: -4;
+}
+
+.carousel-item {
+    display: none; /* Par défaut, caché */
+}
+
+.carousel-item.active {
+    display: flex; /* Affiche uniquement l'élément actif */
+}
+
+.carousel-indicators button {
+    background-color: #1a1a1ab1;
+    padding-block: 5px;
+    padding-inline: 5px;
+    border-radius: 5px;
+    border: 0px;
+    margin: 1vw;
+}
+
+.carousel-indicators {
+    padding-bottom: 4vw;
+}
+
+.game {
+    background: #e78052;
+}
+@media (max-width: 1200px) {
+    .carousel {
+        height: 60vh;
+    }
+}
+
+@media (max-width: 600px) {
+    .carousel {
+        position: relative;
+        width: 100%; 
+        height: 85%; 
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .nav-buttons {
+        display: none;
+    }
+
+    .nav-buttons button {
+        top: 8%; 
+    }
+    
+    #prev {
+        left: 25vw;
+        height: 25px;
+        width: 25px;
+    }
+    
+    #next {
+        right: 25vw;
+        height: 25px;
+        width: 25px;
+    }
+}
