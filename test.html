@@ -31,45 +31,72 @@
   </head>
   <body>
 
-    <div class="carousel-container">
-      <div class="carousel" id="carousel"></div>
-
-      <img src="https://drive.usercontent.google.com/download?id=1s4uJmPPKb9rtV2uOgVBVFQmJey-nop47&export=view&authuser=0">
-  </div>
+    <div class="carousel">
+      <div class="carousel-caption">DISC IN CAMP 2025</div>
+      <div class="carousel-track">
+        <!-- Les images de Google Drive seront insérées ici -->
+      </div>
+    </div>
   
-  <script>
-const FOLDER_ID = "1pebyRt2r6-IDMQ6VJ2qIqid0DqNJcjik"; // Remplace par l'ID de ton dossier Drive
-const API_KEY = "AIzaSyBsk4a5iiyBAhjEzczxaefZcpfOYLCA9CQ"; // Remplace par ta clé API
+<script>
+  const folderId = "1h98ol3V9DuKcqsMIx_Nchjj5EbZb2epB"; // Remplacez par l'ID de votre dossier
+  const apiKey = "AIzaSyBsk4a5iiyBAhjEzczxaefZcpfOYLCA9CQ"; // Remplacez par votre clé API
 
-async function getDriveImages() {
-    const url = `https://www.googleapis.com/drive/v3/files?q='${FOLDER_ID}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType)`;
-    console.log(url);
+const carouselTrack = document.querySelector(".carousel-track");
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+async function fetchDriveImages() {
+  // Construire l'URL pour l'API Google Drive avec la clé API
+  const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${apiKey}&fields=files(id,name,mimeType)`;
+  
+  // Effectuer la requête
+  const response = await fetch(url);
+  
+  // Vérifier si la réponse est correcte (status 200)
+  if (!response.ok) {
+    console.error('Erreur de requête API:', response.statusText);
+    return;
+  }
+  
+  // Extraire les données JSON de la réponse
+  const data = await response.json();
+  
+  // Filtrer uniquement les fichiers image
+  const images = data.files.filter(file => file.mimeType.startsWith("image/"));
 
-        // Filtrer uniquement les images
-        const images = data.files
-            .filter(file => file.mimeType.startsWith("image/"))
-            .map(file => `https://drive.google.com/uc?export=view&id=${file.id}`);
-            console.log(images[0]);
+  // Vérification des données des images
+  console.log('Images récupérées:', images);
 
-        displayCarousel(images);
-    } catch (error) {
-        console.error("Erreur lors de la récupération des images :", error);
-    }
+  // Ajouter les images au carrousel
+  carouselTrack.innerHTML = ""; // Vider les anciennes images
+  images.forEach((image) => {
+    const imgSrc = `https://api.allorigins.win/get?url=https://drive.google.com/uc?id=${image.id}`;
+    console.log('Image source:', imgSrc); // Vérifier que l'URL est correcte
+    const slideDiv = document.createElement("div");
+    slideDiv.classList.add("carousel-slide");
+    slideDiv.innerHTML = `<img src="${imgSrc}" alt="${image.name}" />`;
+    carouselTrack.appendChild(slideDiv);
+  });
+
+  // Initialiser le carrousel après ajout des images
+  initCarousel();
 }
 
-function displayCarousel(images) {
-  console.log(images)
-    const carouselContainer = document.getElementById("carousel");
-    carouselContainer.innerHTML = images.map(img => `<img src="${img}" class="carousel-img">`).join("");
+function initCarousel() {
+  const slides = document.querySelectorAll(".carousel-slide");
+  let currentIndex = 0;
+
+  // Défilement automatique
+  setInterval(() => {
+    slides[currentIndex].classList.remove("active");
+    currentIndex = (currentIndex + 1) % slides.length;
+    slides[currentIndex].classList.add("active");
+  }, 3000); // Change de slide toutes les 3 secondes
 }
 
-// Charger les images au chargement de la page
-getDriveImages();
-  </script>
+// Appeler la fonction pour charger les images
+fetchDriveImages();
+
+</script>
   
   </body>
   </html>
