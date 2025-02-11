@@ -126,7 +126,7 @@ span.time {
 }
 
 .carousel-indicators button {
-    background-color: #1a1a1a28;
+    background-color: #1a1a1a25;
     padding-block: 5px;
     padding-inline: 5px;
     border-radius: 5px;
@@ -134,7 +134,7 @@ span.time {
     margin: 1vw;
 }
 
-.carousel-indicators button {
+.carousel-indicators button.active {
     background-color: #1a1a1ab1;
 }
 
