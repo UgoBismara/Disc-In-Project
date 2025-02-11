@@ -138,9 +138,6 @@ span.time {
     padding-bottom: 4vw;
 }
 
-.game {
-    background: #e78052;
-}
 @media (max-width: 1200px) {
     .carousel {
         height: 60vh;
