@@ -2,7 +2,7 @@
 .carousel {
   position: relative;
   width: 100vw;
-  height: 50vh;
+  height: 60vh;
   overflow: hidden;
   z-index: -1;
 }
@@ -22,12 +22,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
 .carousel-caption {
   position: absolute;
-  top: 85%;
+  top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fffaf7;
@@ -121,6 +122,15 @@ iframe {
   height: 315px;
 }
 
+@media (max-width:1200px) {
+  .participants-grid {
+    grid-template-columns: repeat(4, 1fr); /* Max 3 cartes par ligne */
+  }
+
+  .participant:nth-child(n+5) {
+    display: none; /* Cache toutes les cartes au-delà de la 3ème */
+  }
+}
 @media (max-width: 768px) {
   .menu-index {
     margin: 2vh 20px 90px 20px !important;
