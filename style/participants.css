@@ -518,6 +518,10 @@ span.time {
     .photo-container {
         width: 20vw;
     }
+
+    .carousel {
+        height: 60vh;
+    }
 }
 
 @media (max-width: 600px) {
