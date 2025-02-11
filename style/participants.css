@@ -1,3 +1,22 @@
+main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2vw;
+}
+
+.hide {
+    display: none;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-top: 5vw;
+}
+
 .mg-btm {
     margin-bottom: 0;
     padding-bottom: 1vw;
@@ -15,7 +34,6 @@
 .info-container h1 {
     display: block;
     margin-bottom: 1rem;
-    margin-top: 10vw;
 }
 
 .data-container {
@@ -31,7 +49,7 @@
     position: relative;
     display: flex;
     height:100%;
-    width: 40vw;
+    width: 10vw;
 }
 
 #participantPhoto {
@@ -85,13 +103,13 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-between !important;
 }
 
 .badge {
     display: flex;
     flex-direction: column;
-    width: 27vw;
+    width: 25vw;
     padding: 0.5rem 0;
     background-color: #ffffff;
     border-radius: 15px;
@@ -112,6 +130,7 @@ img.badge {
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: 5vw;
     justify-content: space-around;
     padding-bottom: 5vw;
 }
@@ -496,7 +515,21 @@ span.time {
     }
 }
 
+@media (max-width: 1200px) {
+    .hide {
+        display: block !important;
+    }
+
+    .photo-container {
+        width: 20vw;
+    }
+}
+
 @media (max-width: 600px) {
+    .hide {
+        display: block !important;
+    }
+
     .carousel {
         position: relative;
         width: 100%; 
@@ -510,6 +543,7 @@ span.time {
         z-index: 1;
         position: relative;
         top: -6vw;
+        gap: 1vw;
     }
 
     .nav-buttons button {
@@ -526,5 +560,9 @@ span.time {
         right: 25vw;
         height: 25px;
         width: 25px;
+    }
+
+    .photo-container {
+        width: 40vw;
     }
 }
