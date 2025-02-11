@@ -546,6 +546,10 @@ span.time {
         gap: 1vw;
     }
 
+    .nav-buttons {
+        display: none;
+    }
+
     .nav-buttons button {
         top: 8%; 
     }
