@@ -214,12 +214,10 @@ button:hover .title {
     height: 65%; 
     display: flex;
     align-items: center;
-    z-index: -1;
     overflow: hidden;
 }
 
 .badge-section {
-    z-index: 1;
     position: relative;
     top: -6vw;
 }
@@ -324,7 +322,7 @@ button:hover .title {
     justify-content: space-between; /* Place les flèches aux extrémités */
     align-items: center; /* Centre verticalement les flèches */
     pointer-events: none; /* Empêche les clics en dehors des boutons */
-    z-index: -4;
+    z-index: 4;
 }
 
 .nav-buttons button {
