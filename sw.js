@@ -1,21 +1,23 @@
+const CACHE_NAME = "v1";
+
 self.addEventListener("install", event => {
     event.waitUntil(
-        caches.open("v1").then(cache => {
+        caches.open(CACHE_NAME).then(cache => {
             return cache.addAll([
                 "/",
-                "index.html",
-                "style.css",
-                "home.css",
-                "participants.css",
-                "players.css",
-                "feedback.html",
-                "login.html",
-                "my-profile.html",
-                "news.html",
-                "participants.html",
-                "players.html",
-                "schedule.html",
-                "image/DiscInLogo.png"
+                "/index.html",
+                "/style/style.css",
+                "/style/home.css",
+                "/style/participants.css",
+                "/style/players.css",
+                "/html/feedback.html",
+                "/html/login.html",
+                "/html/my-profile.html",
+                "/html/news.html",
+                "/html/participants.html",
+                "/html/players.html",
+                "/html/schedule.html",
+                "/image/DiscInLogo.png"
             ]);
         })
     );
@@ -27,7 +29,7 @@ self.addEventListener("activate", event => {
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(
-                keys.filter(key => key !== "v1").map(key => caches.delete(key))
+                keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
             );
         })
     );
@@ -39,16 +41,11 @@ self.addEventListener("fetch", event => {
     event.respondWith(
         caches.match(event.request).then(response => {
             return response || fetch(event.request).then(networkResponse => {
-                return caches.open("v1").then(cache => {
+                return caches.open(CACHE_NAME).then(cache => {
                     cache.put(event.request, networkResponse.clone());
                     return networkResponse;
                 });
             });
-        }).catch(() => caches.match("index.html")) // Fallback si offline
+        }).catch(() => caches.match("/index.html")) // Fallback si offline
     );
-});
-
-// 📌 Permettre l’affichage du bouton d’installation de la PWA
-self.addEventListener("beforeinstallprompt", event => {
-    event.preventDefault();
 });

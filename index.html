@@ -323,18 +323,6 @@ function createCamperCard({ Id, Name, Picture, Team }) {
     .then(() => console.log("Service Worker enregistré !"))
     .catch(error => console.log("Erreur Service Worker :", error));
 }
- 
-// pop-up d'installation de l'app //
-let installPrompt;
-
-// 📌 Capture l'événement pour déclencher l'installation plus tard
-window.addEventListener("beforeinstallprompt", event => {
-    event.preventDefault();
-    installPrompt = event;
-
-    // Afficher un bouton personnalisé pour proposer l'installation
-    document.getElementById("install-btn").style.display = "block";
-});
    </script>
    <script defer src="connexion.js"></script>
   </body>
