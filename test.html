@@ -14,7 +14,11 @@
       content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."
     />
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta
       name="keywords"
       content="ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"
@@ -30,73 +34,59 @@
     />
   </head>
   <body>
-
-    <div class="carousel">
-      <div class="carousel-caption">DISC IN CAMP 2025</div>
-      <div class="carousel-track">
-        <!-- Les images de Google Drive seront insérées ici -->
-      </div>
-    </div>
-  
-<script>
-  const folderId = "1h98ol3V9DuKcqsMIx_Nchjj5EbZb2epB"; // Remplacez par l'ID de votre dossier
-  const apiKey = "AIzaSyBsk4a5iiyBAhjEzczxaefZcpfOYLCA9CQ"; // Remplacez par votre clé API
-
-const carouselTrack = document.querySelector(".carousel-track");
-
-async function fetchDriveImages() {
-  // Construire l'URL pour l'API Google Drive avec la clé API
-  const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${apiKey}&fields=files(id,name,mimeType)`;
-  
-  // Effectuer la requête
-  const response = await fetch(url);
-  
-  // Vérifier si la réponse est correcte (status 200)
-  if (!response.ok) {
-    console.error('Erreur de requête API:', response.statusText);
-    return;
-  }
-  
-  // Extraire les données JSON de la réponse
-  const data = await response.json();
-  
-  // Filtrer uniquement les fichiers image
-  const images = data.files.filter(file => file.mimeType.startsWith("image/"));
-
-  // Vérification des données des images
-  console.log('Images récupérées:', images);
-
-  // Ajouter les images au carrousel
-  carouselTrack.innerHTML = ""; // Vider les anciennes images
-  images.forEach((image) => {
-    const imgSrc = `https://api.allorigins.win/get?url=https://drive.google.com/uc?id=${image.id}`;
-    console.log('Image source:', imgSrc); // Vérifier que l'URL est correcte
-    const slideDiv = document.createElement("div");
-    slideDiv.classList.add("carousel-slide");
-    slideDiv.innerHTML = `<img src="${imgSrc}" alt="${image.name}" />`;
-    carouselTrack.appendChild(slideDiv);
-  });
-
-  // Initialiser le carrousel après ajout des images
-  initCarousel();
-}
-
-function initCarousel() {
-  const slides = document.querySelectorAll(".carousel-slide");
-  let currentIndex = 0;
-
-  // Défilement automatique
-  setInterval(() => {
-    slides[currentIndex].classList.remove("active");
-    currentIndex = (currentIndex + 1) % slides.length;
-    slides[currentIndex].classList.add("active");
-  }, 3000); // Change de slide toutes les 3 secondes
-}
-
-// Appeler la fonction pour charger les images
-fetchDriveImages();
-
-</script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+      import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+    
+      const firebaseConfig = {
+        apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+        authDomain: "disc-in-camp.firebaseapp.com",
+        databaseURL:
+          "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "disc-in-camp",
+        storageBucket: "disc-in-camp.appspot.com",
+        messagingSenderId: "128937547779",
+        appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+        measurementId: "G-Y4KZY16LFF",
+      };
+    
+      // Initialisation de Firebase
+      const app = initializeApp(firebaseConfig);
+      const storage = getStorage(app);
+    
+      // Fonction pour uploader un fichier
+      async function uploadFile(file) {
+        const storageRef = ref(storage, `images/${file.name}`);
+        try {
+          // Télécharger le fichier
+          const snapshot = await uploadBytes(storageRef, file);
+          console.log("Fichier uploadé :", snapshot);
+    
+          // Récupérer l'URL de téléchargement
+          const downloadURL = await getDownloadURL(snapshot.ref);
+          console.log("URL de téléchargement :", downloadURL);
+    
+          // Afficher l'image
+          const imgElement = document.createElement("img");
+          imgElement.src = downloadURL;
+          document.body.appendChild(imgElement);
+        } catch (error) {
+          console.error("Erreur lors de l'upload :", error);
+        }
+      }
+    
+      // Exemple d'appel avec un fichier sélectionné dans un input HTML
+      document.getElementById("fileInput").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          uploadFile(file);
+        }
+      });
+    </script>
+    
+    <!-- HTML pour sélectionner un fichier -->
+    <input type="file" id="fileInput" />
+    
   
   </body>
   </html>
