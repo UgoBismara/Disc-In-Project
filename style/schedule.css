@@ -119,6 +119,7 @@ span.time {
 
 .carousel-item {
     display: none; /* Par défaut, caché */
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
 }
 
 .carousel-item.active {
