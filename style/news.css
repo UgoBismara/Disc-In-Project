@@ -1,0 +1,38 @@
+.my-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    margin: 0 auto;
+    padding: 2vw 0;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    align-items: flex-start;
+}
+
+.post h5 {
+    margin: 0;
+    padding-bottom: 0.5vw;
+    font-size: 1rem;
+}
+
+.message {
+    font-size: 1rem;
+}
+
+.timestamp {
+    color: #1a1a1a94;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+    .my-3 {
+        padding: 4vw 0;
+    }
+}
