@@ -119,8 +119,8 @@ span.time {
 
 .carousel-item {
     display: none; /* Par défaut, caché */
-    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-}
+    transition: transform 0.6s ease-in-out; /* ou modifiez la durée et le timing function selon vos besoins */
+  }
 
 .carousel-item.active {
     display: flex; /* Affiche uniquement l'élément actif */
@@ -143,6 +143,10 @@ span.time {
 .carousel-indicators {
     padding-bottom: 4vw;
 }
+
+#carouselExampleIndicators {
+    touch-action: pan-y;
+  }
 
 @media (max-width: 1200px) {
     .carousel {

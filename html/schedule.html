@@ -34,7 +34,7 @@
     <main>
         <h1>SCHEDULE</h1>
         
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-touch="true">
+        <div id="carouselExampleIndicators" class="carousel slide" data-touch="true" data-bs-interval="false">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Monday"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Tuesday"></button>
@@ -625,33 +625,195 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
   <script>
-    // Activer les événements swipe sur le carousel
-    const carouselElement = document.querySelector('#carouselExampleIndicators');
-    const carousel = new bootstrap.Carousel(carouselElement);
+document.addEventListener("DOMContentLoaded", function() {
+  var carouselEl = document.getElementById('carouselExampleIndicators');
+  if (!carouselEl) return;
   
-    let touchStartX = 0;
-    let touchEndX = 0;
+  var carouselInner = carouselEl.querySelector('.carousel-inner');
+  var slides = carouselInner.querySelectorAll('.carousel-item');
   
-    // Détecter le début du toucher
-    carouselElement.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
+  // On récupère ou initialise l'instance Bootstrap du carousel
+  var carouselInstance = bootstrap.Carousel.getInstance(carouselEl);
+  if (!carouselInstance) {
+    carouselInstance = new bootstrap.Carousel(carouselEl);
+  }
+  
+  var isDragging = false;
+  var startX = 0, currentX = 0, diff = 0;
+  var width = carouselEl.offsetWidth;
+  var thresholdFraction = 0.2; // Seuil = 20% de la largeur
+  
+  // Renvoie l'indice de la slide active
+  function getActiveSlideIndex() {
+    for (var i = 0; i < slides.length; i++) {
+      if (slides[i].classList.contains('active')) return i;
+    }
+    return 0;
+  }
+  
+  // Réinitialise les styles inline sur toutes les slides
+  function resetSlidesStyles() {
+    slides.forEach(function(slide) {
+      slide.style.transition = '';
+      slide.style.transform = '';
+      slide.style.position = '';
+      slide.style.display = '';
     });
+  }
   
-    // Détecter la fin du toucher
-    carouselElement.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
+  // Début du geste
+  carouselEl.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX;
+    width = carouselEl.offsetWidth; // Met à jour la largeur au cas où
+  }, { passive: false });
   
-    // Fonction pour gérer le swipe
-    function handleSwipe() {
-      if (touchEndX < touchStartX - 40) {
-        carousel.next(); // Swipe vers la gauche
+  // Pendant le mouvement
+  carouselEl.addEventListener('pointermove', function(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    currentX = e.clientX;
+    diff = currentX - startX;
+    
+    var activeIndex = getActiveSlideIndex();
+    
+    if (diff < 0) { 
+      // Swipe vers la gauche → nouvelle slide (suivante) doit venir de la droite
+      var nextIndex = (activeIndex + 1) % slides.length;
+      var activeSlide = slides[activeIndex];
+      var nextSlide = slides[nextIndex];
+      
+      // progress varie de 0 (aucun mouvement) à 1 (swipe complet)
+      var progress = Math.min(1, -diff / width);
+      
+      // Afficher la slide suivante et la positionner en absolu
+      nextSlide.style.display = 'flex';
+      nextSlide.style.position = 'absolute';
+      nextSlide.style.top = '0';
+      nextSlide.style.left = '0';
+      nextSlide.style.width = '100%';
+      
+      // Slide active : translation de diff pixels et rotation de 0 à –15°
+      activeSlide.style.transform = 'translateX(' + diff + 'px) rotateY(' + (-15 * progress) + 'deg)';
+      
+      // Nouvelle slide : commence à x = width avec rotation +15° et évolue vers x=0, rotation 0°
+      var nextTranslate = width + diff; // lorsque diff = 0 → nextTranslate = width ; lorsque diff = -width → 0
+      nextSlide.style.transform = 'translateX(' + nextTranslate + 'px) rotateY(' + (15 * (1 - progress)) + 'deg)';
+      
+    } else if (diff > 0) { 
+      // Swipe vers la droite → la slide précédente doit venir de la gauche
+      var prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+      var activeSlide = slides[activeIndex];
+      var prevSlide = slides[prevIndex];
+      
+      var progress = Math.min(1, diff / width);
+      
+      // Afficher la slide précédente
+      prevSlide.style.display = 'flex';
+      prevSlide.style.position = 'absolute';
+      prevSlide.style.top = '0';
+      prevSlide.style.left = '0';
+      prevSlide.style.width = '100%';
+      
+      // Slide active : translation de diff pixels et rotation de 0 à 15°
+      activeSlide.style.transform = 'translateX(' + diff + 'px) rotateY(' + (15 * progress) + 'deg)';
+      
+      // Slide précédente : démarre à x = -width avec rotation –15° et évolue vers x=0, rotation 0°
+      var prevTranslate = -width + diff; // lorsque diff = 0 → -width, lorsque diff = width → 0
+      prevSlide.style.transform = 'translateX(' + prevTranslate + 'px) rotateY(' + (-15 * (1 - progress)) + 'deg)';
+    }
+  }, { passive: false });
+  
+  // Fin du geste
+  function onPointerUp(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    var activeIndex = getActiveSlideIndex();
+    var progress = Math.abs(diff) / width;
+    
+    // Si le swipe est suffisamment important...
+    if (progress > thresholdFraction) {
+      if (diff < 0) { 
+        // Swipe vers la gauche → passer à la slide suivante
+        var nextIndex = (activeIndex + 1) % slides.length;
+        var activeSlide = slides[activeIndex];
+        var nextSlide = slides[nextIndex];
+        
+        activeSlide.style.transition = 'transform 0.6s ease-in-out';
+        nextSlide.style.transition = 'transform 0.6s ease-in-out';
+        
+        // Compléter l'animation : active slide sort complètement à gauche, next slide arrive
+        activeSlide.style.transform = 'translateX(-' + width + 'px) rotateY(-15deg)';
+        nextSlide.style.transform = 'translateX(0px) rotateY(0deg)';
+        
+        nextSlide.addEventListener('transitionend', function handler() {
+          activeSlide.classList.remove('active');
+          nextSlide.classList.add('active');
+          resetSlidesStyles();
+          nextSlide.removeEventListener('transitionend', handler);
+        });
+        
+      } else if (diff > 0) { 
+        // Swipe vers la droite → passer à la slide précédente
+        var prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+        var activeSlide = slides[activeIndex];
+        var prevSlide = slides[prevIndex];
+        
+        activeSlide.style.transition = 'transform 0.6s ease-in-out';
+        prevSlide.style.transition = 'transform 0.6s ease-in-out';
+        
+        activeSlide.style.transform = 'translateX(' + width + 'px) rotateY(15deg)';
+        prevSlide.style.transform = 'translateX(0px) rotateY(0deg)';
+        
+        activeSlide.addEventListener('transitionend', function handler() {
+          activeSlide.classList.remove('active');
+          prevSlide.classList.add('active');
+          resetSlidesStyles();
+          activeSlide.removeEventListener('transitionend', handler);
+        });
       }
-      if (touchEndX > touchStartX + 40) {
-        carousel.prev(); // Swipe vers la droite
+    } else {
+      // Sinon, annule le swipe et retourne à l'état initial
+      var activeSlide = slides[getActiveSlideIndex()];
+      activeSlide.style.transition = 'transform 0.6s ease-in-out';
+      activeSlide.style.transform = 'translateX(0px) rotateY(0deg)';
+      
+      if (diff < 0) {
+        var nextIndex = (activeIndex + 1) % slides.length;
+        var nextSlide = slides[nextIndex];
+        nextSlide.style.transition = 'transform 0.6s ease-in-out';
+        nextSlide.style.transform = 'translateX(' + width + 'px) rotateY(15deg)';
+        nextSlide.addEventListener('transitionend', function handler() {
+          resetSlidesStyles();
+          nextSlide.removeEventListener('transitionend', handler);
+        });
+      } else if (diff > 0) {
+        var prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+        var prevSlide = slides[prevIndex];
+        prevSlide.style.transition = 'transform 0.6s ease-in-out';
+        prevSlide.style.transform = 'translateX(-' + width + 'px) rotateY(-15deg)';
+        prevSlide.addEventListener('transitionend', function handler() {
+          resetSlidesStyles();
+          prevSlide.removeEventListener('transitionend', handler);
+        });
       }
     }
-  </script>
+    diff = 0;
+  }
+  
+  carouselEl.addEventListener('pointerup', onPointerUp, { passive: false });
+  carouselEl.addEventListener('pointercancel', onPointerUp, { passive: false });
+  carouselEl.addEventListener('pointerleave', onPointerUp, { passive: false });
+  
+  // Désactive le clic simple (pour éviter que tap ne change rien)
+  carouselEl.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+});
+
+</script>
 </body>
 </html>
