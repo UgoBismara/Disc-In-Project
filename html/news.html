@@ -14,6 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   </head>
   <body>
     <!--Header-->
@@ -85,9 +88,11 @@
         appId: "1:128937547779:web:22677cb4478cffaf1a1636",
         measurementId: "G-Y4KZY16LFF",
       };
+
+      firebase.initializeApp(firebaseConfig);
       
   // Référence à la base de données Firebase (section "news")
-  const newsRef = firebase.database().ref("news");
+  const newsRef = firebase.database().ref(`/news`);
 
   // Fonction pour formater la date
   function formatDate(timestamp) {
@@ -110,9 +115,9 @@
         postDiv.className = "post mb-3 p-3 border rounded";
 
         postDiv.innerHTML = `
-          <h5 class="writer text-primary">${newsItem.writer}</h5>
-          <p class="message">${newsItem.message}</p>
-          <small class="timestamp text-muted">${formatDate(newsItem.timestamp)}</small>
+          <h5 class="writer text-primary">${newsItem.Name}</h5>
+          <p class="message">${newsItem.Message}</p>
+          <small class="timestamp text-muted">${formatDate(newsItem.Date)}</small>
         `;
 
         postsFeed.appendChild(postDiv);
