@@ -132,6 +132,7 @@ span.time {
     border-radius: 5px;
     border: 0px;
     margin: 1vw;
+    cursor: pointer;
 }
 
 .carousel-indicators button.active {
