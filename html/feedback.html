@@ -56,25 +56,47 @@
           </a>
     </div>
 </main>
-    <script>
-        document.getElementById("feedbackForm").addEventListener("submit", function(event) {
-            event.preventDefault(); 
+<script>
+  document.getElementById("feedbackForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Empêche le rechargement de la page
 
-            let formData = {
-                name: document.getElementById("name").value,
-                message: document.getElementById("message").value
-            };
+      let formData = {
+          name: document.getElementById("name").value,
+          message: document.getElementById("message").value
+      };
 
-            fetch("https://script.google.com/macros/s/AKfycbwlmPcIApnyPnwKoBp-bDXlMyKKhiWu01P7uoddB0pnAZKmmz13e42Uts33hYHVLo0f/exec", {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            }).then(response => {
-                alert("Feedback envoyé !");
-            }).catch(error => console.error("Erreur :", error));
-        });
-    </script>
+      // Vérifier si les champs ne sont pas vides
+      if (!formData.name || !formData.message) {
+          alert("Veuillez remplir tous les champs !");
+          return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbwlmPcIApnyPnwKoBp-bDXlMyKKhiWu01P7uoddB0pnAZKmmz13e42Uts33hYHVLo0f/exec", {
+          method: "POST",
+          mode: "cors",  // Activation du mode cross-origin
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+      })
+      .then(response => response.json()) // Convertir la réponse en JSON
+      .then(data => {
+          if (data.result === "success") {
+              alert("Feedback envoyé avec succès !");
+              document.getElementById("feedbackForm").reset();
+          } else {
+              document.getElementById("errorMessage").textContent = "Erreur : " + data.message;
+              document.getElementById("errorMessage").style.display = "block";
+          }
+      })
+      .catch(error => {
+          console.error("Erreur :", error);
+          document.getElementById("errorMessage").textContent = "Erreur de connexion. Vérifiez votre connexion internet.";
+          document.getElementById("errorMessage").style.display = "block";
+      });
+  });
+</script>
+
+
+
       <!--Footer-->
       <div class="navbar">
         <a href="../index.html" class="navbar-item">
