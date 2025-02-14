@@ -65,14 +65,14 @@ document.getElementById("feedbackForm").addEventListener("submit", function(even
                 message: document.getElementById("message").value
             };
 
-            fetch("https://script.google.com/macros/s/AKfycbwlmPcIApnyPnwKoBp-bDXlMyKKhiWu01P7uoddB0pnAZKmmz13e42Uts33hYHVLo0f/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbzfxuRl2GSCS8M6qNSlELwyrvqw9IwTGn6ynqAMIadBMAFDhI7TJUdy-TNc78b7qDIa-A/exec", {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             }).then(response => {
-                alert("Feedback envoyé !");
-            }).catch(error => console.error("Erreur :", error));
+                alert("Feedback sent successfully !");
+            }).catch(error => console.error("Error :", error));
         });
 </script>
 
