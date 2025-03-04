@@ -15,19 +15,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-  </head>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    </head>
   <body>
     <!--Header-->
     <div class="header">
+      <div id="guest-content">
         <a href="login.html" class="login-button">
-        <p class="log-option">Login</p>
-        <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
+          <p class="log-option">Login</p>
+          <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-        </svg>
+          </svg>
         </a>
+      </div>
+      <div id="user-content">
+        <a href="my-profile.html" class="login-button">
+          <p class="log-option">My Profile</p>
+          <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+          </svg>
+        </a>
+      </div>
         <a class="logo" href="../index.html">
         <img src="../image/DiscInLogo.png" alt="Logo" />
         </a>
@@ -126,6 +138,24 @@
       postsFeed.innerHTML = "<p class='text-muted'>Aucune actualité pour le moment.</p>";
     }
   });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const guestContent = document.getElementById("guest-content");
+    const userContent = document.getElementById("user-content");
+
+    // Vérifier l'état de connexion avec Firebase Auth
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // ✅ L'utilisateur est connecté, afficher "user-content"
+            guestContent.style.display = "none";
+            userContent.style.display = "block";
+        } else {
+            // ❌ L'utilisateur est déconnecté, afficher "guest-content"
+            guestContent.style.display = "block";
+            userContent.style.display = "none";
+        }
+    });
+});
 </script>
 
 </body>

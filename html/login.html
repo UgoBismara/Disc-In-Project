@@ -11,10 +11,10 @@
     <title>Disc In Camp | Players</title>
     <!-- Firebase SDK pour le navigateur -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-    <link rel="stylesheet" href="../style/index.css">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="../style/login.css">
     <link rel="stylesheet" href="../style/style.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,11 +23,10 @@
   <body>
     <!--Header-->
     <section class="header">
-        <a href="login.html" class="login-button">
-            <p class="log-option">Login</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+        <a href="#" class="login-button" id="close-login-btn">
+            <p class="log-option">Cancel</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
             </svg>
         </a>
         <a class="logo" href="../index.html">
@@ -37,8 +36,51 @@
 
     <!--Main-->
     <main>
-        <h1>LOGIN</h1>
-        <div class="work">Work in progress...</div>
+      <h1>LOGIN</h1>
+      <p class="center">Ready to vibe with your personal space? Log in here and let your shine through!</p>
+        <div id="auth-container">
+          <h3>WELCOME BACK!</h3>
+          <form>
+            <label for="email">Email Address :</label>
+            <input type="email" id="email" placeholder="example@example.com" required>
+
+            <label for="password">Password :</label>
+            <div class="password-container">
+              <input type="password" id="password" placeholder="********" required>
+              <span class="toggle-password">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e78052" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                </svg>
+              </span>
+            </div>
+          </form>
+
+          <div class="remember-me">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me!</label>
+          </div>
+
+          <button type ="submit" id="login-btn" class="official">LOGIN NOW <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="0.8rem"
+            height="0.8rem"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg></button>
+          <button id="logout-btn" style="display:none;">Logout</button>
+          
+          <a href="#" id="forgot-password" class="forgot-password">Forgot your vibe check password?</a>
+
+          <p id="user-info"></p>
+        </div>
+
+        <p class="center">By clicking on “Login now” you agree to <a class="terms" href="#">Terms of Service</a> | <a class="terms" href="#">Privacy Policy</a></p>
     </main>
 
    <!--Footer-->
@@ -77,20 +119,162 @@
     </a>
   </div>
   <script>
-    function register() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const errorMessage = document.getElementById("error-message");
+    const firebaseConfig = {
+      apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+      authDomain: "disc-in-camp.firebaseapp.com",
+      databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "disc-in-camp",
+      storageBucket: "disc-in-camp.appspot.com",
+      messagingSenderId: "128937547779",
+      appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+      measurementId: "G-Y4KZY16LFF",
+    };
 
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            alert("Compte créé avec succès !");
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            errorMessage.textContent = "Erreur : " + error.message;
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Vérifier si Firebase Auth fonctionne bien
+    console.log("Firebase Auth chargé :", auth);
+
+    // Sélection des éléments HTML
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("login-btn");
+    const logoutBtn = document.getElementById("logout-btn");
+    const userInfo = document.getElementById("user-info");
+    const rememberMeCheckbox = document.getElementById("remember");
+
+    // Vérifier si "Remember Me" a été activé précédemment
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedEmail = localStorage.getItem("savedEmail");
+        const rememberMe = localStorage.getItem("rememberMe");
+
+        if (rememberMe === "true" && savedEmail) {
+            emailInput.value = savedEmail;
+            rememberMeCheckbox.checked = true;
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+              window.location.href = "my-profile.html";
+            } else {
+                userInfo.textContent = "Please sign in.";
+                toggleUI(false);
+            }
         });
-}
-  </script>
+    });
+
+    // Fonction de connexion avec Email/Mot de passe
+    loginBtn.addEventListener("click", (event) => {
+        event.preventDefault(); // Empêcher le rechargement de la page
+
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        if (email && password) {
+            auth.setPersistence(rememberMeCheckbox.checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
+                .then(() => {
+                    return auth.signInWithEmailAndPassword(email, password);
+                })
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log("Connexion réussie :", user.email);
+
+                    // Gérer "Remember Me"
+                    if (rememberMeCheckbox.checked) {
+                        localStorage.setItem("rememberMe", "true");
+                        localStorage.setItem("savedEmail", email);
+                    } else {
+                        localStorage.removeItem("rememberMe");
+                        localStorage.removeItem("savedEmail");
+                    }
+
+                    window.location.href = "my-profile.html";
+
+                })
+                .catch((error) => {
+                    alert("Error while signing in : " + error.message);
+                });
+        } else {
+            alert("Please enter email and password.");
+        }
+    });
+
+    // Fonction de déconnexion
+    logoutBtn.addEventListener("click", () => {
+        auth.signOut().then(() => {
+            console.log("Utilisateur déconnecté");
+
+            // Supprimer les données locales
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("savedEmail");
+
+            emailInput.value = "";
+            passwordInput.value = "";
+            rememberMeCheckbox.checked = false;
+
+            userInfo.textContent = "Disconnected";
+            toggleUI(false);
+        }).catch((error) => {
+            alert("Erreur lors de la déconnexion : " + error.message);
+        });
+    });
+
+    // Fonction pour mettre à jour l'affichage selon l’état de connexion
+    const toggleUI = (isLoggedIn) => {
+        emailInput.style.display = isLoggedIn ? "none" : "block";
+        passwordInput.style.display = isLoggedIn ? "none" : "block";
+        loginBtn.style.display = isLoggedIn ? "none" : "block";
+        logoutBtn.style.display = isLoggedIn ? "block" : "none";
+    };
+
+    // Afficher/Masquer le mot de passe
+    document.addEventListener("DOMContentLoaded", () => {
+        const togglePassword = document.querySelector(".toggle-password");
+
+        togglePassword.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text"; // Afficher le mot de passe
+            } else {
+                passwordInput.type = "password"; // Cacher le mot de passe
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const closeButton = document.getElementById("close-login-btn"); // Remplace par l'ID exact de ton bouton
+
+    if (closeButton) {
+        closeButton.addEventListener("click", (event) => {
+            event.preventDefault(); // Empêche toute autre action par défaut
+            window.history.back(); // Revient à la page précédente
+        });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const auth = firebase.auth();
+    const forgotPasswordLink = document.getElementById("forgot-password");
+
+    forgotPasswordLink.addEventListener("click", (event) => {
+        event.preventDefault(); // Empêche la navigation par défaut
+
+        const email = prompt("Enter your email to reset your password:");
+
+        if (email) {
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert("An email has been sent to reset your password. Check your inbox.");
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    alert("Error: " + error.message);
+                });
+        }
+    });
+});
+
+</script>
+
   </body>
 </html>

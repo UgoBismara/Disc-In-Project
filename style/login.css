@@ -1,0 +1,147 @@
+html, body {
+    height: calc(100% - 80px);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background: url(../image/fusee.png) no-repeat center center;
+    background-size: contain;
+    opacity: 0.5; /* Opacité réduite */
+    z-index: -1; /* Derrière tout le contenu */
+}
+
+
+main {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 !important;
+}
+
+h3 {
+    font-weight: normal;
+    padding-bottom: 2vw;
+    margin: 0;
+}
+
+label {
+    font-weight: normal !important;
+    color: #e78052;
+    font-size: 0.8rem;
+}
+
+/* Conteneur du formulaire de connexion */
+#auth-container {
+    background: rgba(255, 255, 255, 0.9); /* Fond blanc du formulaire */
+    padding: 2vw 5vw;
+    margin: 4vw 0;
+    border-radius: 10px;
+    text-align: left;
+    width: auto;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2); /* Ombre légère */
+}
+
+/* Champs et bouton */
+input {
+    box-sizing: border-box;
+    padding-right: 35px; /* Espace pour l'icône */
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#remember {
+    box-shadow: none !important;
+}
+
+/* Conteneur du champ mot de passe */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Input du mot de passe */
+.password-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Icône œil à droite */
+.toggle-password {
+    position: absolute;
+    top: 15%;
+    right: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Aligner la case "Remember me" à gauche du texte */
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2vw;
+}
+
+/* Styliser la case à cocher */
+.remember-me input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px;
+    cursor: pointer;
+}
+
+.remember-me label {
+    color: #1a1a1a;
+}
+
+a.forgot-password {
+    display: block;
+    color: #1a1a1a;
+    font-size: 0.8rem;
+}
+
+.terms {
+    color: #1a1a1a;
+}
+
+button.official {
+    margin-bottom: 2vw;
+}
+
+@media (max-width: 768px) {
+    h3 {
+        padding-bottom: 6vw;
+    }
+
+    #auth-container {
+        padding: 5vw 5vw;
+    }
+
+    button.official, .remember-me {
+        margin-bottom: 4vw;
+    }
+
+    #auth-container {
+        width: 70%;
+    }
+
+    main {
+        margin: 0 !important;
+    }
+
+    body::before {
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -1,0 +1,91 @@
+main {
+    margin-top: 8vh !important;
+}
+
+/* Style des onglets */
+.tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    padding: 1vw 0;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin: 4vw 0;
+}
+
+/* Style des boutons */
+.tab-button {
+    display: inline-block; /* Permet un bon alignement */
+    border: none;
+    background: none;
+    font-size: 0.8rem;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 1vw 6vw;
+    transition: color 0.3s;
+}
+
+/* Ajouter une ligne noire entre chaque bouton sauf le dernier */
+.tab-button:not(:last-child) {
+    border-right: 1px solid #1a1a1a; 
+    padding: 0 6vw; 
+}
+
+/* Style pour l'onglet actif */
+.tab-button.active {
+    color: #e78052;
+    text-decoration: underline;
+    font-weight: bold !important;
+}
+
+
+/* Sections de contenu */
+.tab-content {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Style du carousel */
+.carousel {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.activity {
+    flex: 0 0 100%;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Boutons du carousel */
+.prev, .next {
+    background: #e78052;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
