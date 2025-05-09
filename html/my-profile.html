@@ -37,6 +37,8 @@
 
       <main>
       <h1>MY PROFILE</h1>
+      <p>Nom : <span id="player-name"></span></p>
+      <p>Équipe : <span id="player-team"></span></p>
       <div id="participant-info"></div>
 
       <div class="tabs">
@@ -49,7 +51,7 @@
             <div class="carousel-wrapper">
               <div class="carousel">
                 <div class="carousel-inner"></div>
-      
+            
                 <div class="nav-buttons">
                   <button id="prev">&#8249;</button>
                   <button id="next">&#8250;</button>
@@ -120,62 +122,59 @@
   </div>
 
   <script>
-        const firebaseConfig = {
-      apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
-      authDomain: "disc-in-camp.firebaseapp.com",
-      databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "disc-in-camp",
-      storageBucket: "disc-in-camp.appspot.com",
-      messagingSenderId: "128937547779",
-      appId: "1:128937547779:web:22677cb4478cffaf1a1636",
-      measurementId: "G-Y4KZY16LFF",
-    };
+      const firebaseConfig = {
+  apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+  authDomain: "disc-in-camp.firebaseapp.com",
+  databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "disc-in-camp",
+  storageBucket: "disc-in-camp.appspot.com",
+  messagingSenderId: "128937547779",
+  appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+  measurementId: "G-Y4KZY16LFF",
+};
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Vérifier si Firebase Auth fonctionne bien
-    console.log("Firebase Auth chargé :", auth);
-
-    document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.getElementById("logout-btn");
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", (event) => {
-            event.preventDefault(); // Empêcher la navigation par défaut
-
-            firebase.auth().signOut().then(() => {
-                console.log("Utilisateur déconnecté");
-
-                // Supprimer les données locales de la session
-                localStorage.removeItem("rememberMe");
-                localStorage.removeItem("savedEmail");
-
-                // Redirection vers la page d'accueil
-                window.location.href = "../index.html";
-            }).catch((error) => {
-                console.error("Erreur lors de la déconnexion :", error);
-            });
-        });
-    }
-});
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Gestion des onglets
-    const tabs = document.querySelectorAll(".tab-button");
-    const tabContents = document.querySelectorAll(".tab-content");
+  const logoutBtn = document.getElementById("logout-btn");
+  const playerDataJSON = localStorage.getItem('playerData');
+  const userId = localStorage.getItem('playerId');
 
-    tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-            // Désactiver l'onglet actif
-            tabs.forEach(t => t.classList.remove("active"));
-            tabContents.forEach(content => content.classList.remove("active"));
+  if (playerDataJSON) {
+    const playerData = JSON.parse(playerDataJSON);
+    console.log(playerData);
+    document.getElementById('player-name').textContent = playerData.Name || "Nom inconnu";
+    document.getElementById('player-team').textContent = playerData.Team || "Équipe inconnue";
+  } else {
+    alert("Données non trouvées. Veuillez vous reconnecter.");
+    window.location.href = "login.html";
+  }
 
-            // Activer l'onglet sélectionné
-            tab.classList.add("active");
-            document.getElementById(tab.dataset.target).classList.add("active");
-        });
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      auth.signOut().then(() => {
+        localStorage.clear();
+        window.location.href = "../index.html";
+      }).catch((error) => {
+        console.error("Erreur lors de la déconnexion :", error);
+      });
     });
+  }
+
+  const tabs = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tabContents.forEach(content => content.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.target).classList.add("active");
+    });
+  });
 });
 
   </script>
