@@ -180,8 +180,16 @@ loginBtn.addEventListener("click", (event) => {
 
                 localStorage.setItem('playerData', JSON.stringify(playerData));
                 localStorage.setItem('playerId', playerId);
-
-                window.location.href = "my-profile.html";
+                console.log(playerData.role);
+                if(playerData.role === 'Player') {
+                window.location.href = "my-profile-player.html";
+                }
+                else if(playerData.role === 'Volunteer'){
+                  window.location.href = "my-profile-volunteer.html";
+                } 
+                else {
+                window.location.href = "my-profile-coach.html";
+              }
               });
             } else {
               alert("Aucun joueur trouvé avec cet email.");

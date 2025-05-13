@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/x-icon" href="../image/DiscInLogo.png"/>
+    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara"/>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <title>Disc In Camp | My Profile</title>
+    <link rel="stylesheet" href="../style/style.css"/>
+    <link rel="stylesheet" href="../style/my-profile.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet"/>
+  </head>
+  <body>
+    <!--Header-->
+    <section class="header">
+      <div id="user-content">
+        <a href="logout" class="login-button" id="logout-btn">
+          <p class="log-option">Logout</p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e78052" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+          </svg>
+        </a>
+      </div>
+        <a class="logo" href="../index.html">
+          <img src="../image/DiscInLogo.png" alt="Logo" />
+        </a>
+      </section>
+
+      <main>
+      <h1>MY PROFILE COACH</h1>
+      <p>Nom : <span id="player-name"></span></p>
+      <p>Équipe : <span id="player-team"></span></p>
+      <div id="participant-info"></div>
+
+      <div class="tabs">
+        <button class="tab-button active" data-target="schedule-section">SCHEDULE</button>
+        <button class="tab-button" data-target="spends-section">SPENDS</button>
+        <button class="tab-button" data-target="feedbacks-section">FEEDBACKS</button>
+      </div>
+
+      <div id="schedule-section" class="tab-content active col">
+            <div class="carousel-wrapper">
+              <div class="carousel">
+                <div class="carousel-inner"></div>
+            
+                <div class="nav-buttons">
+                  <button id="prev">&#8249;</button>
+                  <button id="next">&#8250;</button>
+                </div>
+              </div>
+              <div class="dots"></div>
+            </div>
+        </div>
+
+        <div id="spends-section" class="tab-content">
+            <h3>YOU OWE</h3>
+            <p></p>
+            <div class="carousel-wrapper">
+                <div class="carousel">
+                  <div class="carousel-inner"></div>
+        
+                  <div class="nav-buttons">
+                    <button id="prev">&#8249;</button>
+                    <button id="next">&#8250;</button>
+                  </div>
+                </div>
+                <div class="dots"></div>
+              </div>
+              <a href="#">See more</a>
+          </div>
+        </div>
+        
+        <div id="feedbacks-section" class="tab-content">
+            <p class="center">Ready for the coach’s hot takes? Your game and practice recap’s right here—no filter, just facts!</p>
+            <div id="postsFeed" class="my-3"></div>
+        </div>
+      </main>
+
+   <!--Footer-->
+   <div class="navbar">
+    <a href="../index.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+      </svg>
+      HOME
+    </a>
+    <a href="players.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+      </svg>
+      PLAYERS
+    </a>
+    <a href="schedule.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+      </svg>
+      SCHEDULE
+    </a>
+    <a href="feedback.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-chat-square-text" viewBox="0 0 16 16">
+        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+      </svg>
+      FEEDBACK
+    </a>
+    <a href="news.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
+        <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
+        <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
+      </svg>
+      NEWS
+    </a>
+  </div>
+
+  <script>
+      const firebaseConfig = {
+  apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+  authDomain: "disc-in-camp.firebaseapp.com",
+  databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "disc-in-camp",
+  storageBucket: "disc-in-camp.appspot.com",
+  messagingSenderId: "128937547779",
+  appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+  measurementId: "G-Y4KZY16LFF",
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.getElementById("logout-btn");
+  const playerDataJSON = localStorage.getItem('playerData');
+  const userId = localStorage.getItem('playerId');
+
+  if (playerDataJSON) {
+    const playerData = JSON.parse(playerDataJSON);
+    console.log(playerData);
+    document.getElementById('player-name').textContent = playerData.Name || "Nom inconnu";
+    document.getElementById('player-team').textContent = playerData.Team || "Équipe inconnue";
+  } else {
+    alert("Données non trouvées. Veuillez vous reconnecter.");
+    window.location.href = "login.html";
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      auth.signOut().then(() => {
+        localStorage.clear();
+        window.location.href = "../index.html";
+      }).catch((error) => {
+        console.error("Erreur lors de la déconnexion :", error);
+      });
+    });
+  }
+
+  const tabs = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tabContents.forEach(content => content.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.target).classList.add("active");
+    });
+  });
+});
+
+  </script>
+</body>
+</html>
