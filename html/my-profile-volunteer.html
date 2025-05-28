@@ -37,14 +37,13 @@
 
       <main>
       <h1>MY PROFILE VOLUNTEER</h1>
-      <p>Nom : <span id="player-name"></span></p>
-      <p>Équipe : <span id="player-team"></span></p>
+      <p>Name : <span id="player-name"></span></p>
+      <p>Team : <span id="player-team"></span></p>
       <div id="participant-info"></div>
 
       <div class="tabs">
         <button class="tab-button active" data-target="schedule-section">SCHEDULE</button>
-        <button class="tab-button" data-target="spends-section">SPENDS</button>
-        <button class="tab-button" data-target="feedbacks-section">FEEDBACKS</button>
+        <button class="tab-button" data-target="record-consumption">CONSUMPTIONS</button>
       </div>
 
       <div id="schedule-section" class="tab-content active col">
@@ -61,28 +60,20 @@
             </div>
         </div>
 
-        <div id="spends-section" class="tab-content">
-            <h3>YOU OWE</h3>
-            <p></p>
-            <div class="carousel-wrapper">
-                <div class="carousel">
-                  <div class="carousel-inner"></div>
-        
-                  <div class="nav-buttons">
-                    <button id="prev">&#8249;</button>
-                    <button id="next">&#8250;</button>
-                  </div>
-                </div>
-                <div class="dots"></div>
-              </div>
-              <a href="#">See more</a>
-          </div>
-        </div>
-        
-        <div id="feedbacks-section" class="tab-content">
-            <p class="center">Ready for the coach’s hot takes? Your game and practice recap’s right here—no filter, just facts!</p>
-            <div id="postsFeed" class="my-3"></div>
-        </div>
+        <section id="record-consumption" class="volunteer-section tab-content">
+          <h3>Record a Consumption</h3>
+
+          <label for="playerSelect">Select a player:</label>
+          <select id="playerSelect" class="input-field">
+            <option value="">Choose here ...</option>
+          </select><br/>
+
+          <div class="products-grid" id="productsGrid"></div>
+
+          <button id="submitConsumption" class="action-button official">Submit Consumption</button>
+
+          <p id="confirmationMessage" class="confirmation hidden">✔ Consumption recorded successfully!</p>
+        </section>
       </main>
 
    <!--Footer-->
@@ -173,6 +164,114 @@ document.addEventListener("DOMContentLoaded", () => {
       tabContents.forEach(content => content.classList.remove("active"));
       tab.classList.add("active");
       document.getElementById(tab.dataset.target).classList.add("active");
+    });
+  });
+});
+
+const googleScriptURL = 'https://script.google.com/macros/s/AKfycbxBPzD5mAi2nWJsNGs4FGg_jVJwNkq6Ye_4LGtbxOATauGID7BP3JUg8xJEQXWoL9Y/exec';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const playerSelect = document.getElementById('playerSelect');
+  const productsGrid = document.getElementById('productsGrid');
+  const confirmationMessage = document.getElementById('confirmationMessage');
+  const submitBtn = document.getElementById('submitConsumption');
+
+  // Cacher le message au démarrage
+  confirmationMessage.style.display = 'none';
+
+  // Charger les joueurs depuis Firebase
+  firebase.database().ref('/players').once('value', (snapshot) => {
+    const players = snapshot.val();
+    Object.keys(players).forEach(key => {
+      const option = document.createElement('option');
+      option.value = players[key].Id;
+      option.textContent = players[key].Name;
+      playerSelect.appendChild(option);
+    });
+  });
+
+  const products = [
+    { name: 'BEER', price: 3, icon: '../icons/beer.png' },
+    { name: 'WATER', price: 1, icon: '../icons/water.png' },
+    { name: 'SODA', price: 2, icon: '../icons/soda.png' },
+    { name: 'SNACK', price: 2, icon: '../icons/snack.png' },
+    { name: 'COFFEE', price: 1.5, icon: '../icons/coffee.png' }
+  ];
+
+  const productButtons = [];
+
+  products.forEach(product => {
+    const button = document.createElement('div');
+    button.className = 'product-button';
+    button.count = 0;
+
+    button.innerHTML = `
+      <img src="${product.icon}" alt="${product.name}">
+      <span class="product-name">${product.name}</span>
+      <span class="product-price">${product.price} €</span>
+    `;
+
+    const badge = document.createElement('div');
+    badge.className = 'badge';
+    badge.textContent = '1';
+    badge.style.display = 'none';
+    button.appendChild(badge);
+
+    button.addEventListener('click', () => {
+      button.count++;
+      button.classList.add('selected');
+      badge.textContent = button.count;
+      badge.style.display = 'block';
+    });
+
+    productsGrid.appendChild(button);
+    productButtons.push({ button, productName: product.name });
+  });
+
+  submitBtn.addEventListener('click', () => {
+    const playerId = playerSelect.value;
+
+    if (!playerId) {
+      alert('Please select a player first.');
+      return;
+    }
+
+    const selectedProducts = [];
+    productButtons.forEach(({ button, productName }) => {
+      for (let i = 0; i < button.count; i++) {
+        selectedProducts.push(productName);
+      }
+    });
+
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product.');
+      return;
+    }
+
+    Promise.all(selectedProducts.map(productName => {
+      return fetch(googleScriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ playerId, product: productName })
+      });
+    }))
+    .then(() => {
+      confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
+      confirmationMessage.style.display = 'block';
+      setTimeout(() => confirmationMessage.style.display = 'none', 3000);
+
+      // Reset player select and product buttons
+      playerSelect.value = '';
+      productButtons.forEach(({ button }) => {
+        button.count = 0;
+        button.classList.remove('selected');
+        button.querySelector('.badge').style.display = 'none';
+      });
+    })
+    .catch(err => {
+      console.error('Error submitting consumption:', err);
+      alert('There was an error. Please try again.');
     });
   });
 });

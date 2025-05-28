@@ -2,6 +2,12 @@ main {
     margin-top: 8vh !important;
 }
 
+h3 {
+    font-weight: normal;
+    padding-bottom: 4vw;
+    margin: 0;
+}
+
 /* Style des onglets */
 .tabs {
     display: flex;
@@ -88,4 +94,113 @@ main {
 
 .next {
     right: 10px;
+}
+
+/* Grille de consommations volontaires */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+@media (min-width: 600px) {
+  .products-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(9, 1fr);
+  }
+}
+
+.product-button {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.product-button:hover {
+    background-color: #f9f9f9;
+    transform: scale(1.03);
+}
+
+.product-button.selected {
+    background-color: #e78052;
+    color: white;
+}
+
+.product-button img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.5rem;
+}
+
+.product-button span {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.product-button .product-name {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.product-button .product-price {
+    color: #1a1a1a94;
+    font-size: 0.8rem;
+}
+
+.action-button {
+    margin-top: 4vw !important;
+}
+
+.product-button .badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: white;
+    color: #e78052;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+    display: none;
+}
+
+.product-button.selected .badge {
+    display: block;
+}
+
+#playerSelect {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-top: 4vw;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+}
+
+#playerSelect:focus {
+    outline: none;
+    border-color: #e78052;
+    box-shadow: 0 0 0 2px rgba(231, 128, 82, 0.3);
 }
