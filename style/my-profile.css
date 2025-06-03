@@ -96,6 +96,47 @@ h3 {
     right: 10px;
 }
 
+/*Page consommations players*/
+p.amount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #e78052;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.spends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.spend-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  font-weight: bold;
+}
+.spend-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 1rem;
+}
+
+.see-more {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #e78052;
+  text-decoration: none;
+}
+
 /* Grille de consommations volontaires */
 .products-grid {
   display: grid;

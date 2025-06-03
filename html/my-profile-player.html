@@ -62,12 +62,11 @@
       </div>
 
       <div id="spends-section" class="tab-content">
-          <div id="spends-list" class="spends-list">
-          </div>
-
+          <h3>YOU OWE :</h3>
+          <p id="total-amount" class="amount">0 €</p>
+          <div id="spends-list" class="spends-list"></div>
           <a href="#" class="see-more">See more</a>
       </div>
-
         
         <div id="feedbacks-section" class="tab-content">
             <p class="center">Ready for the coach’s hot takes? Your game and practice recap’s right here—no filter, just facts!</p>
@@ -169,12 +168,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const userId = localStorage.getItem('playerId');
-  const spendsSection = document.getElementById('spends-section');
+  const totalAmountElem = document.getElementById('total-amount');
+  const listContainer = document.getElementById('spends-list');
 
-  if (!userId) {
-    console.error('No player ID found.');
-    return;
-  }
+  if (!userId) return;
 
   const db = firebase.database();
   const playerRef = db.ref('/players/' + userId);
@@ -182,31 +179,14 @@ document.addEventListener("DOMContentLoaded", () => {
   playerRef.once('value').then(snapshot => {
     const data = snapshot.val();
 
-    if (!data) {
-      spendsSection.innerHTML = '<p>No spending data available.</p>';
+    if (!data || !data.consumptions) {
+      listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
+      totalAmountElem.textContent = "0 €";
       return;
     }
 
-    const totalAmount = data.total || '0 €';
-    const consumptions = data.consumptions || [];
-
-    // Créer le bloc YOU OWE
-    const youOweBlock = document.createElement('div');
-    youOweBlock.innerHTML = `
-      <h3>YOU OWE :</h3>
-      <p style="font-size: 2rem; color: #e78052; font-weight: bold;">${totalAmount}</p>
-    `;
-    spendsSection.appendChild(youOweBlock);
-
-    // Créer le bloc détaillé
-    const totalDetail = document.createElement('p');
-    totalDetail.textContent = `TOTAL: ${totalAmount}`;
-    totalDetail.style.marginTop = '1rem';
-    spendsSection.appendChild(totalDetail);
-
-    const listContainer = document.createElement('div');
-    listContainer.classList.add('spends-list');
-    spendsSection.appendChild(listContainer);
+    const total = data.total || 0;
+    totalAmountElem.textContent = `${total} €`;
 
     const productIcons = {
       BEER: '../icons/beer.png',
@@ -214,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
       SODA: '../icons/soda.png',
       SNACK: '../icons/snack.png',
       COFFEE: '../icons/coffee.png'
-      // ➔ ajoute ici d’autres correspondances si besoin
     };
 
     const productPrices = {
@@ -223,56 +202,37 @@ document.addEventListener("DOMContentLoaded", () => {
       SODA: 2,
       SNACK: 2,
       COFFEE: 1.5
-      // ➔ mêmes noms que côté admin pour matcher
     };
 
-    // Compter les quantités
-    const countMap = {};
-    consumptions.forEach(item => {
-      if (!countMap[item]) countMap[item] = 0;
-      countMap[item]++;
+    const counts = {};
+    data.consumptions.forEach(item => {
+      counts[item] = (counts[item] || 0) + 1;
     });
 
-    Object.keys(countMap).forEach(product => {
-      const quantity = countMap[product];
-      const pricePerItem = productPrices[product] || 0;
-      const totalProductPrice = pricePerItem * quantity;
-
-      const itemBlock = document.createElement('div');
-      itemBlock.classList.add('spend-item');
-      itemBlock.style.display = 'flex';
-      itemBlock.style.alignItems = 'center';
-      itemBlock.style.background = '#fff';
-      itemBlock.style.padding = '0.8rem';
-      itemBlock.style.borderRadius = '8px';
-      itemBlock.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-      itemBlock.style.marginBottom = '0.8rem';
+    Object.entries(counts).forEach(([product, quantity]) => {
+      const item = document.createElement('div');
+      item.className = 'spend-item';
 
       const icon = document.createElement('img');
       icon.src = productIcons[product] || '../icons/default.png';
       icon.alt = product;
-      icon.style.width = '24px';
-      icon.style.height = '24px';
-      icon.style.marginRight = '1rem';
 
       const name = document.createElement('span');
-      name.style.flex = '1';
-      name.style.fontWeight = 'bold';
       name.textContent = `${product} × ${quantity}`;
+      name.style.flex = '1';
 
       const price = document.createElement('span');
-      price.textContent = `${totalProductPrice} €`;
+      price.textContent = `${productPrices[product] * quantity} €`;
 
-      itemBlock.appendChild(icon);
-      itemBlock.appendChild(name);
-      itemBlock.appendChild(price);
-
-      listContainer.appendChild(itemBlock);
+      item.appendChild(icon);
+      item.appendChild(name);
+      item.appendChild(price);
+      listContainer.appendChild(item);
     });
 
   }).catch(err => {
-    console.error('Error fetching player data:', err);
-    spendsSection.innerHTML = '<p>Error loading spending data.</p>';
+    console.error('Firebase error:', err);
+    listContainer.innerHTML = '<p style="text-align:center;">Error loading data.</p>';
   });
 });
 
