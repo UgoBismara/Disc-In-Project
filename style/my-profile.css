@@ -541,7 +541,7 @@ p#total-amount.amount {
     display: block;
 }
 
-#playerSelect {
+#playerSelect, #feedbackPlayerSelect {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -559,8 +559,24 @@ p#total-amount.amount {
     background-size: 1rem;
 }
 
-#playerSelect:focus {
+#playerSelect:focus, #feedbackPlayerSelect:focus {
     outline: none;
     border-color: #e78052;
     box-shadow: 0 0 0 2px rgba(231, 128, 82, 0.3);
+}
+
+#feedbackMessage {
+  width: 100%;
+  padding: 1vw;
+  margin-bottom: 2vw;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: auto;
+}
+
+#coach-feedback-form label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  text-align: left;
 }

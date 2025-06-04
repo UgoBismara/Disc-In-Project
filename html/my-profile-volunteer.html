@@ -37,8 +37,6 @@
 
       <main>
       <h1>MY PROFILE VOLUNTEER</h1>
-      <p>Name : <span id="player-name"></span></p>
-      <p>Team : <span id="player-team"></span></p>
       <div id="participant-info"></div>
 
       <div class="tabs">
@@ -112,174 +110,187 @@
     </a>
   </div>
 
-  <script>
-      const firebaseConfig = {
-  apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
-  authDomain: "disc-in-camp.firebaseapp.com",
-  databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "disc-in-camp",
-  storageBucket: "disc-in-camp.appspot.com",
-  messagingSenderId: "128937547779",
-  appId: "1:128937547779:web:22677cb4478cffaf1a1636",
-  measurementId: "G-Y4KZY16LFF",
-};
+ <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+    authDomain: "disc-in-camp.firebaseapp.com",
+    databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "disc-in-camp",
+    storageBucket: "disc-in-camp.appspot.com",
+    messagingSenderId: "128937547779",
+    appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+    measurementId: "G-Y4KZY16LFF",
+  };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const logoutBtn = document.getElementById("logout-btn");
-  const playerDataJSON = localStorage.getItem('playerData');
-  const userId = localStorage.getItem('playerId');
-
-  if (playerDataJSON) {
-    const playerData = JSON.parse(playerDataJSON);
-    console.log(playerData);
-    document.getElementById('player-name').textContent = playerData.Name || "Nom inconnu";
-    document.getElementById('player-team').textContent = playerData.Team || "Équipe inconnue";
-  } else {
-    alert("Données non trouvées. Veuillez vous reconnecter.");
-    window.location.href = "login.html";
+  function getTeamOverlay(team) {
+    const validTeams = ["green", "red", "blue", "yellow"];
+    if (!team || !validTeams.includes(team.toLowerCase())) {
+      return "../filters/grey.png";
+    }
+    return `../filters/${team.toLowerCase()}.png`;
   }
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", (event) => {
-      event.preventDefault();
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logout-btn");
+    const participantInfoDiv = document.getElementById("participant-info");
+    const playerDataJSON = localStorage.getItem('playerData');
 
+    if (!playerDataJSON) {
+      alert("Données non trouvées. Veuillez vous reconnecter.");
+      window.location.href = "login.html";
+      return;
+    }
+
+    const playerData = JSON.parse(playerDataJSON);
+
+    // Affichage des infos volontaire façon "joueur"
+    participantInfoDiv.innerHTML = `
+      <div class="info-container">
+        <div class="container">
+          <div class="photo-container">
+            <img src="${playerData.Picture}" alt="${playerData.Name}" id="participantPhoto">
+            <div class="background-overlay" style="background-image: url('${getTeamOverlay(playerData.Team)}');"></div>
+            <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
+          </div>
+          <div class="data-container">
+            <h4 class="mg-btm">INFORMATIONS</h4>
+            <p><b>ROLE:</b> ${playerData.Role || 'undefined'}</p>
+            <p><b>TEAM:</b> ${playerData.Team || 'undefined'}</p>
+            <p><b>NATIONALITY:</b> ${playerData.nationality || 'N/A'}</p>
+          </div>
+        </div>
+      </div>`;
+
+    logoutBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
       auth.signOut().then(() => {
         localStorage.clear();
         window.location.href = "../index.html";
-      }).catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
       });
     });
-  }
 
-  const tabs = document.querySelectorAll(".tab-button");
-  const tabContents = document.querySelectorAll(".tab-content");
-
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("active"));
-      tabContents.forEach(content => content.classList.remove("active"));
-      tab.classList.add("active");
-      document.getElementById(tab.dataset.target).classList.add("active");
-    });
-  });
-});
-
-const googleScriptURL = 'https://script.google.com/macros/s/AKfycbxBPzD5mAi2nWJsNGs4FGg_jVJwNkq6Ye_4LGtbxOATauGID7BP3JUg8xJEQXWoL9Y/exec';
-
-document.addEventListener('DOMContentLoaded', () => {
-  const playerSelect = document.getElementById('playerSelect');
-  const productsGrid = document.getElementById('productsGrid');
-  const confirmationMessage = document.getElementById('confirmationMessage');
-  const submitBtn = document.getElementById('submitConsumption');
-
-  // Cacher le message au démarrage
-  confirmationMessage.style.display = 'none';
-
-  // Charger les joueurs depuis Firebase
-  firebase.database().ref('/players').once('value', (snapshot) => {
-    const players = snapshot.val();
-    Object.keys(players).forEach(key => {
-      const option = document.createElement('option');
-      option.value = players[key].Id;
-      option.textContent = players[key].Name;
-      playerSelect.appendChild(option);
-    });
-  });
-
- const products = [
-  { name: 'SUNDAY NIGHT', price: 20, icon: '../icons/sunday.png' },
-  { name: 'BEER', price: 2, icon: '../icons/beer.png' },
-  { name: 'SOCKS', price: 25, icon: '../icons/socks.png' },
-  { name: 'SODA', price: 1, icon: '../icons/soda.png' },
-  { name: 'COCKTAIL', price: 3, icon: '../icons/cocktail.png' },
-  { name: 'FRISBEE', price: 15, icon: '../icons/frisbee.png' },
-  { name: 'EXTRA NIGHT', price: 30, icon: '../icons/bed.png' },
-  { name: 'COFFEE', price: 0.5, icon: '../icons/coffee.png' },
-  { name: 'SHOT', price: 1.5, icon: '../icons/shot.png' }
-];
-
-  const productButtons = [];
-
-  products.forEach(product => {
-    const button = document.createElement('div');
-    button.className = 'product-button';
-    button.count = 0;
-
-    button.innerHTML = `
-      <img src="${product.icon}" alt="${product.name}">
-      <span class="product-name">${product.name}</span>
-      <span class="product-price">${product.price} €</span>
-    `;
-
-    const badge = document.createElement('div');
-    badge.className = 'badge';
-    badge.textContent = '1';
-    badge.style.display = 'none';
-    button.appendChild(badge);
-
-    button.addEventListener('click', () => {
-      button.count++;
-      button.classList.add('selected');
-      badge.textContent = button.count;
-      badge.style.display = 'block';
+    // Tabs
+    const tabs = document.querySelectorAll(".tab-button");
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tabContents.forEach(c => c.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.target).classList.add("active");
+      });
     });
 
-    productsGrid.appendChild(button);
-    productButtons.push({ button, productName: product.name });
-  });
+    // ----- CONSUMPTION -----
+    const googleScriptURL = 'https://script.google.com/macros/s/AKfycbxBPzD5mAi2nWJsNGs4FGg_jVJwNkq6Ye_4LGtbxOATauGID7BP3JUg8xJEQXWoL9Y/exec';
+    const playerSelect = document.getElementById('playerSelect');
+    const productsGrid = document.getElementById('productsGrid');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    const submitBtn = document.getElementById('submitConsumption');
 
-  submitBtn.addEventListener('click', () => {
-    const playerId = playerSelect.value;
+    confirmationMessage.style.display = 'none';
 
-    if (!playerId) {
-      alert('Please select a player first.');
-      return;
-    }
+    firebase.database().ref('/players').once('value', (snapshot) => {
+      const players = snapshot.val();
+      Object.keys(players).forEach(key => {
+        const option = document.createElement('option');
+        option.value = players[key].Id;
+        option.textContent = players[key].Name;
+        playerSelect.appendChild(option);
+      });
+    });
 
-    const selectedProducts = [];
-    productButtons.forEach(({ button, productName }) => {
-      for (let i = 0; i < button.count; i++) {
-        selectedProducts.push(productName);
+    const products = [
+      { name: 'SUNDAY NIGHT', price: 20, icon: '../icons/sunday.png' },
+      { name: 'BEER', price: 2, icon: '../icons/beer.png' },
+      { name: 'SOCKS', price: 25, icon: '../icons/socks.png' },
+      { name: 'SODA', price: 1, icon: '../icons/soda.png' },
+      { name: 'COCKTAIL', price: 3, icon: '../icons/cocktail.png' },
+      { name: 'FRISBEE', price: 15, icon: '../icons/frisbee.png' },
+      { name: 'EXTRA NIGHT', price: 30, icon: '../icons/bed.png' },
+      { name: 'COFFEE', price: 0.5, icon: '../icons/coffee.png' },
+      { name: 'SHOT', price: 1.5, icon: '../icons/shot.png' }
+    ];
+
+    const productButtons = [];
+
+    products.forEach(product => {
+      const button = document.createElement('div');
+      button.className = 'product-button';
+      button.count = 0;
+
+      button.innerHTML = `
+        <img src="${product.icon}" alt="${product.name}">
+        <span class="product-name">${product.name}</span>
+        <span class="product-price">${product.price} €</span>`;
+
+      const badge = document.createElement('div');
+      badge.className = 'badge';
+      badge.textContent = '1';
+      badge.style.display = 'none';
+      button.appendChild(badge);
+
+      button.addEventListener('click', () => {
+        button.count++;
+        button.classList.add('selected');
+        badge.textContent = button.count;
+        badge.style.display = 'block';
+      });
+
+      productsGrid.appendChild(button);
+      productButtons.push({ button, productName: product.name });
+    });
+
+    submitBtn.addEventListener('click', () => {
+      const playerId = playerSelect.value;
+
+      if (!playerId) {
+        alert('Please select a player first.');
+        return;
       }
-    });
 
-    if (selectedProducts.length === 0) {
-      alert('Please select at least one product.');
-      return;
-    }
-
-    Promise.all(selectedProducts.map(productName => {
-      return fetch(googleScriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playerId, product: productName })
+      const selectedProducts = [];
+      productButtons.forEach(({ button, productName }) => {
+        for (let i = 0; i < button.count; i++) {
+          selectedProducts.push(productName);
+        }
       });
-    }))
-    .then(() => {
-      confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
-      confirmationMessage.style.display = 'block';
-      setTimeout(() => confirmationMessage.style.display = 'none', 3000);
 
-      // Reset player select and product buttons
-      playerSelect.value = '';
-      productButtons.forEach(({ button }) => {
-        button.count = 0;
-        button.classList.remove('selected');
-        button.querySelector('.badge').style.display = 'none';
-      });
-    })
-    .catch(err => {
-      console.error('Error submitting consumption:', err);
-      alert('There was an error. Please try again.');
+      if (selectedProducts.length === 0) {
+        alert('Please select at least one product.');
+        return;
+      }
+
+      Promise.all(selectedProducts.map(productName => {
+        return fetch(googleScriptURL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playerId, product: productName })
+        });
+      }))
+        .then(() => {
+          confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
+          confirmationMessage.style.display = 'block';
+          setTimeout(() => confirmationMessage.style.display = 'none', 3000);
+
+          playerSelect.value = '';
+          productButtons.forEach(({ button }) => {
+            button.count = 0;
+            button.classList.remove('selected');
+            button.querySelector('.badge').style.display = 'none';
+          });
+        })
+        .catch(err => {
+          console.error('Error submitting consumption:', err);
+          alert('There was an error. Please try again.');
+        });
     });
   });
-});
+</script>
 
-  </script>
 </body>
 </html>
