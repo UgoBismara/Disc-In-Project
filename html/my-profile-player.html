@@ -37,8 +37,6 @@
 
       <main>
       <h1>MY PROFILE PLAYER</h1>
-      <p>Name : <span id="player-name"></span></p>
-      <p>Team : <span id="player-team"></span></p>
       <div id="participant-info"></div>
 
       <div class="tabs">
@@ -48,10 +46,11 @@
       </div>
 
       <div id="schedule-section" class="tab-content active col">
+        <div class="col">
           <div class="carousel-wrapper">
             <div class="carousel">
               <div class="carousel-inner"></div>
-          
+
               <div class="nav-buttons">
                 <button id="prev">&#8249;</button>
                 <button id="next">&#8250;</button>
@@ -59,6 +58,7 @@
             </div>
             <div class="dots"></div>
           </div>
+        </div>
       </div>
 
       <div id="spends-section" class="tab-content">
@@ -110,132 +110,235 @@
     </a>
   </div>
 
-  <script>
-      const firebaseConfig = {
-  apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
-  authDomain: "disc-in-camp.firebaseapp.com",
-  databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "disc-in-camp",
-  storageBucket: "disc-in-camp.appspot.com",
-  messagingSenderId: "128937547779",
-  appId: "1:128937547779:web:22677cb4478cffaf1a1636",
-  measurementId: "G-Y4KZY16LFF",
-};
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+    authDomain: "disc-in-camp.firebaseapp.com",
+    databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "disc-in-camp",
+    storageBucket: "disc-in-camp.appspot.com",
+    messagingSenderId: "128937547779",
+    appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+    measurementId: "G-Y4KZY16LFF",
+  };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const logoutBtn = document.getElementById("logout-btn");
-  const playerDataJSON = localStorage.getItem('playerData');
-  const userId = localStorage.getItem('playerId');
+  const participantInfoDiv = document.getElementById("participant-info");
+  const modal = document.getElementById("modal");
+  const modalImage = document.getElementById("modalImage");
 
-  if (playerDataJSON) {
-    const playerData = JSON.parse(playerDataJSON);
-    console.log(playerData);
-    document.getElementById('player-name').textContent = playerData.Name || "Nom inconnu";
-    document.getElementById('player-team').textContent = playerData.Team || "Équipe inconnue";
-  } else {
-    alert("Données non trouvées. Veuillez vous reconnecter.");
-    window.location.href = "login.html";
+  const carouselInner = document.querySelector(".carousel-inner");
+  const dotsContainer = document.querySelector(".dots");
+  let index = 0; // ✅ Déclaré en haut pour éviter l'erreur ReferenceError
+
+  function getTeamOverlay(team) {
+    const validTeams = ["green", "red", "blue", "yellow"];
+    if (!team || !validTeams.includes(team.toLowerCase())) {
+      return "../filters/grey.png";
+    }
+    return `../filters/${team.toLowerCase()}.png`;
   }
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", (event) => {
-      event.preventDefault();
-
-      auth.signOut().then(() => {
-        localStorage.clear();
-        window.location.href = "../index.html";
-      }).catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
-      });
-    });
+  function updateCarousel() {
+    const items = document.querySelectorAll(".carousel-item");
+    const dots = document.querySelectorAll(".dot");
+    if (!items.length) return;
+    carouselInner.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
   }
 
-  const tabs = document.querySelectorAll(".tab-button");
-  const tabContents = document.querySelectorAll(".tab-content");
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logout-btn");
+    const playerDataJSON = localStorage.getItem('playerData');
+    const userId = localStorage.getItem('playerId');
 
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("active"));
-      tabContents.forEach(content => content.classList.remove("active"));
-      tab.classList.add("active");
-      document.getElementById(tab.dataset.target).classList.add("active");
-    });
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const userId = localStorage.getItem('playerId');
-  const totalAmountElem = document.getElementById('total-amount');
-  const listContainer = document.getElementById('spends-list');
-
-  if (!userId) return;
-
-  const db = firebase.database();
-  const playerRef = db.ref('/players/' + userId);
-
-  playerRef.once('value').then(snapshot => {
-    const data = snapshot.val();
-
-    if (!data || !data.consumptions) {
-      listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
-      totalAmountElem.textContent = "0 €";
+    if (!playerDataJSON) {
+      alert("Données non trouvées. Veuillez vous reconnecter.");
+      window.location.href = "login.html";
       return;
     }
 
-    const total = data.total || 0;
-    totalAmountElem.textContent = `${total} €`;
+    const playerData = JSON.parse(playerDataJSON);
 
-    const productIcons = {
-      BEER: '../icons/beer.png',
-      WATER: '../icons/water.png',
-      SODA: '../icons/soda.png',
-      SNACK: '../icons/snack.png',
-      COFFEE: '../icons/coffee.png'
-    };
+    // Affichage des infos
+    participantInfoDiv.innerHTML = `
+      <div class="info-container">
+        <div class="container">
+          <div class="photo-container">
+            <img src="${playerData.Picture}" alt="${playerData.Name}" id="participantPhoto">
+            <div class="background-overlay" style="background-image: url('${getTeamOverlay(playerData.Team)}');"></div>
+            <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
+          </div>
+          <div class="data-container">
+            <h4 class="mg-btm">INFORMATIONS</h4>
+            <p><b>FIELD POSITION:</b> ${playerData.position || 'undefined'}</p>
+            <p><b>ULTIMATE YEARS:</b> ${playerData.ultimateXP || 'undefined'}</p>
+            <p><b>PALMARES:</b> ${playerData.palmares || 'undefined'}</p>
+            <p><b>DREAMS:</b> ${playerData.dream || 'undefined'}</p>
+            <p><b>TEAM:</b> ${playerData.Team || 'undefined'}</p>
+          </div>
+        </div>
+      </div>`;
 
-    const productPrices = {
-      BEER: 3,
-      WATER: 1,
-      SODA: 2,
-      SNACK: 2,
-      COFFEE: 1.5
-    };
-
-    const counts = {};
-    data.consumptions.forEach(item => {
-      counts[item] = (counts[item] || 0) + 1;
+    document.getElementById("participantPhoto")?.addEventListener("click", () => {
+      modal.style.display = "flex";
+      modalImage.src = playerData.Picture;
     });
 
-    Object.entries(counts).forEach(([product, quantity]) => {
-      const item = document.createElement('div');
-      item.className = 'spend-item';
-
-      const icon = document.createElement('img');
-      icon.src = productIcons[product] || '../icons/default.png';
-      icon.alt = product;
-
-      const name = document.createElement('span');
-      name.textContent = `${product} × ${quantity}`;
-      name.style.flex = '1';
-
-      const price = document.createElement('span');
-      price.textContent = `${productPrices[product] * quantity} €`;
-
-      item.appendChild(icon);
-      item.appendChild(name);
-      item.appendChild(price);
-      listContainer.appendChild(item);
+    logoutBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      auth.signOut().then(() => {
+        localStorage.clear();
+        window.location.href = "../index.html";
+      });
     });
 
-  }).catch(err => {
-    console.error('Firebase error:', err);
-    listContainer.innerHTML = '<p style="text-align:center;">Error loading data.</p>';
+    const tabs = document.querySelectorAll(".tab-button");
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tabContents.forEach(c => c.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.target).classList.add("active");
+      });
+    });
+
+    // ----------- SPENDS ------------
+    const totalAmountElem = document.getElementById('total-amount');
+    const listContainer = document.getElementById('spends-list');
+
+    if (userId) {
+      const db = firebase.database();
+      const consosRef = db.ref('/consos/' + (parseInt(userId) + 1));
+
+      consosRef.once('value').then(snapshot => {
+        const data = snapshot.val();
+        if (!data || !data.consumptions) {
+          listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
+          totalAmountElem.textContent = "0 €";
+          return;
+        }
+
+        totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
+
+        const productIcons = {
+          "SUNDAY NIGHT": "../icons/sunday.png",
+          "BEER": "../icons/beer.png",
+          "SOCKS": "../icons/socks.png",
+          "SODA": "../icons/soda.png",
+          "COCKTAIL": "../icons/cocktail.png",
+          "FRISBEE": "../icons/frisbee.png",
+          "EXTRA NIGHT": "../icons/bed.png",
+          "COFFEE": "../icons/coffee.png",
+          "SHOT": "../icons/shot.png"
+        };
+
+        const productPrices = {
+          "SUNDAY NIGHT": 20, "BEER": 2, "SOCKS": 25, "SODA": 1, "COCKTAIL": 3,
+          "FRISBEE": 15, "EXTRA NIGHT": 30, "COFFEE": 0.5, "SHOT": 1.5
+        };
+
+        const counts = {};
+        data.consumptions.forEach(item => {
+          counts[item] = (counts[item] || 0) + 1;
+        });
+
+        Object.entries(counts).forEach(([product, quantity]) => {
+          const item = document.createElement('div');
+          item.className = 'spend-item';
+          item.innerHTML = `
+            <img src="${productIcons[product] || '../icons/default.png'}" alt="${product}">
+            <span style="flex:1;">${product} × ${quantity}</span>
+            <span>${(productPrices[product] * quantity).toFixed(2)} €</span>`;
+          listContainer.appendChild(item);
+        });
+      });
+    }
+
+    // ----------- CAROUSEL ------------
+    const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
+
+    function createSessionHTML(dayData, day) {
+      const sessions = [
+        { time: dayData[`${day.toLowerCase()}TrainingTime`], field: `Field ${dayData[`${day.toLowerCase()}TrainingField`] || "N/A"}`, coach: dayData[`${day.toLowerCase()}TrainingCoach`] || "N/A", type: "Training" },
+        { time: dayData[`${day.toLowerCase()}GameTime`], field: `Field ${dayData[`${day.toLowerCase()}GameField`] || "N/A"}`, coach: dayData[`${day.toLowerCase()}GameCoach`] || "N/A", type: "Game" },
+        { time: dayData[`${day.toLowerCase()}PresentationTime`], field: dayData[`${day.toLowerCase()}PresentationPlace`] || "N/A", coach: dayData[`${day.toLowerCase()}PresentationCoach`] || "N/A", type: "Presentation" }
+      ];
+
+      return sessions
+        .filter(s => s.time || s.coach || s.field)
+        .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
+        .map(s => `
+          <div class="session-wrapper">
+            <div class="session-item">
+              <div class="session-type"><span>${s.type}</span></div>
+              <div class="session-info">
+                <span class="time">${s.time || "N/A"}</span>
+                <span class="coach">${s.coach}</span>
+                <span class="field">${s.field}</span>
+              </div>
+            </div>
+          </div>`).join("");
+    }
+
+    if (playerData && carouselInner && dotsContainer) {
+      daysOfWeek.forEach(day => {
+        const slide = document.createElement("div");
+        slide.className = "carousel-item";
+        slide.innerHTML = `<h5>${day}</h5>${createSessionHTML(playerData, day)}`;
+        carouselInner.appendChild(slide);
+
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dotsContainer.appendChild(dot);
+      });
+      updateCarousel();
+    }
+
+    document.getElementById("prev")?.addEventListener("click", () => {
+      const items = document.querySelectorAll(".carousel-item");
+      index = index > 0 ? index - 1 : items.length - 1;
+      updateCarousel();
+    });
+
+    document.getElementById("next")?.addEventListener("click", () => {
+      const items = document.querySelectorAll(".carousel-item");
+      index = index < items.length - 1 ? index + 1 : 0;
+      updateCarousel();
+    });
+
+    // Swipe
+    let startX = 0, currentX = 0, isSwiping = false;
+    carouselInner?.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+      isSwiping = true;
+      carouselInner.style.transition = "none";
+    });
+
+    carouselInner?.addEventListener("touchmove", e => {
+      if (!isSwiping) return;
+      currentX = e.touches[0].clientX;
+      const offset = -index * carouselInner.offsetWidth + (currentX - startX);
+      carouselInner.style.transform = `translateX(${offset}px)`;
+    });
+
+    carouselInner?.addEventListener("touchend", () => {
+      const diffX = currentX - startX;
+      const items = document.querySelectorAll(".carousel-item");
+      if (Math.abs(diffX) > 50) {
+        index = diffX > 0 ? (index > 0 ? index - 1 : items.length - 1) : (index < items.length - 1 ? index + 1 : 0);
+      }
+      carouselInner.style.transition = "transform 0.5s ease";
+      updateCarousel();
+      isSwiping = false;
+    });
   });
-});
+</script>
 
-  </script>
+
+
 </body>
 </html>

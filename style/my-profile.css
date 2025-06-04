@@ -2,10 +2,321 @@ main {
     margin-top: 8vh !important;
 }
 
+h1 {
+    margin-bottom: 4vw;
+}
+
 h3 {
     font-weight: normal;
-    padding-bottom: 4vw;
     margin: 0;
+}
+
+/* Information of the player*/
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height:22vh;
+    margin-bottom: 6vw;
+}
+
+.info-container h1 {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.data-container {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.data-container h4 {
+    margin-top: 0;
+}
+
+.photo-container {
+    position: relative;
+    display: flex;
+    height:100%;
+    width: 40vw;
+}
+
+#participantPhoto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: center; 
+    z-index: 1;
+}
+
+.background-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+}
+
+ .photo-container img {
+    height: 90%; 
+    aspect-ratio: 1 / 1;
+    border-radius: 15px;
+    object-fit: cover;
+    display: block;
+    align-items: center;
+}
+
+.name-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.5rem 0;
+    border-radius: 0 0 15px 15px;
+    z-index: 3;
+}
+
+/* Carrousel Schedule */
+.carousel {
+    position: relative;
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 0 !important;
+}
+
+.carousel-inner {
+    display: flex;
+    flex-direction: row;
+    transition: transform 0.5s ease-in-out;
+    width:100%;
+    touch-action: pan-y; 
+}  
+
+.carousel-item {
+    display: flex;
+    flex: 0 0 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    text-align: center;
+    gap: 1vh;        
+}
+
+.session {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.session p {
+    margin: 0.2rem 0;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    align-items: center; /* Assure un bon alignement vertical */
+    gap: 0.5rem;
+    margin-top: 1rem;
+    position: relative; /* Permet un positionnement correct */
+    z-index: 4; /* S'assurer que les dots sont au-dessus du carousel */
+}
+
+.dots span {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+.dots .active {
+    background-color: #444;
+}
+
+.nav-buttons {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between; /* Place les flèches aux extrémités */
+    align-items: center; /* Centre verticalement les flèches */
+    pointer-events: none; /* Empêche les clics en dehors des boutons */
+    z-index: 4;
+}
+
+.nav-buttons button {
+    pointer-events: auto;
+    height: 0;
+    border: none;
+    color: #1a1a1a;
+    font-size: 1.5rem; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 10%; 
+    transform: translateY(-50%); 
+    z-index: 4; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#prev {
+    position: absolute;
+    background-color: #fffaf7 !important;
+    box-shadow: none;
+    left: 22vw;
+    height: 25px;
+    width: 25px;
+}
+
+#next {
+    position: absolute;
+    background-color: #fffaf7 !important;
+    box-shadow: none;
+    right: 22vw;
+    height: 25px;
+    width: 25px;
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.session-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    align-items: flex-start;
+}
+
+.session-info {
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    align-items: center;
+    font-size: 80%;
+    color: #444;
+}
+
+.session-item span {
+    flex: 1; /* Chaque élément occupe une part égale */
+    text-align: center; /* Centrer le texte dans chaque colonne */
+}
+
+.session-item.type {
+    position: absolute;
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    width: 100%; /* Prend toute la largeur de la cellule */
+    text-align: center; /* Aligne le texte au centre */
+    margin-top: 0.5rem; /* Espacement si nécessaire */  
+    transform: translate(-50%, -50%); /* Centrage parfait */
+    left: 50%; /* Place horizontalement au centre */
+    top: 50%; /* Place verticalement au centre */
+    white-space: nowrap; /* Empêche le texte de se couper */  
+}  
+
+.session-wrapper {
+    margin-bottom: 5px; /* Espacement entre les sessions */
+    width: 100%;
+    height:100%;
+    justify-content: space-between;
+}
+
+span.time {
+    font-weight: bold;
+}
+
+.session-item.time {
+    flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
+    text-align: left; /* Aligne le temps à gauche */
+    margin-right: 1rem; /* Ajoute un espace à droite du temps */
+}
+
+.carousel-wrapper {
+    display: flex;
+    flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
+    justify-content: flex-start;
+    align-items: center;
+    height: 40vh; /* Ajustement pour inclure les dots */
+    width: 90vw;
+    max-width : 1000px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.carousel-item h5 {
+    padding: 0.5rem;
+    background-color: #e78052;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);;
+    color: #1a1a1a;
+    text-transform: uppercase; 
+    text-align:center;
+    align-items: center;    
+    margin-top: 0;
+    z-index: -4;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
 }
 
 /* Style des onglets */
@@ -149,12 +460,20 @@ p#total-amount.amount {
   .products-grid {
     grid-template-columns: repeat(5, 1fr);
   }
+
+  .photo-container {
+        width: 20vw;
+    }
 }
 
 @media (min-width: 1024px) {
   .products-grid {
     grid-template-columns: repeat(9, 1fr);
   }
+
+  .photo-container {
+        width: 10vw;
+    }
 }
 
 .product-button {
