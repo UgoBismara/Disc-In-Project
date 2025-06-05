@@ -14,6 +14,7 @@
     <title>Disc In Camp | My Profile</title>
     <link rel="stylesheet" href="../style/style.css"/>
     <link rel="stylesheet" href="../style/my-profile.css"/>
+    <link rel="stylesheet" href="../style/news.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet"/>
@@ -205,6 +206,53 @@
         document.getElementById(tab.dataset.target).classList.add("active");
       });
     });
+
+        // ----------- FEEDBACKS ------------
+function formatShortDate(dateStr) {
+  const date = new Date(dateStr);
+  if (isNaN(date)) return dateStr; // fallback si invalide
+
+  const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const day = days[date.getDay()];
+  const dayNum = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day} ${dayNum} at ${hours}h${minutes}`;
+}
+
+const postsFeed = document.getElementById("postsFeed");
+
+if (playerData?.Id) {
+  const feedbackRef = firebase.database().ref('/feedbacks/' + playerData.Id);
+
+  feedbackRef.once('value').then(snapshot => {
+    const feedbacks = snapshot.val();
+    postsFeed.innerHTML = ""; // Clear old content
+
+    if (!feedbacks) {
+      postsFeed.innerHTML = "<p class='text-muted center'>No feedback yet. Keep grinding!</p>";
+      return;
+    }
+
+    // Trier les feedbacks par date descendante si possible
+    Object.keys(feedbacks)
+      .sort((a, b) => new Date(feedbacks[b].Date) - new Date(feedbacks[a].Date))
+      .forEach(key => {
+        const fb = feedbacks[key];
+        const div = document.createElement("div");
+        div.className = "post mb-3 p-3 border rounded";
+
+        div.innerHTML = `
+          <h5 class="writer text-primary">${fb.Name}</h5>
+          <p class="message">${fb.Message}</p>
+          <small class="timestamp text-muted">${formatShortDate(fb.Date)}</small>
+        `;
+
+        postsFeed.appendChild(div);
+      });
+  });
+}
 
     // ----------- SPENDS ------------
     const totalAmountElem = document.getElementById('total-amount');
