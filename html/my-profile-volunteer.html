@@ -264,12 +264,16 @@
         return;
       }
 
-        fetch(googleScriptURL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ playerId, products: selectedProducts })
-  })
+        const formData = new FormData();
+formData.append('playerId', playerId);
+formData.append('products', JSON.stringify(selectedProducts));
+
+fetch(googleScriptURL, {
+  method: 'POST',
+  mode: 'no-cors',
+  body: formData
+})
+
     .then(response => {
       confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
       confirmationMessage.style.display = 'block';
