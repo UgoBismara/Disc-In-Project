@@ -266,6 +266,7 @@
 
         fetch(googleScriptURL, {
     method: 'POST',
+    mode: 'no-corse',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ playerId, products: selectedProducts })
   })
