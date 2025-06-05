@@ -264,31 +264,28 @@
         return;
       }
 
-      Promise.all(selectedProducts.map(productName => {
-        return fetch(googleScriptURL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ playerId, product: productName })
-        });
-      }))
-        .then(() => {
-          confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
-          confirmationMessage.style.display = 'block';
-          setTimeout(() => confirmationMessage.style.display = 'none', 3000);
+        fetch(googleScriptURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ playerId, products: selectedProducts })
+  })
+    .then(response => {
+      confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
+      confirmationMessage.style.display = 'block';
+      setTimeout(() => confirmationMessage.style.display = 'none', 3000);
 
-          playerSelect.value = '';
-          productButtons.forEach(({ button }) => {
-            button.count = 0;
-            button.classList.remove('selected');
-            button.querySelector('.badge').style.display = 'none';
-          });
-        })
-        .catch(err => {
-          console.error('Error submitting consumption:', err);
-          alert('There was an error. Please try again.');
-        });
+      playerSelect.value = '';
+      productButtons.forEach(({ button }) => {
+        button.count = 0;
+        button.classList.remove('selected');
+        button.querySelector('.badge').style.display = 'none';
+      });
+    })
+    .catch(err => {
+      console.error('Error submitting consumption:', err);
+      alert('There was an error. Please try again.');
     });
+});
   });
 </script>
 

@@ -66,7 +66,7 @@
           <h3>YOU OWE :</h3>
           <p id="total-amount" class="amount">0 €</p>
           <div id="spends-list" class="spends-list"></div>
-          <a href="#" class="see-more">See more</a>
+          <p id="see-more" class="text-center" style="color:#E86D2D; cursor:pointer;">See more</p>
       </div>
         
         <div id="feedbacks-section" class="tab-content">
@@ -132,7 +132,7 @@
 
   const carouselInner = document.querySelector(".carousel-inner");
   const dotsContainer = document.querySelector(".dots");
-  let index = 0; // ✅ Déclaré en haut pour éviter l'erreur ReferenceError
+  let index = 0;
 
   function getTeamOverlay(team) {
     const validTeams = ["green", "red", "blue", "yellow"];
@@ -199,13 +199,18 @@
     const tabs = document.querySelectorAll(".tab-button");
     const tabContents = document.querySelectorAll(".tab-content");
     tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        tabContents.forEach(c => c.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.target).classList.add("active");
-      });
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tabContents.forEach(c => c.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.target).classList.add("active");
+
+      // 🔁 Reset SPENDS to 4 items only
+      if (tab.dataset.target === "spends-section") {
+        renderSpends(false);
+      }
     });
+  });
 
         // ----------- FEEDBACKS ------------
 function formatShortDate(dateStr) {
@@ -254,57 +259,81 @@ if (playerData?.Id) {
   });
 }
 
-    // ----------- SPENDS ------------
-    const totalAmountElem = document.getElementById('total-amount');
-    const listContainer = document.getElementById('spends-list');
+// ----------- SPENDS ------------
+const totalAmountElem = document.getElementById('total-amount');
+const listContainer = document.getElementById('spends-list');
+const seeMoreBtn = document.getElementById('see-more');
 
-    if (userId) {
-      const db = firebase.database();
-      const consosRef = db.ref('/consos/' + (parseInt(userId) + 1));
+let allSpendItems = [];
 
-      consosRef.once('value').then(snapshot => {
-        const data = snapshot.val();
-        if (!data || !data.consumptions) {
-          listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
-          totalAmountElem.textContent = "0 €";
-          return;
-        }
+function renderSpends(showAll = false) {
+  listContainer.innerHTML = ""; // Réinitialiser l'affichage
 
-        totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
+  const itemsToShow = showAll ? allSpendItems : allSpendItems.slice(0, 4);
+  itemsToShow.forEach(item => listContainer.appendChild(item));
 
-        const productIcons = {
-          "SUNDAY NIGHT": "../icons/sunday.png",
-          "BEER": "../icons/beer.png",
-          "SOCKS": "../icons/socks.png",
-          "SODA": "../icons/soda.png",
-          "COCKTAIL": "../icons/cocktail.png",
-          "FRISBEE": "../icons/frisbee.png",
-          "EXTRA NIGHT": "../icons/bed.png",
-          "COFFEE": "../icons/coffee.png",
-          "SHOT": "../icons/shot.png"
-        };
+  if (allSpendItems.length <= 4) {
+    seeMoreBtn.style.display = "none";
+  } else {
+    seeMoreBtn.style.display = "block";
+    seeMoreBtn.textContent = showAll ? "See less" : "See more";
+  }
+}
 
-        const productPrices = {
-          "SUNDAY NIGHT": 20, "BEER": 2, "SOCKS": 25, "SODA": 1, "COCKTAIL": 3,
-          "FRISBEE": 15, "EXTRA NIGHT": 30, "COFFEE": 0.5, "SHOT": 1.5
-        };
+if (userId) {
+  const db = firebase.database();
+  const consosRef = db.ref('/consos/' + (parseInt(userId) + 1));
 
-        const counts = {};
-        data.consumptions.forEach(item => {
-          counts[item] = (counts[item] || 0) + 1;
-        });
-
-        Object.entries(counts).forEach(([product, quantity]) => {
-          const item = document.createElement('div');
-          item.className = 'spend-item';
-          item.innerHTML = `
-            <img src="${productIcons[product] || '../icons/default.png'}" alt="${product}">
-            <span style="flex:1;">${product} × ${quantity}</span>
-            <span>${(productPrices[product] * quantity).toFixed(2)} €</span>`;
-          listContainer.appendChild(item);
-        });
-      });
+  consosRef.once('value').then(snapshot => {
+    const data = snapshot.val();
+    if (!data || !data.consumptions) {
+      listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
+      totalAmountElem.textContent = "0 €";
+      return;
     }
+
+    totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
+
+    const productIcons = {
+      "SUNDAY NIGHT": "../icons/sunday.png",
+      "BEER": "../icons/beer.png",
+      "SOCKS": "../icons/socks.png",
+      "SODA": "../icons/soda.png",
+      "COCKTAIL": "../icons/cocktail.png",
+      "FRISBEE": "../icons/frisbee.png",
+      "EXTRA NIGHT": "../icons/bed.png",
+      "COFFEE": "../icons/coffee.png",
+      "SHOT": "../icons/shot.png"
+    };
+
+    const productPrices = {
+      "SUNDAY NIGHT": 20, "BEER": 2, "SOCKS": 25, "SODA": 1, "COCKTAIL": 3,
+      "FRISBEE": 15, "EXTRA NIGHT": 30, "COFFEE": 0.5, "SHOT": 1.5
+    };
+
+    const counts = {};
+    data.consumptions.forEach(item => {
+      counts[item] = (counts[item] || 0) + 1;
+    });
+
+    allSpendItems = Object.entries(counts).map(([product, quantity]) => {
+      const item = document.createElement('div');
+      item.className = 'spend-item';
+      item.innerHTML = `
+        <img src="${productIcons[product] || '../icons/default.png'}" alt="${product}">
+        <span style="flex:1;">${product} × ${quantity}</span>
+        <span>${(productPrices[product] * quantity).toFixed(2)} €</span>`;
+      return item;
+    });
+
+    renderSpends(false); // Montre les 4 premiers au départ
+  });
+
+  seeMoreBtn?.addEventListener("click", () => {
+    const showAll = seeMoreBtn.textContent === "See more";
+    renderSpends(showAll);
+  });
+}
 
     // ----------- CAROUSEL ------------
     const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];

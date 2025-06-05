@@ -580,3 +580,12 @@ p#total-amount.amount {
   margin-bottom: 0.3rem;
   text-align: left;
 }
+
+#see-more {
+  color: #E86D2D;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;           /* Empêche la sélection du texte */
+  outline: none;               /* Supprime la bordure bleue de focus */
+  -webkit-tap-highlight-color: transparent; /* Supprime flash bleu sur mobile */
+}
