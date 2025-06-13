@@ -32,15 +32,15 @@
         </svg>
       </a>
     </div>
-    <div id="user-content">
-      <a href="html/my-profile.html" class="login-button">
-        <p class="log-option">My Profile</p>
-        <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
-          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-        </svg>
-      </a>
-    </div>
+      <div id="user-content">
+        <a href="#" class="login-button" id="my-profile-btn">
+          <p class="log-option">My Profile</p>
+          <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+          </svg>
+        </a>
+      </div>
       <a class="logo" href="index.html">
         <img src="image/DiscInLogo.png" alt="Logo" />
       </a>
@@ -357,6 +357,7 @@ function createCamperCard({ Id, Name, Picture, Team }) {
       document.addEventListener("DOMContentLoaded", () => {
     const guestContent = document.getElementById("guest-content");
     const userContent = document.getElementById("user-content");
+    const myProfileBtn = document.getElementById("my-profile-btn");
 
     // Vérifier l'état de connexion avec Firebase Auth
     firebase.auth().onAuthStateChanged((user) => {
@@ -364,6 +365,39 @@ function createCamperCard({ Id, Name, Picture, Team }) {
             // ✅ L'utilisateur est connecté, afficher "user-content"
             guestContent.style.display = "none";
             userContent.style.display = "block";
+            myProfileBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        const userEmail = user.email;
+        if (!userEmail) {
+          alert("Impossible de récupérer l'email.");
+          return;
+        }
+
+        database.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              snapshot.forEach((childSnapshot) => {
+                const role = childSnapshot.val().role;
+
+                if (role === 'Player') {
+                  window.location.href = 'html/my-profile-player.html';
+                } else if (role === 'Volunteer') {
+                  window.location.href = 'html/my-profile-volunteer.html';
+                } else if (role === 'Coach') {
+                  window.location.href = 'html/my-profile-coach.html';
+                } else {
+                  alert("Rôle non reconnu : " + role);
+                }
+              });
+            } else {
+              alert("Aucun joueur trouvé avec cet email.");
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur de récupération des données :", error);
+          });
+      });
         } else {
             // ❌ L'utilisateur est déconnecté, afficher "guest-content"
             guestContent.style.display = "block";
@@ -371,7 +405,6 @@ function createCamperCard({ Id, Name, Picture, Team }) {
         }
     });
 });
-
 
    //Mettre en app mobile - fonction sans réseau //
    if ("serviceWorker" in navigator) {

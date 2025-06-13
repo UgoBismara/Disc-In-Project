@@ -32,7 +32,7 @@
         </a>
       </div>
       <div id="user-content">
-        <a href="my-profile.html" class="login-button">
+        <a href="#" class="login-button" id="my-profile-btn">
           <p class="log-option">My Profile</p>
           <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
@@ -72,6 +72,18 @@
     </div>
 </main>
 <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+        authDomain: "disc-in-camp.firebaseapp.com",
+        databaseURL:
+          "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "disc-in-camp",
+        storageBucket: "disc-in-camp.appspot.com",
+        messagingSenderId: "128937547779",
+        appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+        measurementId: "G-Y4KZY16LFF",
+      };
+  firebase.initializeApp(firebaseConfig);
 document.getElementById("feedbackForm").addEventListener("submit", function(event) {
             event.preventDefault(); 
 
@@ -93,6 +105,7 @@ document.getElementById("feedbackForm").addEventListener("submit", function(even
 document.addEventListener("DOMContentLoaded", () => {
     const guestContent = document.getElementById("guest-content");
     const userContent = document.getElementById("user-content");
+    const myProfileBtn = document.querySelector("#user-content a.login-button");
 
     // Vérifier l'état de connexion avec Firebase Auth
     firebase.auth().onAuthStateChanged((user) => {
@@ -100,6 +113,45 @@ document.addEventListener("DOMContentLoaded", () => {
             // ✅ L'utilisateur est connecté, afficher "user-content"
             guestContent.style.display = "none";
             userContent.style.display = "block";
+    myProfileBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+      const userEmail = user.email;
+      const db = firebase.database();
+
+      db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+              const playerData = childSnapshot.val();
+              const role = playerData.role;
+
+              // Redirection en fonction du rôle
+              if (role === 'Player') {
+                window.location.href = 'my-profile-player.html';
+              } else if (role === 'Volunteer') {
+                window.location.href = 'my-profile-volunteer.html';
+              } else if (role === 'Coach') {
+                window.location.href = 'my-profile-coach.html';
+              } else {
+                alert("Rôle non reconnu : " + role);
+              }
+            });
+          } else {
+            alert("Utilisateur non trouvé dans la base de données.");
+          }
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des données utilisateur :", error);
+          alert("Erreur de chargement : " + error.message);
+        });
+        } else {
+          participantButtonsDiv.innerHTML = "<p>Participant not found!</p>";
+        }
+      });
         } else {
             // ❌ L'utilisateur est déconnecté, afficher "guest-content"
             guestContent.style.display = "block";
