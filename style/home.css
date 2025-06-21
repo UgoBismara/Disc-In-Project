@@ -35,7 +35,7 @@
   font-size: 4rem;
   width: 100%;
   text-align: center;
-  z-index: 1000;
+  z-index: 10;
   bottom: 5%;
 }
 
@@ -59,7 +59,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  width: 150px; 
+  width: 150px;
   height: 220px;
   overflow: hidden;
   border-radius: 10px;
@@ -79,7 +79,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  z-index: 1; 
+  z-index: 1;
 }
 
 .participant h2 {
@@ -87,7 +87,7 @@
   bottom: 10px;
   color: white;
   font-size: 1rem;
-  z-index: 2; 
+  z-index: 2;
 }
 
 /*main*/
@@ -122,12 +122,12 @@ iframe {
   height: 315px;
 }
 
-@media (max-width:1200px) {
+@media (max-width: 1200px) {
   .participants-grid {
     grid-template-columns: repeat(4, 1fr); /* Max 3 cartes par ligne */
   }
 
-  .participant:nth-child(n+5) {
+  .participant:nth-child(n + 5) {
     display: none; /* Cache toutes les cartes au-delà de la 3ème */
   }
 }
@@ -170,7 +170,7 @@ iframe {
   }
 
   .participant {
-    width: 90px; 
+    width: 90px;
     height: 120px;
   }
 
@@ -181,7 +181,7 @@ iframe {
     bottom: 0px !important;
   }
 
-  .participant:nth-child(n+4) {
+  .participant:nth-child(n + 4) {
     display: none; /* Cache toutes les cartes au-delà de la 3ème */
   }
 }

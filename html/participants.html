@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <link rel="icon" type="image/x-icon" href="../image/DiscInLogo.png"/>
-    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara"/>
-    <meta name="description" content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."/>
-    <meta name="keywords" content="disc in camp, camp 2025, ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <link rel="icon" type="image/x-icon" href="../image/DiscInLogo.png" />
+    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara" />
+    <meta
+      name="description"
+      content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."
+    />
+    <meta
+      name="keywords"
+      content="disc in camp, camp 2025, ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"
+    />
     <title>Disc In Camp | Players</title>
     <!-- Firebase SDK pour le navigateur -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="../style/participants.css">
-    <link rel="stylesheet" href="../style/style.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style/participants.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!--Header-->
@@ -26,99 +38,161 @@
       <div id="guest-content">
         <a href="login.html" class="login-button">
           <p class="log-option">Login</p>
-          <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="bi bi-person-circle"
+            viewBox="0 0 16 16"
+          >
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path
+              fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+            />
           </svg>
         </a>
       </div>
       <div id="user-content">
-        <a href="#" class="login-button" id="my-profile-btn">
+        <a href="" class="login-button" id="my-profile-btn">
           <p class="log-option">My Profile</p>
-          <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-person-circle" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="bi bi-person-circle"
+            viewBox="0 0 16 16"
+          >
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path
+              fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+            />
           </svg>
         </a>
       </div>
-        <a class="logo" href="../index.html">
-            <img src="../image/DiscInLogo.png" alt="Logo" />
-        </a>
+      <a class="logo" href="../index.html">
+        <img src="../image/DiscInLogo.png" alt="Logo" />
+      </a>
     </section>
 
     <!--Main-->
     <main>
-    <div id="participant-info"></div>
-    
-    <div class="col">
-      <h4 class="mg-btm hide">SCHEDULE</h4>
-      <div class="carousel-wrapper">
-        <div class="carousel">
-          <div class="carousel-inner"></div>
+      <div id="participant-info"></div>
 
-          <div class="nav-buttons">
-            <button id="prev">&#8249;</button>
-            <button id="next">&#8250;</button>
+      <div class="col">
+        <h4 class="mg-btm hide">SCHEDULE</h4>
+        <div class="carousel-wrapper">
+          <div class="carousel">
+            <div class="carousel-inner"></div>
+
+            <div class="nav-buttons">
+              <button id="prev">&#8249;</button>
+              <button id="next">&#8250;</button>
+            </div>
           </div>
+          <div class="dots"></div>
         </div>
-        <div class="dots"></div>
       </div>
-    </div>
 
-    <div class="badge-section" style="width: 100%;">
-      <h4>DISC IN BADGES</h4>
-      <div id="participant-badges"></div>
-    </div>
-    
-    <div style="width: 100%;">
-      <div id="participant-buttons"></div>
-    </div>
+      <div class="badge-section" style="width: 100%">
+        <h4>DISC IN BADGES</h4>
+        <div id="participant-badges"></div>
+      </div>
 
-    <div id="modal" class="modal">
-      <span class="close" id="closeModal">&times;</span>
-      <img id="modalImage" alt="Participant Image" />
-    </div>
+      <div style="width: 100%">
+        <div id="participant-buttons"></div>
+      </div>
 
-    <div id="crushPopup" class="popup">
-      ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
-    </div>
+      <div id="modal" class="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <img id="modalImage" alt="Participant Image" />
+      </div>
 
+      <div id="crushPopup" class="popup">
+        ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
+      </div>
     </main>
-     <!--Footer-->
-      <div class="navbar">
+    <!--Footer-->
+    <div class="navbar">
       <a href="../index.html" class="navbar-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
-          </svg>
-          HOME
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-house"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"
+          />
+        </svg>
+        HOME
       </a>
       <a href="players.html" class="navbar-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
-          <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
-          </svg>
-          PLAYERS
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-people"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"
+          />
+        </svg>
+        PLAYERS
       </a>
       <a href="schedule.html" class="navbar-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-          </svg>
-          SCHEDULE
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-calendar"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+          />
+        </svg>
+        SCHEDULE
       </a>
       <a href="feedback.html" class="navbar-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-chat-square-text" viewBox="0 0 16 16">
-          <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-          <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-chat-square-text"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+          />
+          <path
+            d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"
+          />
         </svg>
         FEEDBACK
       </a>
       <a href="news.html" class="navbar-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
-          <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
-          <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
-          </svg>
-          NEWS
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="8vw"
+          height="8vw"
+          fill="currentColor"
+          class="bi bi-newspaper"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"
+          />
+          <path
+            d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"
+          />
+        </svg>
+        NEWS
       </a>
-      </div>
+    </div>
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
@@ -141,8 +215,11 @@
       const wednesdayInfoDiv = document.getElementById("wednesday-info");
       const thursdayInfoDiv = document.getElementById("thursday-info");
       const fridayInfoDiv = document.getElementById("friday-info");
-      const participantBadgesDiv = document.getElementById("participant-badges");
-      const participantButtonsDiv = document.getElementById("participant-buttons");
+      const participantBadgesDiv =
+        document.getElementById("participant-badges");
+      const participantButtonsDiv = document.getElementById(
+        "participant-buttons"
+      );
       const modal = document.getElementById("modal");
       const modalImage = document.getElementById("modalImage");
       const closeModal = document.getElementById("closeModal");
@@ -191,18 +268,18 @@
         return sortedSessions
           .map(
             (session) => `
-        <div class="session-wrapper">
-            <div class="session-item">
-              <div class="session-type">
-                <span>${session.type}</span>
-              </div>
-              <div class="session-info">
-                <span class="time">${session.time || "N/A"}</span>
-                <span class="coach">${session.coach}</span>
-                <span class="field">${session.field}</span>
-              </div>
-            </div>
-        </div>`
+                    <div class="session-wrapper">
+                        <div class="session-item">
+                          <div class="session-type">
+                            <span>${session.type}</span>
+                          </div>
+                          <div class="session-info">
+                            <span class="time">${session.time || "N/A"}</span>
+                            <span class="coach">${session.coach}</span>
+                            <span class="field">${session.field}</span>
+                          </div>
+                        </div>
+                    </div>`
           )
           .join("");
       }
@@ -214,9 +291,9 @@
             const dayElement = document.createElement("div");
             dayElement.className = "carousel-item";
             dayElement.innerHTML = `
-                <h5>${day}</h5>
-                ${createSessionHTML(dayData, day)}
-            `;
+                            <h5>${day}</h5>
+                            ${createSessionHTML(dayData, day)}
+                        `;
             carouselInner.appendChild(dayElement);
 
             const dot = document.createElement("span");
@@ -337,11 +414,11 @@
 
       function getTeamOverlay(team) {
         const validTeams = ["green", "red", "blue", "yellow"];
-    if (!team || !validTeams.includes(team.toLowerCase())) {
-        return "../filters/grey.png"; // Si l'équipe n'est pas reconnue, filtre gris
-    }
+        if (!team || !validTeams.includes(team.toLowerCase())) {
+          return "../filters/grey.png"; // Si l'équipe n'est pas reconnue, filtre gris
+        }
         return `../filters/${team.toLowerCase()}.png`; // Chemin de l'image d'overlay
-}
+      }
 
       function showCrushPopup() {
         const popup = document.getElementById("crushPopup");
@@ -361,24 +438,30 @@
         if (data) {
           const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
           participantInfoDiv.innerHTML = `
-  <div class="info-container">
-      <h1>${data.Name}</h1>
-      <div class="container">
-        <div class="photo-container">
-            <img src="${data.Picture}" alt="Photo of ${data.Name}" id="participantPhoto">
-            <div class="background-overlay" style="background-image: url('${getTeamOverlay(data.Team)}');" id="participantFiltre"></div>
-            <div class="name-overlay">${data.Crush ? "❤️" : ""}</div>
-        </div>
-        <div class="data-container">
-          <h4 class="mg-btm">INFORMATIONS</h4>
-          <p><b>FIELD POSITION:</b> ${data.Position}</p>
-          <p><b>ULTIMATE YEARS:</b> ${data.UltimateXP}</p>
-          <p><b>PALMARES:</b> ${data.Palmares}</p>
-          <p><b>DREAMS:</b> ${data.Dreams}</p>
-          <p><b>TEAM:</b> ${data.Team}</p>
-        </div>
-      </div>
-  </div>`;
+              <div class="info-container">
+                  <h1>${data.Name}</h1>
+                  <div class="container">
+                    <div class="photo-container">
+                        <img src="${data.Picture}" alt="Photo of ${
+            data.Name
+          }" id="participantPhoto">
+                        <div class="background-overlay" style="background-image: url('${getTeamOverlay(
+                          data.Team
+                        )}');" id="participantFiltre"></div>
+                        <div class="name-overlay">${
+                          data.Crush ? "❤️" : ""
+                        }</div>
+                    </div>
+                    <div class="data-container">
+                      <h4 class="mg-btm">INFORMATIONS</h4>
+                      <p><b>FIELD POSITION:</b> ${data.Position}</p>
+                      <p><b>ULTIMATE YEARS:</b> ${data.UltimateXP}</p>
+                      <p><b>PALMARES:</b> ${data.Palmares}</p>
+                      <p><b>DREAMS:</b> ${data.Dreams}</p>
+                      <p><b>TEAM:</b> ${data.Team}</p>
+                    </div>
+                  </div>
+              </div>`;
 
           const participantPhoto = document.getElementById("participantFiltre");
           participantPhoto.onclick = () => {
@@ -388,112 +471,161 @@
         } else {
           participantInfoDiv.innerHTML = "<p>Participant not found!</p>";
         }
-      })
+      });
 
       database.ref(`/players/${participantId}`).on("value", (snapshot) => {
         const data = snapshot.val();
         console.log(data);
-      if (data) {
-          participantBadgesDiv.innerHTML= `
-    <div class="badge-grid">
-      <div class="badge">
-        <img src="../image/nombres.png" width="40px"/>
-        <h5 class="orange">EDITIONS</h5>
-        <p>${data.editions}</p>
-      </div>
-      <div class="badge">
-        <img src="../image/interet-commun.png" width="40px"/>
-        <h5 class="orange">ACTIVITIES</h5>
-        <p>${data.activities}</p>
-      </div></div>
-      <div class="badge">
-        <img src="../image/rapport-dactivite.png" width="40px"/>
-        <h5 class="orange">ROLE</h5>
-        <p>${data.role}</p>
-      </div>
-    </div> `;
-} else {
-          participantBadgesDiv.innerHTML = "<p>Participant not found!</p>";
-        }
-      })
-
-document.addEventListener("DOMContentLoaded", () => {
-  const guestContent = document.getElementById("guest-content");
-  const userContent = document.getElementById("user-content");
-  const myProfileBtn = document.querySelector("#user-content a.login-button");
-
-  // Vérifier l'état de connexion avec Firebase Auth
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // ✅ L'utilisateur est connecté
-      guestContent.style.display = "none";
-      userContent.style.display = "block";
-
-      // 👉 Injecter le bouton Super Crush seulement ici
-      database.ref(`/players/${participantId}`).once("value").then((snapshot) => {
-        const data = snapshot.val();
         if (data) {
-          participantButtonsDiv.innerHTML = `
-            <div class="button">
-              <button style="--i:#D2602C;--j:#E78052;">
-                <span class="icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                  </svg>
-                </span>
-                <span class="title">Super Crush</span>
-              </button>
-            </div>`;
-        
-    myProfileBtn.addEventListener("click", function(event) {
-    event.preventDefault();
-
-    const user = firebase.auth().currentUser;
-
-    if (user) {
-      const userEmail = user.email;
-      const db = firebase.database();
-
-      db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            snapshot.forEach((childSnapshot) => {
-              const playerData = childSnapshot.val();
-              const role = playerData.role;
-
-              // Redirection en fonction du rôle
-              if (role === 'Player') {
-                window.location.href = 'my-profile-player.html';
-              } else if (role === 'Volunteer') {
-                window.location.href = 'my-profile-volunteer.html';
-              } else if (role === 'Coach') {
-                window.location.href = 'my-profile-coach.html';
-              } else {
-                alert("Rôle non reconnu : " + role);
-              }
-            });
-          } else {
-            alert("Utilisateur non trouvé dans la base de données.");
-          }
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la récupération des données utilisateur :", error);
-          alert("Erreur de chargement : " + error.message);
-        });
+          participantBadgesDiv.innerHTML = `
+                <div class="badge-grid">
+                  <div class="badge">
+                    <img src="../image/nombres.png" width="40px"/>
+                    <h5 class="orange">EDITIONS</h5>
+                    <p>${data.editions}</p>
+                  </div>
+                  <div class="badge">
+                    <img src="../image/interet-commun.png" width="40px"/>
+                    <h5 class="orange">ACTIVITIES</h5>
+                    <p>${data.activities}</p>
+                  </div></div>
+                  <div class="badge">
+                    <img src="../image/rapport-dactivite.png" width="40px"/>
+                    <h5 class="orange">ROLE</h5>
+                    <p>${data.role}</p>
+                  </div>
+                </div> `;
         } else {
-          participantButtonsDiv.innerHTML = "<p>Participant not found!</p>";
+          participantBadgesDiv.innerHTML = "<p>Participant not found!</p>";
         }
       });
 
-    } else {
-      // ❌ L'utilisateur est déconnecté
-      guestContent.style.display = "block";
-      userContent.style.display = "none";
-      participantButtonsDiv.innerHTML = ""; // Masquer aussi ce bouton
-    }
-  });
-}});
-});
+      document.addEventListener("DOMContentLoaded", () => {
+        const guestContent = document.getElementById("guest-content");
+        const userContent = document.getElementById("user-content");
+        const myProfileBtn = document.querySelector(
+          "#user-content a.login-button"
+        );
+
+        // Vérifier l'état de connexion avec Firebase Auth
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            // ✅ L'utilisateur est connecté
+            guestContent.style.display = "none";
+            userContent.style.display = "block";
+
+            const userEmail = firebase.auth().currentUser.email;
+            const db = firebase.database();
+
+            db.ref("/players")
+              .orderByChild("mail")
+              .equalTo(userEmail)
+              .once("value")
+              .then((snapshot) => {
+                if (!snapshot.exists()) return;
+
+                snapshot.forEach((childSnapshot) => {
+                  const playerData = childSnapshot.val();
+                  const fromUserId = "user" + playerData.Id;
+                  const toUserId = `user${participantId + 1}`;
+
+                  // 👉 Vérifie si l'utilisateur a déjà liké cette personne
+                  db.ref(`/likes/${fromUserId}/${toUserId}`)
+                    .once("value")
+                    .then((likeSnapshot) => {
+                      const hasLiked = likeSnapshot.val() === true;
+
+                      // 👉 Charge les infos du participant (la personne à liker)
+                      db.ref(`/players/${participantId}`)
+                        .once("value")
+                        .then((participantSnapshot) => {
+                          const data = participantSnapshot.val();
+                          if (!data) return;
+
+                          // 👉 Injecte le bouton dans le DOM
+                          participantButtonsDiv.innerHTML = `
+  <div class="button" id="superCrushBtn">
+    <button 
+      style="--i:#D2602C;--j:#E78052;">
+      <span class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+        </svg>
+      </span>
+      <span class="title">Super Crush</span>
+    </button>
+  </div>
+`;
+                          // 👉 Ajoute le comportement au clic
+                          document
+                            .getElementById("superCrushBtn")
+                            .addEventListener("click", () => {
+                              db.ref(`/likes/${fromUserId}/${toUserId}`)
+                                .set(true)
+                                .then(() => {
+                                  console.log("🔥 Firebase updated !");
+                                })
+                                .catch(console.error);
+                            });
+                        });
+                    });
+                });
+              });
+
+            myProfileBtn.addEventListener("click", function (event) {
+              event.preventDefault();
+
+              const user = firebase.auth().currentUser;
+
+              if (user) {
+                const userEmail = user.email;
+                const db = firebase.database();
+
+                db.ref("/players")
+                  .orderByChild("mail")
+                  .equalTo(userEmail)
+                  .once("value")
+                  .then((snapshot) => {
+                    if (snapshot.exists()) {
+                      snapshot.forEach((childSnapshot) => {
+                        const playerData = childSnapshot.val();
+                        const role = playerData.role;
+
+                        // Redirection en fonction du rôle
+                        if (role === "Player") {
+                          window.location.href = "my-profile-player.html";
+                        } else if (role === "Volunteer") {
+                          window.location.href = "my-profile-volunteer.html";
+                        } else if (role === "Coach") {
+                          window.location.href = "my-profile-coach.html";
+                        } else {
+                          alert("Rôle non reconnu : " + role);
+                        }
+                      });
+                    } else {
+                      alert("Utilisateur non trouvé dans la base de données.");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Erreur lors de la récupération des données utilisateur :",
+                      error
+                    );
+                    alert("Erreur de chargement : " + error.message);
+                  });
+              } else {
+                participantButtonsDiv.innerHTML =
+                  "<p>Participant not found!</p>";
+              }
+            });
+          } else {
+            // ❌ L'utilisateur est déconnecté
+            guestContent.style.display = "block";
+            userContent.style.display = "none";
+            participantButtonsDiv.innerHTML = ""; // Masquer aussi ce bouton
+          }
+        });
+      });
     </script>
   </body>
 </html>
