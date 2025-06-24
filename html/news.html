@@ -113,31 +113,36 @@
   }
 
   // Écoute les mises à jour des actualités dans Firebase
-  newsRef.on("value", (snapshot) => {
-    const postsFeed = document.getElementById("postsFeed");
-    postsFeed.innerHTML = ""; // Vide le conteneur avant d'ajouter les nouvelles données
+newsRef.on("value", (snapshot) => {
+  const postsFeed = document.getElementById("postsFeed");
+  postsFeed.innerHTML = "";
 
-    const newsData = snapshot.val();
-    if (newsData) {
-      Object.keys(newsData).forEach((key) => {
-        const newsItem = newsData[key];
+  const newsData = snapshot.val();
+  if (newsData) {
+    // Convertir en tableau et parser les dates avant de trier
+    const sortedNews = Object.values(newsData).sort((a, b) => {
+      const dateA = new Date(a.Date).getTime();
+      const dateB = new Date(b.Date).getTime();
+      return dateB - dateA; // du plus récent au plus ancien
+    });
 
-        // Création d'un élément HTML pour chaque actualité
-        const postDiv = document.createElement("div");
-        postDiv.className = "post mb-3 p-3 border rounded";
+    sortedNews.forEach((newsItem) => {
+      const postDiv = document.createElement("div");
+      postDiv.className = "post mb-3 p-3 border rounded";
 
-        postDiv.innerHTML = `
-          <h5 class="writer text-primary">${newsItem.Name}</h5>
-          <p class="message">${newsItem.Message}</p>
-          <small class="timestamp text-muted">${formatDate(newsItem.Date)}</small>
-        `;
+      postDiv.innerHTML = `
+        <h5 class="writer text-primary">${newsItem.Name}</h5>
+        <p class="message">${newsItem.Message}</p>
+        <small class="timestamp text-muted">${formatDate(newsItem.Date)}</small>
+      `;
 
-        postsFeed.appendChild(postDiv);
-      });
-    } else {
-      postsFeed.innerHTML = "<p class='text-muted'>Aucune actualité pour le moment.</p>";
-    }
-  });
+      postsFeed.appendChild(postDiv);
+    });
+  } else {
+    postsFeed.innerHTML = "<p class='text-muted'>Aucune actualité pour le moment.</p>";
+  }
+});
+
 
   document.addEventListener("DOMContentLoaded", () => {
     const guestContent = document.getElementById("guest-content");

@@ -154,8 +154,8 @@
         </div>
       </div>
     </div>
-    <!--Main content-->
-    <main class="menu-index">
+    <!--Main content Guest-->
+    <main class="menu-index" id="guest-main">
       <section>
         <h1>NEWS</h1>
         <p class="center">
@@ -214,6 +214,36 @@
         </button>
       </section>
     </main>
+    
+    <!--Main content Guest-->
+    <main class="menu-index" id="user-main">
+      
+      <section>
+        <h1>LATEST NEWS</h1>
+        <div id="latest-news" class="my-3"></div>
+        <a class="link" href="html/NEWS.html">And many more<svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill"><path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/></svg></a>
+      </section>
+      <section class="middle">
+        <h1>RATE THE PRACTICE</h1>
+        <p class="center">Evaluate your last practice - Give a grade to the coach so that they can improve!</p>
+          <div class="rating-stars">
+            <img src="image/rating.png" alt="5 rating stars"/>
+            <img src="image/rating.png" alt="5 rating stars"/>
+            <img src="image/rating.png" alt="5 rating stars"/>
+            <img src="image/rating.png" alt="5 rating stars"/>
+            <img src="image/rating.png" alt="5 rating stars"/>
+          </div>
+        <button class="official">
+          <a class="bouton" href="#" target="_blank" >DO IT NOW<svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16"><path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/></svg>
+          </a>
+        </button>
+      </section>
+      <section>
+        <h1>LIVE RESULTS</h1>
+        <div id="live-results"></div>
+      </section>
+    </main>
+
     <!--Footer-->
     <div class="navbar">
       <a href="index.html" class="navbar-item">
@@ -466,6 +496,8 @@
         const guestContent = document.getElementById("guest-content");
         const userContent = document.getElementById("user-content");
         const myProfileBtn = document.getElementById("my-profile-btn");
+        const guestMain = document.getElementById("guest-main");
+        const userMain = document.getElementById("user-main");
 
         // Vérifier l'état de connexion avec Firebase Auth
         firebase.auth().onAuthStateChanged((user) => {
@@ -473,6 +505,8 @@
             // ✅ L'utilisateur est connecté, afficher "user-content"
             guestContent.style.display = "none";
             userContent.style.display = "block";
+            guestMain.style.display = "none";
+            userMain.style.display = "block";
             myProfileBtn.addEventListener("click", function (event) {
               event.preventDefault();
 
@@ -514,9 +548,110 @@
             // ❌ L'utilisateur est déconnecté, afficher "guest-content"
             guestContent.style.display = "block";
             userContent.style.display = "none";
+            guestMain.style.display = "block";
+            userMain.style.display = "none";
           }
         });
       });
+
+function fetchLiveScores() {
+  const dbRef = firebase.database().ref("/scores");
+  dbRef.on("value", (snapshot) => {
+    const scores = snapshot.val();
+    renderLiveResults(scores);
+  });
+}
+
+function renderLiveResults(scores) {
+  const container = document.getElementById("live-results");
+  container.innerHTML = ""; // reset
+
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("teams");
+
+  const highest = Math.max(...Object.values(scores));
+
+  const teamInfo = {
+    blue: "blue-logo.png",
+    green: "green-logo.png",
+    red: "red-logo.png",
+    yellow: "yellow-logo.png"
+  };
+
+  for (const team in teamInfo) {
+    const block = document.createElement("div");
+    block.classList.add("team");
+
+    if (scores[team] === highest) {
+  const crown = document.createElement("img");
+  crown.src = "image/couronne.png";
+  crown.alt = "Crown";
+  crown.classList.add("crown");
+  block.appendChild(crown);
+} else {
+  // couronne vide pour garder l'alignement
+  const emptyCrown = document.createElement("div");
+  emptyCrown.classList.add("crown-placeholder");
+  block.appendChild(emptyCrown);
+}
+
+    const logo = document.createElement("img");
+    logo.src = `image/icons/${teamInfo[team]}`;
+    logo.alt = `${team} logo`;
+    logo.classList.add("team-logo");
+
+    const points = document.createElement("p");
+    points.classList.add("score");
+    points.innerHTML = `<strong>${scores[team]} PTS</strong>`;
+
+    block.appendChild(logo);
+    block.appendChild(points);
+
+    wrapper.appendChild(block);
+  }
+
+  container.appendChild(wrapper);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchLiveScores();
+});
+
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  return date.toLocaleString();
+}
+
+function loadLatestNews() {
+  const newsRef = firebase.database().ref("/news");
+
+  newsRef.once("value", (snapshot) => {
+    const data = snapshot.val();
+    if (!data) return;
+
+    // Convertir en tableau, parser les dates, puis trier
+    const sortedNews = Object.values(data).sort((a, b) => {
+      const dateA = new Date(a.Date).getTime();
+      const dateB = new Date(b.Date).getTime();
+      return dateB - dateA;
+    });
+
+    const latestNews = sortedNews[0];
+
+    const latestDiv = document.getElementById("latest-news");
+    latestDiv.innerHTML = `
+      <div class="post mb-3 p-3 border rounded">
+        <h5 class="writer text-primary">${latestNews.Name}</h5>
+        <p class="message">${latestNews.Message}</p>
+        <small class="timestamp text-muted">${formatDate(latestNews.Date)}</small>
+      </div>
+    `;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadLatestNews();
+});
 
       //Mettre en app mobile - fonction sans réseau //
       if ("serviceWorker" in navigator) {
