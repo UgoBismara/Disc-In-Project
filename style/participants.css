@@ -120,7 +120,8 @@ main {
 .badge h5,
 .badge img {
   margin: 0 auto;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
+  text-align: center;
 }
 
 img.badge {

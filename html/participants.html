@@ -478,23 +478,24 @@
         console.log(data);
         if (data) {
           participantBadgesDiv.innerHTML = `
-                <div class="badge-grid">
-                  <div class="badge">
-                    <img src="../image/nombres.png" width="40px"/>
-                    <h5 class="orange">EDITIONS</h5>
-                    <p>${data.editions}</p>
-                  </div>
-                  <div class="badge">
-                    <img src="../image/interet-commun.png" width="40px"/>
-                    <h5 class="orange">ACTIVITIES</h5>
-                    <p>${data.activities}</p>
-                  </div></div>
-                  <div class="badge">
-                    <img src="../image/rapport-dactivite.png" width="40px"/>
-                    <h5 class="orange">ROLE</h5>
-                    <p>${data.role}</p>
-                  </div>
-                </div> `;
+          <div class="badge-grid">
+            <div class="badge">
+              <img src="../image/nombres.png" width="40px"/>
+              <h5 class="orange">EDITIONS</h5>
+              <p>${data.editions}</p>
+            </div>
+            <div class="badge">
+              <img src="../image/interet-commun.png" width="40px"/>
+              <h5 class="orange">ACTIVITIES</h5>
+              <p>${data.activities}</p>
+            </div>
+            <div class="badge">
+              <img src="../image/rapport-dactivite.png" width="40px"/>
+              <h5 class="orange">ROLE</h5>
+              <p>${data.role}</p>
+            </div>
+          </div>
+        `;
         } else {
           participantBadgesDiv.innerHTML = "<p>Participant not found!</p>";
         }
