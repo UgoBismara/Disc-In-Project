@@ -118,50 +118,90 @@
       NEWS
     </a>
   </div>
-  <script>
-    const firebaseConfig = {
-  apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
-  authDomain: "disc-in-camp.firebaseapp.com",
-  databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "disc-in-camp",
-  storageBucket: "disc-in-camp.appspot.com",
-  messagingSenderId: "128937547779",
-  appId: "1:128937547779:web:22677cb4478cffaf1a1636",
-  measurementId: "G-Y4KZY16LFF",
-};
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+    authDomain: "disc-in-camp.firebaseapp.com",
+    databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "disc-in-camp",
+    storageBucket: "disc-in-camp.appspot.com",
+    messagingSenderId: "128937547779",
+    appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+    measurementId: "G-Y4KZY16LFF",
+  };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
 
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const loginBtn = document.getElementById("login-btn");
-const rememberMeCheckbox = document.getElementById("remember");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const loginBtn = document.getElementById("login-btn");
+  const rememberMeCheckbox = document.getElementById("remember");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const savedEmail = localStorage.getItem("savedEmail");
-  const rememberMe = localStorage.getItem("rememberMe");
+  document.addEventListener("DOMContentLoaded", () => {
+    // Pré-remplir si rememberMe est actif
+    const savedEmail = localStorage.getItem("savedEmail");
+    const rememberMe = localStorage.getItem("rememberMe");
 
-  if (rememberMe === "true" && savedEmail) {
-    emailInput.value = savedEmail;
-    rememberMeCheckbox.checked = true;
-  }
-});
+    if (rememberMe === "true" && savedEmail) {
+      emailInput.value = savedEmail;
+      rememberMeCheckbox.checked = true;
+    }
 
-loginBtn.addEventListener("click", (event) => {
-  event.preventDefault();
+    // Connexion automatique si l'utilisateur est déjà authentifié
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userEmail = user.email;
+        db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              snapshot.forEach((childSnapshot) => {
+                const playerData = childSnapshot.val();
+                const playerId = childSnapshot.key;
 
-  const email = emailInput.value;
-  const password = passwordInput.value;
+                localStorage.setItem('playerData', JSON.stringify(playerData));
+                localStorage.setItem('playerId', playerId);
 
-  if (email && password) {
-    auth.setPersistence(rememberMeCheckbox.checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
+                if (playerData.role === 'Player') {
+                  window.location.href = "my-profile-player.html";
+                } else if (playerData.role === 'Volunteer') {
+                  window.location.href = "my-profile-volunteer.html";
+                } else {
+                  window.location.href = "my-profile-coach.html";
+                }
+              });
+            }
+          });
+      }
+    });
+
+    // Toggle affichage mot de passe
+    const togglePassword = document.querySelector(".toggle-password");
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+    });
+  });
+
+  loginBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    if (email && password) {
+      auth.setPersistence(
+        rememberMeCheckbox.checked
+          ? firebase.auth.Auth.Persistence.LOCAL
+          : firebase.auth.Auth.Persistence.SESSION
+      )
       .then(() => auth.signInWithEmailAndPassword(email, password))
       .then((userCredential) => {
         const user = userCredential.user;
         const userEmail = user.email;
 
+        // Sauvegarde de l'email si "remember me" est coché
         if (rememberMeCheckbox.checked) {
           localStorage.setItem("rememberMe", "true");
           localStorage.setItem("savedEmail", email);
@@ -180,36 +220,57 @@ loginBtn.addEventListener("click", (event) => {
 
                 localStorage.setItem('playerData', JSON.stringify(playerData));
                 localStorage.setItem('playerId', playerId);
-                console.log(playerData.role);
-                if(playerData.role === 'Player') {
-                window.location.href = "my-profile-player.html";
-                }
-                else if(playerData.role === 'Volunteer'){
+
+                if (playerData.role === 'Player') {
+                  window.location.href = "my-profile-player.html";
+                } else if (playerData.role === 'Volunteer') {
                   window.location.href = "my-profile-volunteer.html";
-                } 
-                else {
-                window.location.href = "my-profile-coach.html";
-              }
+                } else {
+                  window.location.href = "my-profile-coach.html";
+                }
               });
             } else {
-              alert("Aucun joueur trouvé avec cet email.");
+              alert("Are you sure you're a Disc In Participant? We didn't recognise that email...");
             }
           })
           .catch((error) => {
-            console.error("Erreur récupération joueur :", error);
-            alert("Erreur récupération joueur : " + error.message);
+            console.error("Error finding participant :", error);
+            alert("Error finding participant : " + error.message);
           });
       })
       .catch((error) => {
-        alert("Erreur de connexion : " + error.message);
+        alert("Connection's error : " + error.message);
       });
-  } else {
-    alert("Veuillez entrer email et mot de passe.");
+    } else {
+      alert("Please enter your email and password...");
+    }
+  });
+
+  // Réinitialisation du mot de passe
+const forgotPasswordLink = document.getElementById("forgot-password");
+
+forgotPasswordLink.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    alert("Please enter your email first so we can send you a reset link.");
+    return;
   }
+
+  auth.sendPasswordResetEmail(email)
+    .then(() => {
+      alert("Reset link sent! Check your inbox (and spam folder just in case).");
+    })
+    .catch((error) => {
+      console.error("Reset error:", error);
+      alert("Error sending reset link: " + error.message);
+    });
 });
 
-
 </script>
+
 
   </body>
 </html>

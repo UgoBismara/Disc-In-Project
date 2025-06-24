@@ -145,3 +145,21 @@ button.official {
         height: 100%;
     }
 }
+
+
+/* Chrome, Edge, Opera */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-clear-button {
+  display: none !important;
+}
+
+/* Firefox (souvent ne l’affiche pas de base, mais au cas où) */
+input[type="password"]::-moz-focus-inner {
+  display: none;
+}
