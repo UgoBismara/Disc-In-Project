@@ -61,6 +61,7 @@
 
         <div id="spends-section" class="tab-content">
             <p class="center">Here's the list of players you have in charge!</p>
+            <div id="player-list"></div>
         </div>
         
         <div id="feedbacks-section" class="tab-content">
@@ -116,138 +117,159 @@
     </a>
   </div>
 
-  <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
-    authDomain: "disc-in-camp.firebaseapp.com",
-    databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "disc-in-camp",
-    storageBucket: "disc-in-camp.appspot.com",
-    messagingSenderId: "128937547779",
-    appId: "1:128937547779:web:22677cb4478cffaf1a1636",
-    measurementId: "G-Y4KZY16LFF",
-  };
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
+        authDomain: "disc-in-camp.firebaseapp.com",
+        databaseURL: "https://disc-in-camp-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "disc-in-camp",
+        storageBucket: "disc-in-camp.appspot.com",
+        messagingSenderId: "128937547779",
+        appId: "1:128937547779:web:22677cb4478cffaf1a1636",
+        measurementId: "G-Y4KZY16LFF",
+      };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
 
-  function getTeamOverlay(team) {
-    const validTeams = ["green", "red", "blue", "yellow"];
-    if (!team || !validTeams.includes(team.toLowerCase())) {
-      return "../filters/grey.png";
-    }
-    return `../filters/${team.toLowerCase()}.png`;
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.getElementById("logout-btn");
-    const participantInfoDiv = document.getElementById("participant-info");
-    const playerDataJSON = localStorage.getItem("playerData");
-
-    if (!playerDataJSON) {
-      alert("Données non trouvées. Veuillez vous reconnecter.");
-      window.location.href = "login.html";
-      return;
-    }
-
-    const playerData = JSON.parse(playerDataJSON);
-
-    // ✅ Affichage structuré des infos du coach
-    participantInfoDiv.innerHTML = `
-      <div class="info-container">
-        <div class="container">
-          <div class="photo-container">
-            <img src="${playerData.Picture}" alt="${playerData.Name}" id="participantPhoto">
-            <div class="background-overlay" style="background-image: url('${getTeamOverlay(playerData.Team)}');"></div>
-            <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
-          </div>
-          <div class="data-container">
-            <h4 class="mg-btm">INFORMATIONS</h4>
-            <p><b>ROLE:</b> ${playerData.Role || "N/A"}</p>
-            <p><b>TEAM:</b> ${playerData.Team || "N/A"}</p>
-            <p><b>EXPERIENCE:</b> ${playerData.ultimateXP || "N/A"} years</p>
-          </div>
-        </div>
-      </div>`;
-
-    // 🧼 Logout
-    logoutBtn?.addEventListener("click", (e) => {
-      e.preventDefault();
-      auth.signOut().then(() => {
-        localStorage.clear();
-        window.location.href = "../index.html";
-      }).catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
-      });
-    });
-
-    // Tabs
-    const tabs = document.querySelectorAll(".tab-button");
-    const tabContents = document.querySelectorAll(".tab-content");
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        tabContents.forEach(c => c.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.target).classList.add("active");
-      });
-    });
-
-    // ========== 🎯 FEEDBACK FORM LOGIC ==========
-    const feedbackScriptURL = "https://script.google.com/macros/s/AKfycbxa0WQNLRWKW6cjwqpRFSfz5-X5NozkLEB7NC1YEFeJlkZtKb9xigTLljKCxB-xH0Ao/exec"; // 🔁 Remplace par ton vrai ID Apps Script
-    const feedbackPlayerSelect = document.getElementById("feedbackPlayerSelect");
-    const feedbackTextarea = document.getElementById("feedbackMessage");
-    const feedbackSubmit = document.getElementById("submitFeedback");
-    const feedbackConfirm = document.getElementById("feedbackConfirmation");
-
-    if (feedbackConfirm) feedbackConfirm.style.display = "none";
-
-    // Chargement des joueurs
-    firebase.database().ref("/players").once("value").then(snapshot => {
-      const players = snapshot.val();
-      Object.keys(players).forEach(key => {
-        const option = document.createElement("option");
-        option.value = players[key].Id;
-        option.textContent = players[key].Name;
-        feedbackPlayerSelect.appendChild(option);
-      });
-    });
-
-    // Envoi du feedback
-    feedbackSubmit?.addEventListener("click", () => {
-      const playerId = feedbackPlayerSelect.value;
-      const message = feedbackTextarea.value.trim();
-
-      if (!playerId || !message) {
-        alert("Please select a player and write a message.");
-        return;
+      function getTeamOverlay(team) {
+        const validTeams = ["green", "red", "blue", "yellow"];
+        if (!team || !validTeams.includes(team.toLowerCase())) {
+          return "../filters/grey.png";
+        }
+        return `../filters/${team.toLowerCase()}.png`;
       }
 
-      fetch(feedbackScriptURL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          playerId,
-          givenBy: playerData.Name,
-          message
-        })
-      })
-        .then(() => {
-          feedbackConfirm.textContent = "✔ Feedback sent successfully!";
-          feedbackConfirm.style.display = "block";
-          setTimeout(() => feedbackConfirm.style.display = "none", 3000);
-          feedbackPlayerSelect.value = "";
-          feedbackTextarea.value = "";
-        })
-        .catch(err => {
-          console.error("Erreur lors de l'envoi du feedback:", err);
-          alert("Erreur d'envoi. Réessaie.");
+      document.addEventListener("DOMContentLoaded", () => {
+        const logoutBtn = document.getElementById("logout-btn");
+        const participantInfoDiv = document.getElementById("participant-info");
+        const playerDataJSON = localStorage.getItem("playerData");
+
+        if (!playerDataJSON) {
+          alert("Données non trouvées. Veuillez vous reconnecter.");
+          window.location.href = "login.html";
+          return;
+        }
+
+        const playerData = JSON.parse(playerDataJSON);
+
+        participantInfoDiv.innerHTML = `
+          <div class="info-container">
+            <div class="container">
+              <div class="photo-container">
+                <img src="${playerData.Picture}" alt="${playerData.Name}" id="participantPhoto">
+                <div class="background-overlay" style="background-image: url('${getTeamOverlay(playerData.Team)}');"></div>
+                <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
+              </div>
+              <div class="data-container">
+                <h4 class="mg-btm">INFORMATIONS</h4>
+                <p><b>ROLE:</b> ${playerData.Role || "N/A"}</p>
+                <p><b>TEAM:</b> ${playerData.Team || "N/A"}</p>
+                <p><b>EXPERIENCE:</b> ${playerData.ultimateXP || "N/A"} years</p>
+              </div>
+            </div>
+          </div>`;
+
+        logoutBtn?.addEventListener("click", (e) => {
+          e.preventDefault();
+          auth.signOut().then(() => {
+            localStorage.clear();
+            window.location.href = "../index.html";
+          }).catch((error) => {
+            console.error("Erreur lors de la déconnexion :", error);
+          });
         });
-    });
-  });
-</script>
 
+        const tabs = document.querySelectorAll(".tab-button");
+        const tabContents = document.querySelectorAll(".tab-content");
+        tabs.forEach(tab => {
+          tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tabContents.forEach(c => c.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById(tab.dataset.target).classList.add("active");
+          });
+        });
 
+        // 🎯 FEEDBACK FORM LOGIC
+        const feedbackScriptURL = "https://script.google.com/macros/s/AKfycbxa0WQNLRWKW6cjwqpRFSfz5-X5NozkLEB7NC1YEFeJlkZtKb9xigTLljKCxB-xH0Ao/exec";
+        const feedbackPlayerSelect = document.getElementById("feedbackPlayerSelect");
+        const feedbackTextarea = document.getElementById("feedbackMessage");
+        const feedbackSubmit = document.getElementById("submitFeedback");
+        const feedbackConfirm = document.getElementById("feedbackConfirmation");
+
+        if (feedbackConfirm) feedbackConfirm.style.display = "none";
+
+        firebase.database().ref("/players").once("value").then(snapshot => {
+          const players = snapshot.val();
+          Object.keys(players).forEach(key => {
+            const option = document.createElement("option");
+            option.value = players[key].Id;
+            option.textContent = players[key].Name;
+            feedbackPlayerSelect.appendChild(option);
+          });
+        });
+
+        feedbackSubmit?.addEventListener("click", () => {
+          const playerId = feedbackPlayerSelect.value;
+          const message = feedbackTextarea.value.trim();
+
+          if (!playerId || !message) {
+            alert("Please select a player and write a message.");
+            return;
+          }
+
+          fetch(feedbackScriptURL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              playerId,
+              givenBy: playerData.Name,
+              message
+            })
+          })
+          .then(() => {
+            feedbackConfirm.textContent = "✔ Feedback sent successfully!";
+            feedbackConfirm.style.display = "block";
+            setTimeout(() => feedbackConfirm.style.display = "none", 3000);
+            feedbackPlayerSelect.value = "";
+            feedbackTextarea.value = "";
+          })
+          .catch(err => {
+            console.error("Erreur lors de l'envoi du feedback:", err);
+            alert("Erreur d'envoi. Réessaie.");
+          });
+        });
+
+        // 📋 Affichage des joueurs encadrés par le coach connecté
+        const playerListElement = document.getElementById("player-list");
+
+        firebase.database().ref("/players").once("value").then(snapshot => {
+          const players = snapshot.val();
+          const coachName = playerData.Name?.trim();
+
+          Object.values(players).forEach(player => {
+            if (player.coachSupervisor?.trim() === coachName) {
+              const card = document.createElement("div");
+              card.classList.add("player-card");
+
+              card.innerHTML = `
+                <strong>${player.Name?.trim() || "Unnamed Player"}</strong><br/>
+                <small>Team: ${player.Team || "N/A"}</small>
+              `;
+
+              // 🔁 Redirection vers participants.html
+              card.addEventListener("click", () => {
+                sessionStorage.setItem("participantId", player.Id);
+                window.location.href = "participants.html";
+              });
+
+              playerListElement.appendChild(card);
+            }
+          });
+        });
+      });
+    </script>
 </body>
 </html>

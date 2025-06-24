@@ -589,3 +589,21 @@ p#total-amount.amount {
   outline: none;               /* Supprime la bordure bleue de focus */
   -webkit-tap-highlight-color: transparent; /* Supprime flash bleu sur mobile */
 }
+
+.player-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 10px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-family: 'Gabarito', sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.player-card:hover {
+  transform: scale(1.02);
+}
+
+ul#player-list {
+    padding-left: 0 !important;
+}
