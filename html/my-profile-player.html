@@ -163,7 +163,7 @@
 
     const playerData = JSON.parse(playerDataJSON);
 
-    // Affichage des infos
+    // Affichage initial avec les infos du localStorage
     participantInfoDiv.innerHTML = `
       <div class="info-container">
         <div class="container">
@@ -173,19 +173,34 @@
             <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
           </div>
           <div class="data-container">
-            <h4 class="mg-btm">INFORMATIONS</h4>
-            <p><b>FIELD POSITION:</b> ${playerData.position || 'undefined'}</p>
-            <p><b>ULTIMATE YEARS:</b> ${playerData.ultimateXP || 'undefined'}</p>
-            <p><b>PALMARES:</b> ${playerData.palmares || 'undefined'}</p>
-            <p><b>DREAMS:</b> ${playerData.dream || 'undefined'}</p>
             <p><b>TEAM:</b> ${playerData.Team || 'undefined'}</p>
+            <p id="supervisor"><b>SUPERVISOR:</b> loading...</p>
+            <p id="likes"><b>NUMBER OF LIKES:</b> loading...</p>
+            <p id="matches"><b>NUMBER OF MATCHES:</b> loading...</p>
+            <p id="move"><b>MAKE THE MOVE:</b> loading...</p>
           </div>
         </div>
       </div>`;
 
+    // Ajout listener image
     document.getElementById("participantPhoto")?.addEventListener("click", () => {
       modal.style.display = "flex";
       modalImage.src = playerData.Picture;
+    });
+
+    // 🔄 Mise à jour des infos depuis Firebase
+    const db = firebase.database();
+    const userRef = db.ref('/players/' + userId);
+
+    // Simule un champ "move" s’il n’existe pas encore
+    userRef.once('value').then(snapshot => {
+      const data = snapshot.val();
+      if (!data) return;
+
+      document.getElementById("supervisor").innerHTML = `<b>SUPERVISOR:</b> ${data.coachSupervisor || 'undefined'}`;
+      document.getElementById("likes").innerHTML = `<b>NUMBER OF LIKES:</b> ${data.likes || '0'}`;
+      document.getElementById("matches").innerHTML = `<b>NUMBER OF MATCHES:</b> ${data.matches || '0'}`;
+      document.getElementById("move").innerHTML = `<b>MAKE THE MOVE:</b> ${data.move || 'Stay chill'}`;
     });
 
     logoutBtn?.addEventListener("click", (e) => {

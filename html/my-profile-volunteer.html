@@ -145,9 +145,10 @@
     }
 
     const playerData = JSON.parse(playerDataJSON);
+    const userId = localStorage.getItem("playerId");
 
     // Affichage des infos volontaire façon "joueur"
-    participantInfoDiv.innerHTML = `
+        participantInfoDiv.innerHTML = `
       <div class="info-container">
         <div class="container">
           <div class="photo-container">
@@ -156,13 +157,35 @@
             <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
           </div>
           <div class="data-container">
-            <h4 class="mg-btm">INFORMATIONS</h4>
-            <p><b>ROLE:</b> ${playerData.Role || 'undefined'}</p>
             <p><b>TEAM:</b> ${playerData.Team || 'undefined'}</p>
-            <p><b>NATIONALITY:</b> ${playerData.nationality || 'N/A'}</p>
+            <p id="supervisor"><b>SUPERVISOR:</b> loading...</p>
+            <p id="likes"><b>NUMBER OF LIKES:</b> loading...</p>
+            <p id="matches"><b>NUMBER OF MATCHES:</b> loading...</p>
+            <p id="move"><b>MAKE THE MOVE:</b> loading...</p>
           </div>
         </div>
       </div>`;
+
+    // Ajout listener image
+    document.getElementById("participantPhoto")?.addEventListener("click", () => {
+      modal.style.display = "flex";
+      modalImage.src = playerData.Picture;
+    });
+
+    // 🔄 Mise à jour des infos depuis Firebase
+    const db = firebase.database();
+    const userRef = db.ref('/players/' + userId);
+
+    // Simule un champ "move" s’il n’existe pas encore
+    userRef.once('value').then(snapshot => {
+      const data = snapshot.val();
+      if (!data) return;
+
+      document.getElementById("supervisor").innerHTML = `<b>SUPERVISOR:</b> ${data.coachSupervisor || 'undefined'}`;
+      document.getElementById("likes").innerHTML = `<b>NUMBER OF LIKES:</b> ${data.likes || '0'}`;
+      document.getElementById("matches").innerHTML = `<b>NUMBER OF MATCHES:</b> ${data.matches || '0'}`;
+      document.getElementById("move").innerHTML = `<b>MAKE THE MOVE:</b> ${data.move || 'Stay chill'}`;
+    });
 
     logoutBtn?.addEventListener("click", (e) => {
       e.preventDefault();
