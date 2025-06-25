@@ -68,6 +68,12 @@
 
           <div class="products-grid" id="productsGrid"></div>
 
+          <button id="resetButton" title="Reset selection">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6a6.005 6.005 0 0 1-5.917-5H4.062A8.003 8.003 0 0 0 12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8z"/>
+            </svg>
+          </button>
+
           <button id="submitConsumption" class="action-button official">Submit Consumption</button>
 
           <p id="confirmationMessage" class="confirmation hidden">✔ Consumption recorded successfully!</p>
@@ -111,6 +117,7 @@
   </div>
 
  <script>
+document.addEventListener("DOMContentLoaded", () => {
   const firebaseConfig = {
     apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
     authDomain: "disc-in-camp.firebaseapp.com",
@@ -123,7 +130,23 @@
   };
 
   firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
   const auth = firebase.auth();
+
+  // ---------------------
+  // 🔥 Gestion Infos Volontaire
+  const logoutBtn = document.getElementById("logout-btn");
+  const participantInfoDiv = document.getElementById("participant-info");
+  const playerDataJSON = localStorage.getItem('playerData');
+
+  if (!playerDataJSON) {
+    alert("Données non trouvées. Veuillez vous reconnecter.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const playerData = JSON.parse(playerDataJSON);
+  const userId = localStorage.getItem("playerId");
 
   function getTeamOverlay(team) {
     const validTeams = ["green", "red", "blue", "yellow"];
@@ -133,185 +156,227 @@
     return `../filters/${team.toLowerCase()}.png`;
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.getElementById("logout-btn");
-    const participantInfoDiv = document.getElementById("participant-info");
-    const playerDataJSON = localStorage.getItem('playerData');
-
-    if (!playerDataJSON) {
-      alert("Données non trouvées. Veuillez vous reconnecter.");
-      window.location.href = "login.html";
-      return;
-    }
-
-    const playerData = JSON.parse(playerDataJSON);
-    const userId = localStorage.getItem("playerId");
-
-    // Affichage des infos volontaire façon "joueur"
-        participantInfoDiv.innerHTML = `
-      <div class="info-container">
-        <div class="container">
-          <div class="photo-container">
-            <img src="${playerData.Picture}" alt="${playerData.Name}" id="participantPhoto">
-            <div class="background-overlay" style="background-image: url('${getTeamOverlay(playerData.Team)}');"></div>
-            <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
-          </div>
-          <div class="data-container">
-            <p><b>TEAM:</b> ${playerData.Team || 'undefined'}</p>
-            <p id="supervisor"><b>SUPERVISOR:</b> loading...</p>
-            <p id="likes"><b>NUMBER OF LIKES:</b> loading...</p>
-            <p id="matches"><b>NUMBER OF MATCHES:</b> loading...</p>
-            <p id="move"><b>MAKE THE MOVE:</b> loading...</p>
-          </div>
+  participantInfoDiv.innerHTML = `
+    <div class="info-container">
+      <div class="container">
+        <div class="photo-container">
+          <img src="${playerData.Picture}" alt="${playerData.Name}" id="participantPhoto">
+          <div class="background-overlay" style="background-image: url('${getTeamOverlay(playerData.Team)}');"></div>
+          <div class="name-overlay">${playerData.Crush ? "❤️" : ""}</div>
         </div>
-      </div>`;
+        <div class="data-container">
+          <p><b>TEAM:</b> ${playerData.Team || 'undefined'}</p>
+          <p id="supervisor"><b>SUPERVISOR:</b> loading...</p>
+          <p id="likes"><b>NUMBER OF LIKES:</b> loading...</p>
+          <p id="matches"><b>NUMBER OF MATCHES:</b> loading...</p>
+          <p id="move"><b>MAKE THE MOVE:</b> loading...</p>
+        </div>
+      </div>
+    </div>`;
 
-    // Ajout listener image
-    document.getElementById("participantPhoto")?.addEventListener("click", () => {
-      modal.style.display = "flex";
-      modalImage.src = playerData.Picture;
+  const userRef = db.ref('/players/' + userId);
+
+  userRef.once('value').then(snapshot => {
+    const data = snapshot.val();
+    if (!data) return;
+    document.getElementById("supervisor").innerHTML = `<b>SUPERVISOR:</b> ${data.coachSupervisor || 'undefined'}`;
+    document.getElementById("likes").innerHTML = `<b>NUMBER OF LIKES:</b> ${data.likes || '0'}`;
+    document.getElementById("matches").innerHTML = `<b>NUMBER OF MATCHES:</b> ${data.matches || '0'}`;
+    document.getElementById("move").innerHTML = `<b>MAKE THE MOVE:</b> ${data.move || 'Stay chill'}`;
+  });
+
+  logoutBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    auth.signOut().then(() => {
+      localStorage.clear();
+      window.location.href = "../index.html";
     });
+  });
 
-    // 🔄 Mise à jour des infos depuis Firebase
-    const db = firebase.database();
-    const userRef = db.ref('/players/' + userId);
-
-    // Simule un champ "move" s’il n’existe pas encore
-    userRef.once('value').then(snapshot => {
-      const data = snapshot.val();
-      if (!data) return;
-
-      document.getElementById("supervisor").innerHTML = `<b>SUPERVISOR:</b> ${data.coachSupervisor || 'undefined'}`;
-      document.getElementById("likes").innerHTML = `<b>NUMBER OF LIKES:</b> ${data.likes || '0'}`;
-      document.getElementById("matches").innerHTML = `<b>NUMBER OF MATCHES:</b> ${data.matches || '0'}`;
-      document.getElementById("move").innerHTML = `<b>MAKE THE MOVE:</b> ${data.move || 'Stay chill'}`;
+  // ---------------------
+  // 🔥 Tabs
+  const tabs = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tabContents.forEach(c => c.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.target).classList.add("active");
     });
+  });
 
-    logoutBtn?.addEventListener("click", (e) => {
-      e.preventDefault();
-      auth.signOut().then(() => {
-        localStorage.clear();
-        window.location.href = "../index.html";
-      });
-    });
+  // ---------------------
+  // 🔥 Gestion Consommations
+  const playerSelect = document.getElementById('playerSelect');
+  const productsGrid = document.getElementById('productsGrid');
+  const submitBtn = document.getElementById('submitConsumption');
+  const confirmationMessage = document.getElementById('confirmationMessage');
 
-    // Tabs
-    const tabs = document.querySelectorAll(".tab-button");
-    const tabContents = document.querySelectorAll(".tab-content");
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        tabContents.forEach(c => c.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById(tab.dataset.target).classList.add("active");
-      });
-    });
+  confirmationMessage.style.display = 'none';
 
-    // ----- CONSUMPTION -----
-    const googleScriptURL = 'https://script.google.com/macros/s/AKfycbxBPzD5mAi2nWJsNGs4FGg_jVJwNkq6Ye_4LGtbxOATauGID7BP3JUg8xJEQXWoL9Y/exec';
-    const playerSelect = document.getElementById('playerSelect');
-    const productsGrid = document.getElementById('productsGrid');
-    const confirmationMessage = document.getElementById('confirmationMessage');
-    const submitBtn = document.getElementById('submitConsumption');
+  const productPrices = {
+    'SUNDAY NIGHT': 20,
+    'BEER': 2,
+    'SOCKS': 25,
+    'SODA': 1,
+    'COCKTAIL': 3,
+    'FRISBEE': 15,
+    'EXTRA NIGHT': 30,
+    'COFFEE': 0.5,
+    'SHOT': 1.5
+  };
 
-    confirmationMessage.style.display = 'none';
-
-    firebase.database().ref('/players').once('value', (snapshot) => {
-      const players = snapshot.val();
-      Object.keys(players).forEach(key => {
-        const option = document.createElement('option');
-        option.value = players[key].Id;
-        option.textContent = players[key].Name;
-        playerSelect.appendChild(option);
-      });
-    });
-
-    const products = [
-      { name: 'SUNDAY NIGHT', price: 20, icon: '../icons/sunday.png' },
-      { name: 'BEER', price: 2, icon: '../icons/beer.png' },
-      { name: 'SOCKS', price: 25, icon: '../icons/socks.png' },
-      { name: 'SODA', price: 1, icon: '../icons/soda.png' },
-      { name: 'COCKTAIL', price: 3, icon: '../icons/cocktail.png' },
-      { name: 'FRISBEE', price: 15, icon: '../icons/frisbee.png' },
-      { name: 'EXTRA NIGHT', price: 30, icon: '../icons/bed.png' },
-      { name: 'COFFEE', price: 0.5, icon: '../icons/coffee.png' },
-      { name: 'SHOT', price: 1.5, icon: '../icons/shot.png' }
-    ];
-
-    const productButtons = [];
-
-    products.forEach(product => {
-      const button = document.createElement('div');
-      button.className = 'product-button';
-      button.count = 0;
-
-      button.innerHTML = `
-        <img src="${product.icon}" alt="${product.name}">
-        <span class="product-name">${product.name}</span>
-        <span class="product-price">${product.price} €</span>`;
-
-      const badge = document.createElement('div');
-      badge.className = 'badge';
-      badge.textContent = '1';
-      badge.style.display = 'none';
-      button.appendChild(badge);
-
-      button.addEventListener('click', () => {
-        button.count++;
-        button.classList.add('selected');
-        badge.textContent = button.count;
-        badge.style.display = 'block';
-      });
-
-      productsGrid.appendChild(button);
-      productButtons.push({ button, productName: product.name });
-    });
-
-    submitBtn.addEventListener('click', () => {
-      const playerId = playerSelect.value;
-
-      if (!playerId) {
-        alert('Please select a player first.');
-        return;
-      }
-
-const selectedProducts = [];
-productButtons.forEach(({ button, productName }) => {
-  for (let i = 0; i < button.count; i++) {
-    selectedProducts.push(productName);
+  function calculateTotal(consumptions) {
+    return consumptions.reduce((sum, item) => sum + (productPrices[item] || 0), 0);
   }
-});
 
-if (selectedProducts.length === 0) {
-  alert('Please select at least one product.');
-  return;
-}
+  function recordConsumption(playerId, products) {
+    const playerRef = db.ref('/consos/' + playerId);
 
-fetch(googleScriptURL, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ playerId, products: selectedProducts })
-})
-.then(() => {
-  confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
-  confirmationMessage.style.display = 'block';
-  setTimeout(() => confirmationMessage.style.display = 'none', 3000);
+    playerRef.once('value')
+      .then(snapshot => {
+        const playerData = snapshot.val() || {};
 
-  playerSelect.value = '';
+        const existingConsos = playerData.consumptions || [];
+        const newConsos = existingConsos.concat(products);
+
+        const total = calculateTotal(newConsos);
+
+        return playerRef.update({
+          consumptions: newConsos,
+          total: total
+        });
+      })
+      .then(() => {
+        confirmationMessage.textContent = `✔ ${products.length} consumptions recorded successfully!`;
+        confirmationMessage.style.display = 'block';
+        setTimeout(() => confirmationMessage.style.display = 'none', 3000);
+      })
+      .catch(err => {
+        console.error('❌ Error recording consumption:', err);
+        alert('❌ Error recording consumption');
+      });
+  }
+
+  firebase.database().ref('/players').once('value', (snapshot) => {
+    const players = snapshot.val();
+    Object.keys(players).forEach(key => {
+      const option = document.createElement('option');
+      option.value = players[key].Id;
+      option.textContent = players[key].Name;
+      playerSelect.appendChild(option);
+    });
+  });
+
+  const products = [
+    { name: 'SUNDAY NIGHT', price: 20, icon: '../icons/sunday.png' },
+    { name: 'BEER', price: 2, icon: '../icons/beer.png' },
+    { name: 'SOCKS', price: 25, icon: '../icons/socks.png' },
+    { name: 'SODA', price: 1, icon: '../icons/soda.png' },
+    { name: 'COCKTAIL', price: 3, icon: '../icons/cocktail.png' },
+    { name: 'FRISBEE', price: 15, icon: '../icons/frisbee.png' },
+    { name: 'EXTRA NIGHT', price: 30, icon: '../icons/bed.png' },
+    { name: 'COFFEE', price: 0.5, icon: '../icons/coffee.png' },
+    { name: 'SHOT', price: 1.5, icon: '../icons/shot.png' }
+  ];
+
+  const productButtons = [];
+
+  products.forEach(product => {
+    const button = document.createElement('div');
+    button.className = 'product-button';
+    button.count = 0;
+
+    button.innerHTML = `
+      <img src="${product.icon}" alt="${product.name}">
+      <span class="product-name">${product.name}</span>
+      <span class="product-price">${product.price} €</span>`;
+
+    const badge = document.createElement('div');
+    badge.className = 'badge';
+    badge.textContent = '1';
+    badge.style.display = 'none';
+    button.appendChild(badge);
+
+    const minusBtn = document.createElement('div');
+    minusBtn.className = 'minus-button';
+    minusBtn.innerHTML = '–';
+    minusBtn.style.display = 'none';
+    button.appendChild(minusBtn);
+
+    // ➕ Clic pour ajouter
+    button.addEventListener('click', () => {
+      button.count++;
+      button.classList.add('selected');
+      badge.textContent = button.count;
+      badge.style.display = 'block';
+      minusBtn.style.display = 'flex';
+    });
+
+    // ➖ Clic sur le bouton moins pour enlever
+    minusBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (button.count > 0) {
+        button.count--;
+        badge.textContent = button.count;
+        if (button.count === 0) {
+          button.classList.remove('selected');
+          badge.style.display = 'none';
+          minusBtn.style.display = 'none';
+        }
+      }
+    });
+
+    productsGrid.appendChild(button);
+    productButtons.push({ button, productName: product.name });
+  });
+
+const resetButton = document.getElementById('resetButton');
+
+resetButton.addEventListener('click', () => {
   productButtons.forEach(({ button }) => {
     button.count = 0;
     button.classList.remove('selected');
     button.querySelector('.badge').style.display = 'none';
+    button.querySelector('.minus-button').style.display = 'none';
   });
-})
-.catch(err => {
-  console.error('Error submitting consumption:', err);
-  alert('There was an error. Please try again.');
+  playerSelect.value = '';
 });
 
-});
+  submitBtn.addEventListener('click', () => {
+    const playerId = playerSelect.value;
+
+    if (!playerId) {
+      alert('Please select a player first.');
+      return;
+    }
+
+    const selectedProducts = [];
+    productButtons.forEach(({ button, productName }) => {
+      for (let i = 0; i < button.count; i++) {
+        selectedProducts.push(productName);
+      }
+    });
+
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product.');
+      return;
+    }
+
+    recordConsumption(playerId, selectedProducts);
+
+    playerSelect.value = '';
+    productButtons.forEach(({ button }) => {
+      button.count = 0;
+      button.classList.remove('selected');
+      button.querySelector('.badge').style.display = 'none';
+      button.querySelector('.minus-button').style.display = 'none';
+    });
   });
+});
 </script>
+
 
 </body>
 </html>

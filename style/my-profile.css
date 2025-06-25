@@ -541,6 +541,56 @@ p#total-amount.amount {
     display: block;
 }
 
+.minus-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #fff;
+  color: #d96a36;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 20px;
+  cursor: pointer;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.product-button {
+  position: relative;
+}
+
+#resetButton {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background-color: #e78052;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+#resetButton svg {
+  width: 28px;
+  height: 28px;
+  fill: white;
+}
+
+#resetButton:hover {
+  background-color: #d96a36;
+}
+
 #playerSelect, #feedbackPlayerSelect {
     appearance: none;
     -webkit-appearance: none;
