@@ -275,47 +275,40 @@
         return;
       }
 
-      const selectedProducts = [];
-      productButtons.forEach(({ button, productName }) => {
-        for (let i = 0; i < button.count; i++) {
-          selectedProducts.push(productName);
-        }
-      });
+const selectedProducts = [];
+productButtons.forEach(({ button, productName }) => {
+  for (let i = 0; i < button.count; i++) {
+    selectedProducts.push(productName);
+  }
+});
 
-      if (selectedProducts.length === 0) {
-        alert('Please select at least one product.');
-        return;
-      }
+if (selectedProducts.length === 0) {
+  alert('Please select at least one product.');
+  return;
+}
 
-        const formData = new FormData();
-formData.append('playerId', playerId);
-formData.append('products', JSON.stringify(selectedProducts));
+fetch(googleScriptURL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ playerId, products: selectedProducts })
+})
+.then(() => {
+  confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
+  confirmationMessage.style.display = 'block';
+  setTimeout(() => confirmationMessage.style.display = 'none', 3000);
 
-      Promise.all(selectedProducts.map(productName => {
-        return fetch(googleScriptURL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ playerId, product: productName })
-        });
-      }))
+  playerSelect.value = '';
+  productButtons.forEach(({ button }) => {
+    button.count = 0;
+    button.classList.remove('selected');
+    button.querySelector('.badge').style.display = 'none';
+  });
+})
+.catch(err => {
+  console.error('Error submitting consumption:', err);
+  alert('There was an error. Please try again.');
+});
 
-        .then(() => {
-      confirmationMessage.textContent = `✔ ${selectedProducts.length} consumptions recorded successfully!`;
-      confirmationMessage.style.display = 'block';
-      setTimeout(() => confirmationMessage.style.display = 'none', 3000);
-
-      playerSelect.value = '';
-      productButtons.forEach(({ button }) => {
-        button.count = 0;
-        button.classList.remove('selected');
-        button.querySelector('.badge').style.display = 'none';
-      });
-    })
-    .catch(err => {
-      console.error('Error submitting consumption:', err);
-      alert('There was an error. Please try again.');
-    });
 });
   });
 </script>
