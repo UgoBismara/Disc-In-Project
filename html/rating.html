@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="icon" type="image/x-icon" href="../image/DiscInLogo.png"/>
+    <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara"/>
+    <meta name="description" content="This year’s edition is unlike any other—while we welcome everyone, we are prioritizing young participants to grow the next generation of ultimate players! We want everyone to be part of this incredible adventure, but this festival is especially designed to empower younger players and give them a platform to shine. Get ready for an unforgettable week of ultimate frisbee, music, creativity, and most importantly, community! The festival will take place in the beautiful setting of Saint-Martin-en-Haut, France 📍, from July 14th to July 19th, 2025 📆."/>
+    <meta name="keywords" content="disc in camp, camp 2025, ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"/>
+    <title>Disc In Camp | Rates</title>
+    <!-- Firebase SDK pour le navigateur -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="../style/login.css">
+    <link rel="stylesheet" href="../style/style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+        body.feedback-page, body.feedback-page html {
+            height: auto !important;
+        }
+
+        body.feedback-page {
+            align-items: stretch;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+
+        body.feedback-page main {
+            justify-content: flex-start;
+            padding-top: 60px;
+            padding-bottom: 80px;
+        }
+
+        body.feedback-page #auth-container {
+            margin: 2vw 0 4vw 0;
+        }
+
+        .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .stars input {
+            display: none;
+        }
+
+        .stars label {
+            font-size: 30px;
+            color: lightgray;
+            cursor: pointer;
+        }
+
+        .stars input:checked ~ label,
+        .stars label:hover,
+        .stars label:hover ~ label {
+            color: gold;
+        }
+
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            font-size: 1rem;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+  </head>
+  <body class="feedback-page">
+    <!--Header-->
+    <section class="header">
+        <a href="#" class="login-button" id="close-login-btn">
+            <p class="log-option">Cancel</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+            </svg>
+        </a>
+        <a class="logo" href="../index.html">
+            <img src="../image/DiscInLogo.png" alt="Logo" />
+        </a>
+    </section>
+
+    <!--Main-->
+    <main>
+        <h1>RATE THE PRACTICE</h1>
+        <p class="center">Evaluate your last practice - Give a grade to the coach so that they can improve!</p>
+        <div id="auth-container">
+         <form id="rating-form">
+
+            <label for="coach">Coach Name</label>
+            <select id="coach" name="coach" required>
+                <option value="">Select</option>
+                <option>Coach 1</option>
+                <option>Coach 2</option>
+                <option>Coach 3</option>
+            </select>
+
+            <label for="assistant">Assistant Coach Name</label>
+            <select id="assistant" name="assistant" required>
+                <option value="">Select</option>
+                <option>Coach 1</option>
+                <option>Coach 2</option>
+                <option>Coach 3</option>
+            </select>
+
+            <label for="type">Session Type</label>
+            <select id="type" name="type" required>
+                <option value="">Select</option>
+                <option>Game</option>
+                <option>Practice</option>
+                <option>Presentation</option>
+            </select>
+
+            <label for="datetime">Session Date and Time</label>
+            <input type="datetime-local" id="datetime" name="datetime" required 
+                min="2024-07-14T00:00" max="2025-07-19T23:59">
+
+            <label>Rating</label>
+            <div class="stars">
+                <input type="radio" id="star5" name="rating" value="5" required><label for="star5">&#9733;</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+            </div>
+
+            <label for="comment">Comment</label>
+            <textarea id="comment" name="comment" rows="5" placeholder="Your feedback..."></textarea>
+
+            <button type="submit" class="submit-btn official">Submit</button>
+         </form>
+        </div>
+    </main>
+
+   <!--Footer-->
+   <div class="navbar">
+    <a href="../index.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+      </svg>
+      HOME
+    </a>
+    <a href="players.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+      </svg>
+      PLAYERS
+    </a>
+    <a href="schedule.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+      </svg>
+      SCHEDULE
+    </a>
+    <a href="feedback.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-chat-square-text" viewBox="0 0 16 16">
+        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+      </svg>
+      FEEDBACK
+    </a>
+    <a href="news.html" class="navbar-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8vw" height="8vw" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
+        <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5z"/>
+        <path d="M2 3h10v2H2zm0 3h4v3H2zm0 4h4v1H2zm0 2h4v1H2zm5-6h2v1H7zm3 0h2v1h-2zM7 8h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2zm-3 2h2v1H7zm3 0h2v1h-2z"/>
+      </svg>
+      NEWS
+    </a>
+  </div>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Annule le submit natif du navigateur
+
+        const data = {
+            type: "rating",
+            coachName: document.getElementById('coach').value,
+            assistantCoach: document.getElementById('assistant').value,
+            sessionType: document.getElementById('type').value,
+            sessionDateTime: document.getElementById('datetime').value,
+            rating: document.querySelector('input[name="rating"]:checked')?.value || '',
+            comment: document.getElementById('comment').value
+        };
+
+        fetch('https://script.google.com/macros/s/AKfycbxa0WQNLRWKW6cjwqpRFSfz5-X5NozkLEB7NC1YEFeJlkZtKb9xigTLljKCxB-xH0Ao/exec', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.result === 'success') {
+                alert('Rating sent successfully!');
+                window.location.href = '../index.html';
+            } else {
+                alert('Error: ' + response.message);
+            }
+        })
+        .catch(err => alert('Error: ' + err));
+    });
+  </script>
+
+</body>
+</html>
