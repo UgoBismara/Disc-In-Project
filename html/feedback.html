@@ -64,11 +64,9 @@
     </section>
     <div class="abuse">
       <p class="center" style="text-transform: uppercase;">Victim of <b class=green>malicious behavior</b>?<br>Click the button bellow to directly <b class=green>alert</b> the <b class=green>Safe-Team.</b></p>
-          <a href="#" target="_blank">
-            <button class="official alert">
-              REPORT ISSUE
-            </button>
-          </a>
+        <button class="official alert" id="reportIssueBtn">
+            REPORT ISSUE
+        </button>
     </div>
 </main>
 <script>
@@ -159,6 +157,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const reportIssueBtn = document.getElementById("reportIssueBtn");
+
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // ✅ Si connecté, activer le bouton
+            reportIssueBtn.addEventListener("click", () => {
+                window.location.href = "report-issue.html"; // Remplace par ta vraie page
+            });
+        } else {
+            // ❌ Si pas connecté, afficher un message d'erreur
+            reportIssueBtn.addEventListener("click", () => {
+                alert("You must be logged in to report an issue. Please log in first.");
+            });
+        }
+    });
+});
+
 </script>
 
       <!--Footer-->
