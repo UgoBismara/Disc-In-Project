@@ -78,7 +78,7 @@
   <body class="feedback-page">
     <!--Header-->
     <section class="header">
-        <a href="#" class="login-button" id="close-login-btn">
+        <a href="../index.html" class="login-button" id="close-login-btn">
             <p class="log-option">Cancel</p>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
               <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
@@ -99,17 +99,41 @@
             <label for="coach">Coach Name</label>
             <select id="coach" name="coach" required>
                 <option value="">Select</option>
-                <option>Coach 1</option>
-                <option>Coach 2</option>
-                <option>Coach 3</option>
+                <option>Alana Archer</option>
+                <option>Aurora Lesnik</option>
+                <option>Carmen Lagala</option>
+                <option>Charlotte Schall</option>
+                <option>Coralie Fouquet</option>
+                <option>Leila Denniston</option>
+                <option>Martina Kmecová</option>
+                <option>Simona Lieberth</option>
+                <option>David Barzasi</option>
+                <option>Eliott Bonnet</option>
+                <option>Giovanni Cioppo Santucci</option>
+                <option>Jakob Dunshirn</option>
+                <option>Jan Bobinec</option>
+                <option>Moby Espita</option>
+                <option>Tobias Mine</option>
             </select>
 
             <label for="assistant">Assistant Coach Name</label>
             <select id="assistant" name="assistant" required>
                 <option value="">Select</option>
-                <option>Coach 1</option>
-                <option>Coach 2</option>
-                <option>Coach 3</option>
+                <option>Alana Archer</option>
+                <option>Aurora Lesnik</option>
+                <option>Carmen Lagala</option>
+                <option>Charlotte Schall</option>
+                <option>Coralie Fouquet</option>
+                <option>Leila Denniston</option>
+                <option>Martina Kmecová</option>
+                <option>Simona Lieberth</option>
+                <option>David Barzasi</option>
+                <option>Eliott Bonnet</option>
+                <option>Giovanni Cioppo Santucci</option>
+                <option>Jakob Dunshirn</option>
+                <option>Jan Bobinec</option>
+                <option>Moby Espita</option>
+                <option>Tobias Mine</option>
             </select>
 
             <label for="type">Session Type</label>
@@ -121,8 +145,7 @@
             </select>
 
             <label for="datetime">Session Date and Time</label>
-            <input type="datetime-local" id="datetime" name="datetime" required 
-                min="2024-07-14T00:00" max="2025-07-19T23:59">
+            <input type="datetime-local" id="datetime" name="datetime" required min="2025-07-14T00:00" max="2025-07-19T23:59">
 
             <label>Rating</label>
             <div class="stars">
@@ -177,37 +200,36 @@
     </a>
   </div>
 
-  <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Annule le submit natif du navigateur
+<script>
+    document.getElementById("rating-form").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-        const data = {
-            type: "rating",
-            coachName: document.getElementById('coach').value,
-            assistantCoach: document.getElementById('assistant').value,
-            sessionType: document.getElementById('type').value,
-            sessionDateTime: document.getElementById('datetime').value,
-            rating: document.querySelector('input[name="rating"]:checked')?.value || '',
-            comment: document.getElementById('comment').value
+        // Récupération correcte de la note cochée
+        let rating = document.querySelector('input[name="rating"]:checked')?.value || "";
+
+        let formData = {
+            coach: document.getElementById("coach").value,
+            assistant: document.getElementById("assistant").value,
+            type: document.getElementById("type").value,
+            datetime: document.getElementById("datetime").value,
+            rating: rating,
+            comment: document.getElementById("comment").value
         };
 
-        fetch('https://script.google.com/macros/s/AKfycbwq_9yFaXLMrErj6Lthe0jrKOV4FEKMT1Jl-HHygAhuT39W3JSQCtzf57lzOSBQ-kp9eA/exec', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' }
-        })
-        .then(res => res.json())
-        .then(response => {
-            if (response.result === 'success') {
-                alert('Rating sent successfully!');
-                window.location.href = '../index.html';
-            } else {
-                alert('Error: ' + response.message);
-            }
-        })
-        .catch(err => alert('Error: ' + err));
+        fetch("https://script.google.com/macros/s/AKfycbz2-f_LJfpHzF4mIbeXfUYg3M4vLOZvBGdMztAuSKr6MLxDG5GZpw86URgEl8Kb-7Scmg/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        }).then(() => {
+            alert("Feedback sent successfully!");
+            document.getElementById("rating-form").reset();
+        }).catch(error => {
+            console.error("Error:", error);
+            alert("There was an error submitting the form.");
+        });
     });
-  </script>
+</script>
 
 </body>
 </html>
