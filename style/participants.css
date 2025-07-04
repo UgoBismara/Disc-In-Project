@@ -14,7 +14,6 @@ main {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  padding-top: 5vw;
 }
 
 .mg-btm {
@@ -94,6 +93,10 @@ main {
 }
 
 /*Badges Disc In*/
+.badge-section {
+  margin-top: 4vw;
+}
+
 #participant-badges {
   display: flex;
   flex-direction: row;
@@ -131,8 +134,8 @@ img.badge {
 /*Buttons like and message*/
 #participant-buttons {
   justify-items: center;
-  padding-bottom: 2vw;
 }
+
 button {
   background-color: #fff;
   position: relative;
@@ -528,9 +531,6 @@ span.time {
     display: block !important;
   }
 
-  #participant-buttons {
-    padding-bottom: 6vw;
-  }
 
   .carousel {
     position: relative;
@@ -539,13 +539,6 @@ span.time {
     display: flex;
     align-items: center;
     overflow: hidden;
-  }
-
-  .badge-section {
-    z-index: 1;
-    position: relative;
-    top: -6vw;
-    gap: 1vw;
   }
 
   .nav-buttons {

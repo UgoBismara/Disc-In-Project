@@ -63,12 +63,15 @@
         </form>
     </section>
     <div class="abuse">
-      <p class="center" style="text-transform: uppercase;">Victim of <b class=green>malicious behavior</b>?<br>Click the button bellow to directly <b class=green>alert</b> the <b class=green>Safe-Team.</b></p>
+      <p class="center" style="text-transform: uppercase;">Victim of <b class=green>malicious behavior</b>?<br>Go talk to the <a class="orange" href="#" id="showSafeTeam">Safe Team</a> directly or click the button bellow to directly <b class=green>alert</b> them.</p>
         <button class="official alert" id="reportIssueBtn">
             REPORT ISSUE
         </button>
     </div>
 </main>
+
+<div id="safeTeamList" style="display:none; margin: 10px; text-align: center;"></div>
+
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
@@ -174,6 +177,49 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
+});
+
+document.getElementById("showSafeTeam").addEventListener("click", function(event) {
+    event.preventDefault();
+
+    const safeTeamListDiv = document.getElementById("safeTeamList");
+    safeTeamListDiv.innerHTML = "<p>Loading Safe Team...</p>";
+    safeTeamListDiv.style.display = "block";
+
+    const db = firebase.database();
+    db.ref('/players').once('value')
+        .then(snapshot => {
+            if (snapshot.exists()) {
+                let listHTML = "<h3>Safe Team Members:</h3><ul style='list-style: none; padding: 0;'>";
+                snapshot.forEach(childSnapshot => {
+                    const player = childSnapshot.val();
+                    const playerId = childSnapshot.key;
+                    const activities = player.activities ? player.activities.toLowerCase() : "";
+
+                    if (activities.includes('safe team')) {
+                        listHTML += `
+                            <li style="margin: 5px 0;">
+                                <a href="participants.html?id=${playerId}" style="color: #f97316; text-decoration: underline;">
+                                    ${player.Name}
+                                </a>
+                            </li>
+                        `;
+                    }
+                });
+                listHTML += "</ul>";
+                if (listHTML === "<h3>Safe Team Members:</h3><ul style='list-style: none; padding: 0;'></ul>") {
+                    safeTeamListDiv.innerHTML = "<p>No Safe Team members found.</p>";
+                } else {
+                    safeTeamListDiv.innerHTML = listHTML;
+                }
+            } else {
+                safeTeamListDiv.innerHTML = "<p>No players found in the database.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching Safe Team:", error);
+            safeTeamListDiv.innerHTML = "<p>Error loading Safe Team members.</p>";
+        });
 });
 
 </script>
