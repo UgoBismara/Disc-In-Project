@@ -150,8 +150,97 @@
           window.location.href = "login.html";
           return;
         }
+        
+          function updateCarousel() {
+    const items = document.querySelectorAll(".carousel-item");
+    const dots = document.querySelectorAll(".dot");
+    if (!items.length) return;
+    carouselInner.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+  }
 
         const playerData = JSON.parse(playerDataJSON);
+
+            // ----------- CAROUSEL ------------
+    const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
+      const carouselInner = document.querySelector(".carousel-inner");
+  const dotsContainer = document.querySelector(".dots");
+  let index = 0;
+
+    function createSessionHTML(dayData, day) {
+      const sessions = [
+        { time: dayData[`${day.toLowerCase()}TrainingTime`], field: `Field ${dayData[`${day.toLowerCase()}TrainingField`] || "N/A"}`, coach: dayData[`${day.toLowerCase()}TrainingCoach`] || "N/A", type: "Training" },
+        { time: dayData[`${day.toLowerCase()}GameTime`], field: `Field ${dayData[`${day.toLowerCase()}GameField`] || "N/A"}`, coach: dayData[`${day.toLowerCase()}GameCoach`] || "N/A", type: "Game" },
+        { time: dayData[`${day.toLowerCase()}PresentationTime`], field: dayData[`${day.toLowerCase()}PresentationPlace`] || "N/A", coach: dayData[`${day.toLowerCase()}PresentationCoach`] || "N/A", type: "Presentation" }
+      ];
+
+      return sessions
+        .filter(s => s.time || s.coach || s.field)
+        .sort((a, b) => (a.time || "").localeCompare(b.time || ""))
+        .map(s => `
+          <div class="session-wrapper">
+            <div class="session-item">
+              <div class="session-type"><span>${s.type}</span></div>
+              <div class="session-info">
+                <span class="time">${s.time || "N/A"}</span>
+                <span class="coach">${s.coach}</span>
+                <span class="field">${s.field}</span>
+              </div>
+            </div>
+          </div>`).join("");
+    }
+
+    if (playerData && carouselInner && dotsContainer) {
+      daysOfWeek.forEach(day => {
+        const slide = document.createElement("div");
+        slide.className = "carousel-item";
+        slide.innerHTML = `<h5>${day}</h5>${createSessionHTML(playerData, day)}`;
+        carouselInner.appendChild(slide);
+
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dotsContainer.appendChild(dot);
+      });
+      updateCarousel();
+    }
+
+    document.getElementById("prev")?.addEventListener("click", () => {
+      const items = document.querySelectorAll(".carousel-item");
+      index = index > 0 ? index - 1 : items.length - 1;
+      updateCarousel();
+    });
+
+    document.getElementById("next")?.addEventListener("click", () => {
+      const items = document.querySelectorAll(".carousel-item");
+      index = index < items.length - 1 ? index + 1 : 0;
+      updateCarousel();
+    });
+
+    // Swipe
+    let startX = 0, currentX = 0, isSwiping = false;
+    carouselInner?.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+      isSwiping = true;
+      carouselInner.style.transition = "none";
+    });
+
+    carouselInner?.addEventListener("touchmove", e => {
+      if (!isSwiping) return;
+      currentX = e.touches[0].clientX;
+      const offset = -index * carouselInner.offsetWidth + (currentX - startX);
+      carouselInner.style.transform = `translateX(${offset}px)`;
+    });
+
+    carouselInner?.addEventListener("touchend", () => {
+      const diffX = currentX - startX;
+      const items = document.querySelectorAll(".carousel-item");
+      if (Math.abs(diffX) > 50) {
+        index = diffX > 0 ? (index > 0 ? index - 1 : items.length - 1) : (index < items.length - 1 ? index + 1 : 0);
+      }
+      carouselInner.style.transition = "transform 0.5s ease";
+      updateCarousel();
+      isSwiping = false;
+    });
         const userId = localStorage.getItem("playerId");
 
             participantInfoDiv.innerHTML = `
