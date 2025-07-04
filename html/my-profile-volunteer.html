@@ -40,23 +40,16 @@
       <div id="participant-info"></div>
 
       <div class="tabs">
-        <button class="tab-button active" data-target="schedule-section">SCHEDULE</button>
+        <button class="tab-button active" data-target="spends-section">SPENDS</button>
         <button class="tab-button" data-target="record-consumption">CONSUMPTIONS</button>
       </div>
 
-      <div id="schedule-section" class="tab-content active col">
-            <div class="carousel-wrapper">
-              <div class="carousel">
-                <div class="carousel-inner"></div>
-            
-                <div class="nav-buttons">
-                  <button id="prev">&#8249;</button>
-                  <button id="next">&#8250;</button>
-                </div>
-              </div>
-              <div class="dots"></div>
-            </div>
-        </div>
+      <div id="spends-section" class="tab-content">
+          <h3>YOU OWE :</h3>
+          <p id="total-amount" class="amount">0 €</p>
+          <div id="spends-list" class="spends-list"></div>
+          <p id="see-more" class="text-center" style="color:#E86D2D; cursor:pointer;">See more</p>
+      </div>
 
         <section id="record-consumption" class="volunteer-section tab-content">
           <h3>Record a Consumption</h3>
@@ -203,6 +196,11 @@ document.addEventListener("DOMContentLoaded", () => {
       tabContents.forEach(c => c.classList.remove("active"));
       tab.classList.add("active");
       document.getElementById(tab.dataset.target).classList.add("active");
+
+   // 🔁 Reset SPENDS to 4 items only
+      if (tab.dataset.target === "spends-section") {
+        renderSpends(false);
+      }
     });
   });
 
@@ -375,6 +373,83 @@ resetButton.addEventListener('click', () => {
     });
   });
 });
+
+// ----------- SPENDS ------------
+const userId = localStorage.getItem("playerId");
+const totalAmountElem = document.getElementById('total-amount');
+const listContainer = document.getElementById('spends-list');
+const seeMoreBtn = document.getElementById('see-more');
+
+let allSpendItems = [];
+
+function renderSpends(showAll = false) {
+  listContainer.innerHTML = ""; // Réinitialiser l'affichage
+
+  const itemsToShow = showAll ? allSpendItems : allSpendItems.slice(0, 4);
+  itemsToShow.forEach(item => listContainer.appendChild(item));
+
+  if (allSpendItems.length <= 4) {
+    seeMoreBtn.style.display = "none";
+  } else {
+    seeMoreBtn.style.display = "block";
+    seeMoreBtn.textContent = showAll ? "See less" : "See more";
+  }
+}
+
+if (userId) {
+  const db = firebase.database();
+  const consosRef = db.ref('/consos/' + (parseInt(userId) + 1));
+
+  consosRef.once('value').then(snapshot => {
+    const data = snapshot.val();
+    if (!data || !data.consumptions) {
+      listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
+      totalAmountElem.textContent = "0 €";
+      return;
+    }
+
+    totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
+
+    const productIcons = {
+      "SUNDAY NIGHT": "../icons/sunday.png",
+      "BEER": "../icons/beer.png",
+      "SOCKS": "../icons/socks.png",
+      "SODA": "../icons/soda.png",
+      "COCKTAIL": "../icons/cocktail.png",
+      "FRISBEE": "../icons/frisbee.png",
+      "EXTRA NIGHT": "../icons/bed.png",
+      "COFFEE": "../icons/coffee.png",
+      "SHOT": "../icons/shot.png"
+    };
+
+    const productPrices = {
+      "SUNDAY NIGHT": 20, "BEER": 2, "SOCKS": 25, "SODA": 1, "COCKTAIL": 3,
+      "FRISBEE": 15, "EXTRA NIGHT": 30, "COFFEE": 0.5, "SHOT": 1.5
+    };
+
+    const counts = {};
+    data.consumptions.forEach(item => {
+      counts[item] = (counts[item] || 0) + 1;
+    });
+
+    allSpendItems = Object.entries(counts).map(([product, quantity]) => {
+      const item = document.createElement('div');
+      item.className = 'spend-item';
+      item.innerHTML = `
+        <img src="${productIcons[product] || '../icons/default.png'}" alt="${product}">
+        <span style="flex:1;">${product} × ${quantity}</span>
+        <span>${(productPrices[product] * quantity).toFixed(2)} €</span>`;
+      return item;
+    });
+
+    renderSpends(false); // Montre les 4 premiers au départ
+  });
+
+  seeMoreBtn?.addEventListener("click", () => {
+    const showAll = seeMoreBtn.textContent === "See more";
+    renderSpends(showAll);
+  });
+}
 </script>
 
 
