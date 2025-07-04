@@ -223,8 +223,13 @@ firebase.auth().onAuthStateChanged((user) => {
                 document.getElementById("likesList").innerHTML = "<li>Aucun like reçu pour l'instant.</li>";
 
                 document.getElementById("supervisor").innerHTML =
+<<<<<<< HEAD
                   `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
 
+=======
+                  `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'None'}`;
+                
+>>>>>>> 942bbee43b8451b56e460f0637e5ca57f861042d
                 document.getElementById("likes").innerHTML =
                   `<b>NUMBER OF LIKES:</b> 0`;
 
