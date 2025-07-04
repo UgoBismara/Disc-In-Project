@@ -187,7 +187,6 @@
       modal.style.display = "flex";
       modalImage.src = playerData.Picture;
     });
-
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     const userEmail = user.email;
@@ -204,6 +203,7 @@ firebase.auth().onAuthStateChanged((user) => {
           const playerData = childSnapshot.val();
           const toUserId = "user" + playerData.Id;
 
+          // 🔄 1) Vérifier tous les likes déjà existants au démarrage
           db.ref("/likes")
             .once("value")
             .then((likesSnapshot) => {
@@ -220,20 +220,7 @@ firebase.auth().onAuthStateChanged((user) => {
               let processed = 0;
 
               if (receivedLikes.length === 0) {
-                document.getElementById("likesList").innerHTML = "<li>Aucun like reçu pour l'instant.</li>";
-
-                document.getElementById("supervisor").innerHTML =
-                  `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'None'}`;
-                
-                document.getElementById("likes").innerHTML =
-                  `<b>NUMBER OF LIKES:</b> 0`;
-
-                document.getElementById("matches").innerHTML =
-                  `<b>NUMBER OF MATCHES:</b> ${playerData.matches || '0'}`;
-
-                document.getElementById("move").innerHTML =
-                  `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
-
+                updateInfos(playerData, 0, 0);
                 return;
               }
 
@@ -242,58 +229,91 @@ firebase.auth().onAuthStateChanged((user) => {
                   .once("value")
                   .then((snap) => {
                     const isReciprocal = snap.val() === true;
-                    if (isReciprocal) {
-                      reciprocalLikes.push(fromUserId);
-                    }
+                    if (isReciprocal) reciprocalLikes.push(fromUserId);
                   })
                   .finally(() => {
                     processed++;
                     if (processed === receivedLikes.length) {
                       const newMatchesQueue = [];
-
+                      let checked = 0;
                       reciprocalLikes.forEach((matchUserId) => {
                         db.ref(`/notifiedMatches/${toUserId}/${matchUserId}`)
                           .once("value")
                           .then((notifSnap) => {
                             const alreadyNotified = notifSnap.val() === true;
-                            if (!alreadyNotified) {
-                              newMatchesQueue.push(matchUserId);
-                            }
-
-                            // Une fois qu'on a vérifié tous les matchs
-                            if (newMatchesQueue.length + alreadyNotified === reciprocalLikes.length) {
-                              if (newMatchesQueue.length > 0) {
-                                // Démarre l'affichage de la file
-                                showMatchQueue(newMatchesQueue, toUserId);
-                              }
+                            if (!alreadyNotified) newMatchesQueue.push(matchUserId);
+                          })
+                          .finally(() => {
+                            checked++;
+                            if (checked === reciprocalLikes.length && newMatchesQueue.length > 0) {
+                              showMatchQueue(newMatchesQueue, toUserId);
                             }
                           });
                       });
 
-                      // Mise à jour infos
-                      document.getElementById("supervisor").innerHTML =
-                        `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
-                      document.getElementById("likes").innerHTML =
-                        `<b>NUMBER OF LIKES:</b> ${receivedLikes.length}`;
-                      document.getElementById("matches").innerHTML =
-                        `<b>NUMBER OF MATCHES:</b> ${reciprocalLikes.length}`;
-                      document.getElementById("move").innerHTML =
-                        `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+                      updateInfos(playerData, receivedLikes.length, reciprocalLikes.length);
                     }
                   });
               });
             });
+
+          // 🔄 2) Ecouter en temps réel les nouveaux likes reçus
+          db.ref("/likes").on("child_added", (snapshot) => {
+            const fromUserId = snapshot.key;
+            db.ref(`/likes/${fromUserId}/${toUserId}`)
+              .once("value")
+              .then((snap) => {
+                const likedMe = snap.val() === true;
+                if (likedMe) {
+                  // Vérifier réciproque
+                  db.ref(`/likes/${toUserId}/${fromUserId}`)
+                    .once("value")
+                    .then((recipSnap) => {
+                      const isReciprocal = recipSnap.val() === true;
+                      if (isReciprocal) {
+                        // Vérifier si déjà notifié
+                        db.ref(`/notifiedMatches/${toUserId}/${fromUserId}`)
+                          .once("value")
+                          .then((notifSnap) => {
+                            const alreadyNotified = notifSnap.val() === true;
+                            if (!alreadyNotified) {
+                              const playerId = fromUserId.substring(4);
+                              db.ref(`/players/${playerId}`)
+                                .once("value")
+                                .then((playerSnap) => {
+                                  const data = playerSnap.val();
+                                  const name = data ? data.Name || fromUserId : fromUserId;
+                                });
+                            }
+                          });
+                      }
+                    });
+                }
+              });
+          });
         });
       });
   }
 });
 
-// 💡 Fonction pour afficher les modales en file d'attente
+// 🔄 Mettre à jour les infos DOM
+function updateInfos(playerData, likesCount, matchesCount) {
+  document.getElementById("supervisor").innerHTML =
+    `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
+  document.getElementById("likes").innerHTML =
+    `<b>NUMBER OF LIKES:</b> ${likesCount}`;
+  document.getElementById("matches").innerHTML =
+    `<b>NUMBER OF MATCHES:</b> ${matchesCount}`;
+  document.getElementById("move").innerHTML =
+    `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+}
+
+// 🔄 File d'attente
 function showMatchQueue(queue, toUserId) {
-  if (queue.length === 0) return;
+  if (queue.length === 0) return; // Plus rien à faire
 
   const currentMatchId = queue.shift();
-  const playerId = currentMatchId.substring(4) -1;
+  const playerId = currentMatchId.substring(4) - 1;
 
   firebase.database().ref(`/players/${playerId}`)
     .once("value")
@@ -303,15 +323,15 @@ function showMatchQueue(queue, toUserId) {
 
       showMatchModal(name, () => {
         // Marquer comme notifié
-        firebase.database().ref(`/notifiedMatches/${toUserId}/${currentMatchId}`).set(true);
-
-        // Afficher la prochaine modal si elle existe
-        showMatchQueue(queue, toUserId);
+        firebase.database().ref(`/notifiedMatches/${toUserId}/${currentMatchId}`).set(true)
+          .then(() => {
+            // Ensuite on passe au suivant
+            showMatchQueue(queue, toUserId);
+          });
       });
     });
 }
 
-// 💡 Fonction pour afficher UNE modal avec callback au clic
 function showMatchModal(name, onClose) {
   const modal = document.createElement("div");
   modal.style.position = "fixed";
@@ -325,27 +345,33 @@ function showMatchModal(name, onClose) {
   modal.style.justifyContent = "center";
   modal.style.zIndex = "9999";
 
-  modal.innerHTML = `
-    <div style="
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      max-width: 300px;
-    ">
-      <h2>💘 Nouveau match !</h2>
-      <p>Tu as un match avec <b>${name}</b> !</p>
-      <button id="closeModal" style="margin-top:10px;">OK</button>
-    </div>
+  // Création d'un bouton unique sans ID
+  const content = document.createElement("div");
+  content.style.background = "white";
+  content.style.padding = "20px";
+  content.style.borderRadius = "10px";
+  content.style.textAlign = "center";
+  content.style.maxWidth = "300px";
+
+  content.innerHTML = `
+    <h2>💘 Nouveau match !</h2>
+    <p>Tu as un match avec <b>${name}</b> !</p>
   `;
 
-  document.body.appendChild(modal);
-
-  document.getElementById("closeModal").addEventListener("click", () => {
+  const button = document.createElement("button");
+  button.textContent = "OK";
+  button.style.marginTop = "10px";
+  button.addEventListener("click", () => {
     document.body.removeChild(modal);
     if (onClose) onClose();
   });
+
+  content.appendChild(button);
+  modal.appendChild(content);
+  document.body.appendChild(modal);
 }
+
+
 
 
     logoutBtn?.addEventListener("click", (e) => {

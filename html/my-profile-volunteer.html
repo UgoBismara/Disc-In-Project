@@ -185,69 +185,94 @@ firebase.auth().onAuthStateChanged((user) => {
           const playerData = childSnapshot.val();
           const toUserId = "user" + playerData.Id;
 
-          // 🔥 Parcourir tous les likes
+          // 🔄 1) Vérifier tous les likes déjà existants au démarrage
           db.ref("/likes")
             .once("value")
             .then((likesSnapshot) => {
               const allLikes = likesSnapshot.val() || {};
               const receivedLikes = [];
 
-              // Récupère tous les utilisateurs qui t'ont liké
               Object.entries(allLikes).forEach(([fromUserId, likes]) => {
                 if (likes && likes[toUserId] === true) {
                   receivedLikes.push(fromUserId);
                 }
               });
 
-              // 🔄 Vérifier la réciprocité
               const reciprocalLikes = [];
               let processed = 0;
 
               if (receivedLikes.length === 0) {
-                // Pas de likes reçus
-                document.getElementById("likesList").innerHTML = "<li>Aucun like reçu pour l'instant.</li>";
-                
-                // ✅ Mettre à jour les autres infos
-                document.getElementById("supervisor").innerHTML =
-                  `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'None'}`;
-                
-                document.getElementById("likes").innerHTML =
-                  `<b>NUMBER OF LIKES:</b> 0`;
-                
-                document.getElementById("matches").innerHTML =
-                  `<b>NUMBER OF MATCHES:</b> ${playerData.matches || '0'}`;
-                
-                document.getElementById("move").innerHTML =
-                  `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
-
+                updateInfos(playerData, 0, 0);
                 return;
               }
 
-              // Si on a des likes, on vérifie la réciprocité
-              receivedLikes.forEach((fromUserId) => {               
+              receivedLikes.forEach((fromUserId) => {
                 db.ref(`/likes/${toUserId}/${fromUserId}`)
                   .once("value")
                   .then((snap) => {
                     const isReciprocal = snap.val() === true;
-                    if (isReciprocal) {
-                      reciprocalLikes.push(fromUserId);
-                    }
-                    
-                      // ✅ Mettre à jour les autres infos
-                      document.getElementById("supervisor").innerHTML =
-                        `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
-                      
-                      document.getElementById("likes").innerHTML =
-                        `<b>NUMBER OF LIKES:</b> ${receivedLikes.length}`;
-                      
-                      document.getElementById("matches").innerHTML =
-                        `<b>NUMBER OF MATCHES:</b> ${reciprocalLikes.length}`;
-                      
-                      document.getElementById("move").innerHTML =
-                        `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+                    if (isReciprocal) reciprocalLikes.push(fromUserId);
                   })
+                  .finally(() => {
+                    processed++;
+                    if (processed === receivedLikes.length) {
+                      const newMatchesQueue = [];
+                      let checked = 0;
+                      reciprocalLikes.forEach((matchUserId) => {
+                        db.ref(`/notifiedMatches/${toUserId}/${matchUserId}`)
+                          .once("value")
+                          .then((notifSnap) => {
+                            const alreadyNotified = notifSnap.val() === true;
+                            if (!alreadyNotified) newMatchesQueue.push(matchUserId);
+                          })
+                          .finally(() => {
+                            checked++;
+                            if (checked === reciprocalLikes.length && newMatchesQueue.length > 0) {
+                              showMatchQueue(newMatchesQueue, toUserId);
+                            }
+                          });
+                      });
+
+                      updateInfos(playerData, receivedLikes.length, reciprocalLikes.length);
+                    }
+                  });
               });
             });
+
+          // 🔄 2) Ecouter en temps réel les nouveaux likes reçus
+          db.ref("/likes").on("child_added", (snapshot) => {
+            const fromUserId = snapshot.key;
+            db.ref(`/likes/${fromUserId}/${toUserId}`)
+              .once("value")
+              .then((snap) => {
+                const likedMe = snap.val() === true;
+                if (likedMe) {
+                  // Vérifier réciproque
+                  db.ref(`/likes/${toUserId}/${fromUserId}`)
+                    .once("value")
+                    .then((recipSnap) => {
+                      const isReciprocal = recipSnap.val() === true;
+                      if (isReciprocal) {
+                        // Vérifier si déjà notifié
+                        db.ref(`/notifiedMatches/${toUserId}/${fromUserId}`)
+                          .once("value")
+                          .then((notifSnap) => {
+                            const alreadyNotified = notifSnap.val() === true;
+                            if (!alreadyNotified) {
+                              const playerId = fromUserId.substring(4);
+                              db.ref(`/players/${playerId}`)
+                                .once("value")
+                                .then((playerSnap) => {
+                                  const data = playerSnap.val();
+                                  const name = data ? data.Name || fromUserId : fromUserId;
+                                });
+                            }
+                          });
+                      }
+                    });
+                }
+              });
+          });
         });
       });
   }
