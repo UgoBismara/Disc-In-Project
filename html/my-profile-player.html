@@ -227,7 +227,7 @@ firebase.auth().onAuthStateChanged((user) => {
                 
                 // ✅ Mettre à jour les autres infos
                 document.getElementById("supervisor").innerHTML =
-                  `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
+                  `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'None'}`;
                 
                 document.getElementById("likes").innerHTML =
                   `<b>NUMBER OF LIKES:</b> 0`;
