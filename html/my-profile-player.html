@@ -187,21 +187,89 @@
       modal.style.display = "flex";
       modalImage.src = playerData.Picture;
     });
-
-    // 🔄 Mise à jour des infos depuis Firebase
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    const userEmail = user.email;
     const db = firebase.database();
-    const userRef = db.ref('/players/' + userId);
 
-    // Simule un champ "move" s’il n’existe pas encore
-    userRef.once('value').then(snapshot => {
-      const data = snapshot.val();
-      if (!data) return;
+    db.ref("/players")
+      .orderByChild("mail")
+      .equalTo(userEmail)
+      .once("value")
+      .then((snapshot) => {
+        if (!snapshot.exists()) return;
 
-      document.getElementById("supervisor").innerHTML = `<b>SUPERVISOR:</b> ${data.coachSupervisor || 'undefined'}`;
-      document.getElementById("likes").innerHTML = `<b>NUMBER OF LIKES:</b> ${data.likes || '0'}`;
-      document.getElementById("matches").innerHTML = `<b>NUMBER OF MATCHES:</b> ${data.matches || '0'}`;
-      document.getElementById("move").innerHTML = `<b>MAKE THE MOVE:</b> ${data.move || 'Stay chill'}`;
-    });
+        snapshot.forEach((childSnapshot) => {
+          const playerData = childSnapshot.val();
+          const toUserId = "user" + playerData.Id;
+
+          // 🔥 Parcourir tous les likes
+          db.ref("/likes")
+            .once("value")
+            .then((likesSnapshot) => {
+              const allLikes = likesSnapshot.val() || {};
+              const receivedLikes = [];
+
+              // Récupère tous les utilisateurs qui t'ont liké
+              Object.entries(allLikes).forEach(([fromUserId, likes]) => {
+                if (likes && likes[toUserId] === true) {
+                  receivedLikes.push(fromUserId);
+                }
+              });
+
+              // 🔄 Vérifier la réciprocité
+              const reciprocalLikes = [];
+              let processed = 0;
+
+              if (receivedLikes.length === 0) {
+                // Pas de likes reçus
+                document.getElementById("likesList").innerHTML = "<li>Aucun like reçu pour l'instant.</li>";
+                
+                // ✅ Mettre à jour les autres infos
+                document.getElementById("supervisor").innerHTML =
+                  `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
+                
+                document.getElementById("likes").innerHTML =
+                  `<b>NUMBER OF LIKES:</b> 0`;
+                
+                document.getElementById("matches").innerHTML =
+                  `<b>NUMBER OF MATCHES:</b> ${playerData.matches || '0'}`;
+                
+                document.getElementById("move").innerHTML =
+                  `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+
+                return;
+              }
+
+              // Si on a des likes, on vérifie la réciprocité
+              receivedLikes.forEach((fromUserId) => {               
+                db.ref(`/likes/${toUserId}/${fromUserId}`)
+                  .once("value")
+                  .then((snap) => {
+                    const isReciprocal = snap.val() === true;
+                    if (isReciprocal) {
+                      reciprocalLikes.push(fromUserId);
+                    }
+                    
+                      // ✅ Mettre à jour les autres infos
+                      document.getElementById("supervisor").innerHTML =
+                        `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
+                      
+                      document.getElementById("likes").innerHTML =
+                        `<b>NUMBER OF LIKES:</b> ${receivedLikes.length}`;
+                      
+                      document.getElementById("matches").innerHTML =
+                        `<b>NUMBER OF MATCHES:</b> ${reciprocalLikes.length}`;
+                      
+                      document.getElementById("move").innerHTML =
+                        `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+                  })
+              });
+            });
+        });
+      });
+  }
+});
 
     logoutBtn?.addEventListener("click", (e) => {
       e.preventDefault();
