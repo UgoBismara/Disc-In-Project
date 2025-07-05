@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   const auth = firebase.auth();
+    const userId = localStorage.getItem('playerId');
 
 // ----------- SPENDS ------------
 const totalAmountElem = document.getElementById('total-amount');
