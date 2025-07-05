@@ -117,6 +117,20 @@ main {
   z-index: 2; 
 }
 
+.heart-icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  background-image: url('../icons/heart.png');
+  background-size: cover;
+  z-index: 10;
+}
+.participant {
+  position: relative;
+}
+
 @media (max-width: 600px) {
   .participants-grid {
     grid-template-columns: repeat(2, 1fr); /* Two columns for smaller screens */

@@ -135,7 +135,7 @@
         return `../filters/${team.toLowerCase()}.png`; // Chemin de l'image d'overlay
 }
 
-function createCamperCard({ Id, Name, Picture, Team }) {
+function createCamperCard({ Id, Name, Picture, Team, activities }) {
     const card = document.createElement("a");
     card.className = "participant";
     card.dataset.color = Team;
@@ -151,6 +151,14 @@ function createCamperCard({ Id, Name, Picture, Team }) {
     overlay.className = "team-overlay";
     overlay.style.backgroundImage = `url('${getTeamOverlay(Team)}')`;
 
+    // 💚 Ajout du cœur si c'est un membre de la safe team
+// 💚 Ajout du cœur si c'est un membre de la safe team
+if (typeof activities === "string" && activities.toLowerCase().includes("safe team")) {
+    const heart = document.createElement("div");
+    heart.className = "heart-icon";
+    card.appendChild(heart);
+}
+
     // Nom du participant
     const nameElement = document.createElement("h2");
     nameElement.innerText = Name;
@@ -163,11 +171,12 @@ function createCamperCard({ Id, Name, Picture, Team }) {
 
     // Ajouter les éléments à la carte
     card.appendChild(img);
-    card.appendChild(overlay); // Ajoute l'overlay après l'image
-    card.appendChild(nameElement); // Ajoute le texte au-dessus de tout
+    card.appendChild(overlay);
+    card.appendChild(nameElement);
 
     return card;
 }
+
 
       function updateUI(filteredData) {
         // Clear existing data
