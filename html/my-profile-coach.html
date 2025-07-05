@@ -261,6 +261,17 @@
               </div>
             </div>`;
 
+            function updateInfos(playerData, likesCount, matchesCount) {
+  document.getElementById("supervisor").innerHTML =
+    `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
+  document.getElementById("likes").innerHTML =
+    `<b>NUMBER OF LIKES:</b> ${likesCount}`;
+  document.getElementById("matches").innerHTML =
+    `<b>NUMBER OF MATCHES:</b> ${matchesCount}`;
+  document.getElementById("move").innerHTML =
+    `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+}
+
           // Ajout listener image
           document.getElementById("participantPhoto")?.addEventListener("click", () => {
             modal.style.display = "flex";
@@ -375,6 +386,65 @@ firebase.auth().onAuthStateChanged((user) => {
       });
   }
 });
+
+function showMatchQueue(queue, toUserId) {
+  if (queue.length === 0) return;
+
+  const currentMatchId = queue.shift();
+  const playerId = currentMatchId.substring(4) - 1;
+
+  firebase.database().ref(`/players/${playerId}`)
+    .once("value")
+    .then((snap) => {
+      const data = snap.val();
+      const name = data ? data.Name || currentMatchId : currentMatchId;
+
+      showMatchModal(name, () => {
+        firebase.database().ref(`/notifiedMatches/${toUserId}/${currentMatchId}`).set(true)
+          .then(() => {
+            showMatchQueue(queue, toUserId);
+          });
+      });
+    });
+}
+
+function showMatchModal(name, onClose) {
+  const modal = document.createElement("div");
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.width = "100%";
+  modal.style.height = "100%";
+  modal.style.background = "rgba(0,0,0,0.6)";
+  modal.style.display = "flex";
+  modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
+  modal.style.zIndex = "9999";
+
+  const content = document.createElement("div");
+  content.style.background = "white";
+  content.style.padding = "20px";
+  content.style.borderRadius = "10px";
+  content.style.textAlign = "center";
+  content.style.maxWidth = "300px";
+
+  content.innerHTML = `
+    <h2>💘 Nouveau match !</h2>
+    <p>Tu as un match avec <b>${name}</b> !</p>
+  `;
+
+  const button = document.createElement("button");
+  button.textContent = "OK";
+  button.style.marginTop = "10px";
+  button.addEventListener("click", () => {
+    document.body.removeChild(modal);
+    if (onClose) onClose();
+  });
+
+  content.appendChild(button);
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+}
 
         logoutBtn?.addEventListener("click", (e) => {
           e.preventDefault();
