@@ -507,7 +507,7 @@ if (userId) {
     }
 
     // Ajouter "BALANCE" comme consommation virtuelle si > 0
-    if (balance > 0) {
+    if (balance !== 0) {
       counts["BALANCE"] = 1;
       productPrices["BALANCE"] = balance;
     }
