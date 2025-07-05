@@ -371,9 +371,6 @@ function showMatchModal(name, onClose) {
   document.body.appendChild(modal);
 }
 
-
-
-
     logoutBtn?.addEventListener("click", (e) => {
       e.preventDefault();
       auth.signOut().then(() => {
@@ -472,13 +469,17 @@ if (userId) {
 
   consosRef.once('value').then(snapshot => {
     const data = snapshot.val();
-    if (!data || !data.consumptions) {
+    if (!data || (!data.consumptions && !data.balance)) {
       listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
       totalAmountElem.textContent = "0 €";
       return;
     }
 
-    totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
+    const total = data.total || 0;
+    const balance = data.balance || 0;
+    const finalTotal = total + balance;
+
+    totalAmountElem.textContent = `${finalTotal.toFixed(2)} €`;
 
     const productIcons = {
       "SUNDAY NIGHT": "../icons/sunday.png",
@@ -489,7 +490,8 @@ if (userId) {
       "FRISBEE": "../icons/frisbee.png",
       "EXTRA NIGHT": "../icons/bed.png",
       "COFFEE": "../icons/coffee.png",
-      "SHOT": "../icons/shot.png"
+      "SHOT": "../icons/shot.png",
+      "BALANCE": "../icons/money.png" 
     };
 
     const productPrices = {
@@ -498,9 +500,17 @@ if (userId) {
     };
 
     const counts = {};
-    data.consumptions.forEach(item => {
-      counts[item] = (counts[item] || 0) + 1;
-    });
+    if (data.consumptions) {
+      data.consumptions.forEach(item => {
+        counts[item] = (counts[item] || 0) + 1;
+      });
+    }
+
+    // Ajouter "BALANCE" comme consommation virtuelle si > 0
+    if (balance > 0) {
+      counts["BALANCE"] = 1;
+      productPrices["BALANCE"] = balance;
+    }
 
     allSpendItems = Object.entries(counts).map(([product, quantity]) => {
       const item = document.createElement('div');
