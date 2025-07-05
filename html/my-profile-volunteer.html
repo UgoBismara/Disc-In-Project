@@ -126,6 +126,92 @@ document.addEventListener("DOMContentLoaded", () => {
   const db = firebase.database();
   const auth = firebase.auth();
 
+
+// ----------- SPENDS ------------
+const userId = localStorage.getItem("playerId");
+const totalAmountElem = document.getElementById('total-amount');
+const listContainer = document.getElementById('spends-list');
+const seeMoreBtn = document.getElementById('see-more');
+
+let allSpendItems = [];
+
+function renderSpends(showAll = false) {
+  listContainer.innerHTML = ""; // Réinitialiser l'affichage
+
+  const itemsToShow = showAll ? allSpendItems : allSpendItems.slice(0, 4);
+  itemsToShow.forEach(item => listContainer.appendChild(item));
+
+  if (allSpendItems.length <= 4) {
+    seeMoreBtn.style.display = "none";
+  } else {
+    seeMoreBtn.style.display = "block";
+    seeMoreBtn.textContent = showAll ? "See less" : "See more";
+  }
+}
+
+if (userId) {
+  const db = firebase.database();
+  const consosRef = db.ref('/consos/' + (parseInt(userId) + 1));
+
+  consosRef.once('value').then(snapshot => {
+    const data = snapshot.val();
+    if (!data || !data.consumptions) {
+      listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
+      totalAmountElem.textContent = "0 €";
+      return;
+    }
+
+    totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
+
+    const productIcons = {
+      "SUNDAY NIGHT": "../icons/sunday.png",
+      "BEER": "../icons/beer.png",
+      "SOCKS": "../icons/socks.png",
+      "SODA": "../icons/soda.png",
+      "COCKTAIL": "../icons/cocktail.png",
+      "FRISBEE": "../icons/frisbee.png",
+      "EXTRA NIGHT": "../icons/bed.png",
+      "COFFEE": "../icons/coffee.png",
+      "SHOT": "../icons/shot.png"
+    };
+
+    const productPrices = {
+      "SUNDAY NIGHT": 20, "BEER": 2, "SOCKS": 25, "SODA": 1, "COCKTAIL": 3,
+      "FRISBEE": 15, "EXTRA NIGHT": 30, "COFFEE": 0.5, "SHOT": 1.5
+    };
+
+    const counts = {};
+    data.consumptions.forEach(item => {
+      counts[item] = (counts[item] || 0) + 1;
+    });
+
+allSpendItems = Object.entries(counts).map(([product, quantity]) => {
+  const item = document.createElement('div');
+  item.className = 'spend-item';
+  item.innerHTML = `
+    <img src="${productIcons[product] || '../icons/default.png'}" alt="${product}">
+    <span style="flex:1;">${product} × ${quantity}</span>
+    <span>${(productPrices[product] * quantity).toFixed(2)} €</span>`;
+  return item;
+});
+
+// ✅ Fix: Affiche directement les données si SPENDS est actif
+if (document.querySelector(".tab-button.active")?.dataset.target === "spends-section") {
+  renderSpends(false);
+}
+
+    // ✅ Montre les données ET active la section visuellement
+renderSpends(false);
+document.getElementById("spends-section").classList.add("active");
+document.querySelector('[data-target="spends-section"]').classList.add("active");
+  });
+
+  seeMoreBtn?.addEventListener("click", () => {
+    const showAll = seeMoreBtn.textContent === "See more";
+    renderSpends(showAll);
+  });
+}
+
   // ---------------------
   // 🔥 Gestion Infos Volontaire
   const logoutBtn = document.getElementById("logout-btn");
@@ -139,7 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const playerData = JSON.parse(playerDataJSON);
-  const userId = localStorage.getItem("playerId");
 
   function getTeamOverlay(team) {
     const validTeams = ["green", "red", "blue", "yellow"];
@@ -331,8 +416,8 @@ function showMatchModal(name, onClose) {
   content.style.maxWidth = "300px";
 
   content.innerHTML = `
-    <h2>💘 Nouveau match !</h2>
-    <p>Tu as un match avec <b>${name}</b> !</p>
+    <h2>💘 New match !</h2>
+    <p>You’ve matched with <b>${name}</b> !</p>
   `;
 
   const button = document.createElement("button");
@@ -544,90 +629,6 @@ resetButton.addEventListener('click', () => {
   });
 });
 
-// ----------- SPENDS ------------
-const userId = localStorage.getItem("playerId");
-const totalAmountElem = document.getElementById('total-amount');
-const listContainer = document.getElementById('spends-list');
-const seeMoreBtn = document.getElementById('see-more');
-
-let allSpendItems = [];
-
-function renderSpends(showAll = false) {
-  listContainer.innerHTML = ""; // Réinitialiser l'affichage
-
-  const itemsToShow = showAll ? allSpendItems : allSpendItems.slice(0, 4);
-  itemsToShow.forEach(item => listContainer.appendChild(item));
-
-  if (allSpendItems.length <= 4) {
-    seeMoreBtn.style.display = "none";
-  } else {
-    seeMoreBtn.style.display = "block";
-    seeMoreBtn.textContent = showAll ? "See less" : "See more";
-  }
-}
-
-if (userId) {
-  const db = firebase.database();
-  const consosRef = db.ref('/consos/' + (parseInt(userId) + 1));
-
-  consosRef.once('value').then(snapshot => {
-    const data = snapshot.val();
-    if (!data || !data.consumptions) {
-      listContainer.innerHTML = '<p style="text-align:center;">No spending data available.</p>';
-      totalAmountElem.textContent = "0 €";
-      return;
-    }
-
-    totalAmountElem.textContent = data.total?.toString().includes("€") ? data.total : `${data.total} €`;
-
-    const productIcons = {
-      "SUNDAY NIGHT": "../icons/sunday.png",
-      "BEER": "../icons/beer.png",
-      "SOCKS": "../icons/socks.png",
-      "SODA": "../icons/soda.png",
-      "COCKTAIL": "../icons/cocktail.png",
-      "FRISBEE": "../icons/frisbee.png",
-      "EXTRA NIGHT": "../icons/bed.png",
-      "COFFEE": "../icons/coffee.png",
-      "SHOT": "../icons/shot.png"
-    };
-
-    const productPrices = {
-      "SUNDAY NIGHT": 20, "BEER": 2, "SOCKS": 25, "SODA": 1, "COCKTAIL": 3,
-      "FRISBEE": 15, "EXTRA NIGHT": 30, "COFFEE": 0.5, "SHOT": 1.5
-    };
-
-    const counts = {};
-    data.consumptions.forEach(item => {
-      counts[item] = (counts[item] || 0) + 1;
-    });
-
-allSpendItems = Object.entries(counts).map(([product, quantity]) => {
-  const item = document.createElement('div');
-  item.className = 'spend-item';
-  item.innerHTML = `
-    <img src="${productIcons[product] || '../icons/default.png'}" alt="${product}">
-    <span style="flex:1;">${product} × ${quantity}</span>
-    <span>${(productPrices[product] * quantity).toFixed(2)} €</span>`;
-  return item;
-});
-
-// ✅ Fix: Affiche directement les données si SPENDS est actif
-if (document.querySelector(".tab-button.active")?.dataset.target === "spends-section") {
-  renderSpends(false);
-}
-
-    // ✅ Montre les données ET active la section visuellement
-renderSpends(false);
-document.getElementById("spends-section").classList.add("active");
-document.querySelector('[data-target="spends-section"]').classList.add("active");
-  });
-
-  seeMoreBtn?.addEventListener("click", () => {
-    const showAll = seeMoreBtn.textContent === "See more";
-    renderSpends(showAll);
-  });
-}
 </script>
 
 
