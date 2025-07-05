@@ -221,8 +221,27 @@
             // ✅ Réinitialiser le formulaire
             document.getElementById("reportIssueForm").reset();
 
-            // → Ici tu pourras ajouter la logique d'envoi (Firebase, email, autre).
-        });
+            // Méthode d'envoi
+            const formData = new FormData(document.getElementById("reportIssueForm"));
+
+            fetch("../send-report.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(responseText => {
+                if (responseText.trim() === "success") {
+                    document.getElementById("popup-confirmation").style.display = "flex";
+                    document.getElementById("reportIssueForm").reset();
+                } else {
+                    alert("Error: " + responseText);
+                }
+            })
+            .catch(error => {
+                console.error("Error submitting form:", error);
+                alert("An unexpected error occurred.");
+            });
+});
 
         // Gestion du bouton pour fermer le popup + redirection
         document.getElementById("close-popup").addEventListener("click", () => {
