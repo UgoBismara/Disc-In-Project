@@ -68,9 +68,10 @@
             REPORT ISSUE
         </button>
     </div>
-</main>
 
-<div id="safeTeamList" style="display:none; margin: 10px; text-align: center;"></div>
+    <div id="safeTeamList" style="display:none;" class="safe-team-container"></div>
+
+  </main>
 
 <script>
     const firebaseConfig = {
@@ -194,23 +195,40 @@ document.getElementById("showSafeTeam").addEventListener("click", function(event
                 snapshot.forEach(childSnapshot => {
                     const player = childSnapshot.val();
                     const playerId = childSnapshot.key;
-                    const activities = player.activities ? player.activities.toLowerCase() : "";
+                    const activities = typeof player.activities === 'string' ? player.activities.toLowerCase() : "";
 
                     if (activities.includes('safe team')) {
                         listHTML += `
-                            <li style="margin: 5px 0;">
-                                <a href="participants.html?id=${playerId}" style="color: #f97316; text-decoration: underline;">
+                            <li class="safe-team-list" style="margin: 5px 0;">
+                                <span class="safe-team-member" data-id="${playerId}" style="color: #f97316; text-decoration: underline; cursor: pointer;">
                                     ${player.Name}
-                                </a>
+                                </span>
                             </li>
                         `;
                     }
                 });
                 listHTML += "</ul>";
-                if (listHTML === "<h3>Safe Team Members:</h3><ul style='list-style: none; padding: 0;'></ul>") {
+
+                if (!listHTML.includes('<li')) {
                     safeTeamListDiv.innerHTML = "<p>No Safe Team members found.</p>";
                 } else {
                     safeTeamListDiv.innerHTML = listHTML;
+
+                  // 👉 Ajoute les événements de clic
+                  document.querySelectorAll(".safe-team-member").forEach(elem => {
+                      elem.addEventListener("click", () => {
+                          const rawId = elem.getAttribute("data-id");
+                          const parsed = parseInt(rawId, 10);
+                          if (!isNaN(parsed)) {
+                              const adjustedId = parsed + 1;
+                              sessionStorage.setItem("participantId", adjustedId);
+                              window.location.href = "participants.html";
+                          } else {
+                              console.error("Invalid data-id:", rawId);
+                              alert("Erreur : impossible de récupérer l'ID du participant.");
+                          }
+                      });
+                  });
                 }
             } else {
                 safeTeamListDiv.innerHTML = "<p>No players found in the database.</p>";
@@ -220,8 +238,7 @@ document.getElementById("showSafeTeam").addEventListener("click", function(event
             console.error("Error fetching Safe Team:", error);
             safeTeamListDiv.innerHTML = "<p>Error loading Safe Team members.</p>";
         });
-});
-
+  });
 </script>
 
       <!--Footer-->
