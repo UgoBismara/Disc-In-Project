@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $emailContent .= "Follow-up preference: $followup\n\n";
     $emailContent .= "Description:\n$description\n";
 
-    $headers = "From: safe-form@discin-camp.com\r\n";
+    $headers = "From: ultimate.discin@gmail.com\r\n";
     $headers .= "Reply-To: $contactInfo\r\n";
 
     if (mail($to, $subject, $emailContent, $headers)) {

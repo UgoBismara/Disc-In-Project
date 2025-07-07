@@ -1,7 +1,8 @@
-body {
+  body {
   font-family: Blinker;
   margin: 0;
   background-color: #fffaf7;
+  height: 100% !important;
 }
 
 section {
@@ -34,6 +35,7 @@ p {
   color: #fffaf7;
   text-decoration: none;
 }
+
 a.bouton:hover {
   color: #1a1a1a;
   text-decoration: underline;

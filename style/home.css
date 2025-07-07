@@ -3,6 +3,8 @@
   position: relative;
   width: 100vw;
   height: 60vh;
+  top: -6vw;
+  left: 0;
   overflow: hidden;
   z-index: -1;
 }
