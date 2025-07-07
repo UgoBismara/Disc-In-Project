@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Préparer l'e-mail
-    $to = "info@discin.eu";  // <-- À modifier si besoin
+    $to = "gavilleto@gmail.com";  // <-- À modifier si besoin
     $subject = "New Safe-Team Report (DiscIn.eu)";
 
     $emailContent = "Name: $name\n";
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $emailContent .= "Not specified\n";
     }
 
-    $headers = "From: contact@discin.eu\r\n";
+    $headers = "From: ultimate.discin@gmail.com\r\n";
     if (!empty($contact)) {
         $headers .= "Reply-To: $contact\r\n";
     }
