@@ -50,7 +50,7 @@
       <h1>REPORT ISSUE</h1>
       <p class="center"><b>⚠️ Report an Issue to the Safe-Team ⚠️</b><br/>All messages are confidential, only Moby and Henrik Young from the Safe-Team will receive it.</p>
       <section class="forms">
-        <form id="reportIssueForm">
+        <form id="reportIssueForm" action="../submit_report.php" method="POST">
             <!-- Name -->
             <label for="name">Your Name</label>
             <p style="margin-top: 0 !important;">Optional: check the anonymous box if you prefer not to say.</p>
@@ -180,74 +180,47 @@
             }
         });
 
-        // 🚦 Validation du formulaire Report Issue
-        document.getElementById("reportIssueForm").addEventListener("submit", function (event) {
-            // Empêcher la soumission
-            event.preventDefault();
+    // Formulaire
+    const form = document.getElementById("reportIssueForm");
+    const popup = document.getElementById("popup-confirmation");
+    const closePopupBtn = document.getElementById("close-popup");
 
-            // 🔍 Récupération des valeurs
-            const name = document.getElementById("name").value.trim();
-            const anonymous = document.getElementById("anonymous").checked;
-            const description = document.getElementById("description").value.trim();
-            const followup = document.querySelector('input[name="followup"]:checked');
+    form.addEventListener("submit", function (event) {
+        // Validation client
+        const name = document.getElementById("name").value.trim();
+        const anonymous = document.getElementById("anonymous").checked;
+        const description = document.getElementById("description").value.trim();
+        const followup = document.querySelector('input[name="followup"]:checked');
 
-            let errors = [];
+        let errors = [];
 
-            // ✅ Vérifier que name OU anonymous est renseigné
-            if (name === "" && !anonymous) {
-                errors.push("Please provide your name or check the anonymous box.");
-            }
+        if (name === "" && !anonymous) {
+            errors.push("Please provide your name or check the anonymous box.");
+        }
 
-            // ✅ Vérifier que la description est remplie
-            if (description === "") {
-                errors.push("Please describe the situation.");
-            }
+        if (description === "") {
+            errors.push("Please describe the situation.");
+        }
 
-            // ✅ Vérifier qu'une option followup est cochée
-            if (!followup) {
-                errors.push("Please choose what you wish us to do next.");
-            }
+        if (!followup) {
+            errors.push("Please choose what you wish us to do next.");
+        }
 
-            // 🚨 Gestion des erreurs
-            if (errors.length > 0) {
-                alert(errors.join("\n"));
-                return;
-            }
+        if (errors.length > 0) {
+            event.preventDefault(); // Stop envoi si erreur
+            alert(errors.join("\n"));
+            return;
+        }
 
-            // ✅ Afficher le popup de confirmation
-            const popup = document.getElementById("popup-confirmation");
-            popup.style.display = "flex";
-
-            // ✅ Réinitialiser le formulaire
-            document.getElementById("reportIssueForm").reset();
-
-            // Méthode d'envoi
-            const formData = new FormData(document.getElementById("reportIssueForm"));
-
-            fetch("../send-report.php", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.text())
-            .then(responseText => {
-                if (responseText.trim() === "success") {
-                    document.getElementById("popup-confirmation").style.display = "flex";
-                    document.getElementById("reportIssueForm").reset();
-                } else {
-                    alert("Error: " + responseText);
-                }
-            })
-            .catch(error => {
-                console.error("Error submitting form:", error);
-                alert("An unexpected error occurred.");
-            });
-});
-
-        // Gestion du bouton pour fermer le popup + redirection
-        document.getElementById("close-popup").addEventListener("click", () => {
-            window.location.href = "feedback.html";
-        });
+        // Sinon, laisser le formulaire se soumettre naturellement (pas de preventDefault)
+        // Le PHP gérera la réponse serveur (redirection ou message)
     });
+
+    // Gestion du bouton "CLOSE"
+    closePopupBtn.addEventListener("click", () => {
+        window.location.href = "feedback.html";
+    });
+});
 </script>
 
       <!--Footer-->
