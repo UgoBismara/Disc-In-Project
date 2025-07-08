@@ -39,6 +39,7 @@ main {
   width: 90vw;
   max-width: 1000px;
   margin: 0 auto;
+  padding-bottom: 2rem;
 }
 
 .data-container {
@@ -233,7 +234,7 @@ img.badge {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 1rem;
+  padding-top: 1rem;
   text-align: center;
   gap: 1vh;
 }
@@ -249,6 +250,7 @@ img.badge {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+
 .session p {
   margin: 0.2rem 0;
 }
@@ -428,13 +430,14 @@ span.time {
   flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
   justify-content: flex-start;
   align-items: center;
-  height: 50vh; /* Ajustement pour inclure les dots */
+  height: 100%; /* Ajustement pour inclure les dots */
   width: 90vw;
   max-width: 1000px;
   box-sizing: border-box;
   text-align: center;
   overflow: hidden;
   margin: 0 auto;
+  padding-bottom: 3rem;
 }
 
 .carousel-item h5 {
@@ -507,6 +510,10 @@ span.time {
     display: block !important;
   }
 
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
 
   .carousel {
     position: relative;
