@@ -3,22 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
-    />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
     <link rel="icon" type="image/x-icon" href="../image/DiscInLogo.png" />
     <meta name="author" content="Ophelie Gavillet" content="Ugo Bismara" />
-    <meta
-      name="description"
-      content="Check out the list of players participating in the 2025 edition of Disc In Camp, a dynamic and passionate group ready to experience a unique adventure of ultimate, sharing, and community!"
-    />
-    <meta
-      name="keywords"
-      content="disc in camp, camp 2025, ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"
-    />
+    <meta name="description" content="Check out the list of players participating in the 2025 edition of Disc In Camp, a dynamic and passionate group ready to experience a unique adventure of ultimate, sharing, and community!"/>
+    <meta name="keywords" content="disc in camp, camp 2025, ultimate frisbee, frisbee community, disc sport, ultimate team, frisbee family, competitive frisbee, team spirit, sports community, ultimate, frisbee, community, disc, sport, collective, family, camp, festival"/>
     <title>Disc In Camp | Players</title>
-    <!-- Firebase SDK pour le navigateur -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -27,10 +17,7 @@
     <link rel="stylesheet" href="../style/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet"/>
   </head>
   <body>
     <section class="header">
@@ -145,13 +132,20 @@ function createCamperCard({ Id, Name, Picture, Team, activities }) {
     img.src = Picture;
     img.alt = `${Name}'s photo`;
     img.className = "participant-photo";
+    img.loading = "lazy";
+    img.onload = () => {
+      img.classList.add("loaded");
+    };
+    img.width = 150;   // ou la taille que tu veux
+    img.height = 220;
 
     // Overlay avec l'image PNG de l'équipe
     const overlay = document.createElement("div");
     overlay.className = "team-overlay";
     overlay.style.backgroundImage = `url('${getTeamOverlay(Team)}')`;
 
-    // 💚 Ajout du cœur si c'est un membre de la safe team
+   if (!Name || !Team) return null; // Skip les entrées mal formées
+
 // 💚 Ajout du cœur si c'est un membre de la safe team
 if (typeof activities === "string" && activities.toLowerCase().includes("safe team")) {
     const heart = document.createElement("div");

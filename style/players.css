@@ -98,6 +98,16 @@ main {
   object-fit: cover;
 }
 
+.participant-photo {
+  background-color: #eee; /* gris clair si l'image n’est pas encore chargée */
+  transition: filter 0.3s ease;
+  filter: blur(10px);
+}
+
+.participant-photo.loaded {
+  filter: blur(0);
+}
+
 .team-overlay {
   position: absolute;
   top: 0;
