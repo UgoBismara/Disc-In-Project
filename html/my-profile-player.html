@@ -250,8 +250,23 @@ firebase.auth().onAuthStateChanged((user) => {
                             }
                           });
                       });
+                      if (reciprocalLikes.length > 0) {
+                        const lastMatchId = reciprocalLikes[reciprocalLikes.length - 1];
+                        const lastMatchPlayerId = lastMatchId.substring(4) - 1;
 
-                      updateInfos(playerData, receivedLikes.length, reciprocalLikes.length);
+                        // Récupérer son nom
+                        db.ref(`/players/${lastMatchPlayerId}`)
+                          .once("value")
+                          .then((snap) => {
+                            const data = snap.val();
+                            const name = data ? data.Name || "Unknown" : "Unknown";
+                            const phoneNumber = data ? "+" + data.phone || "Unknown" : "Unknown";
+                            console.log(phoneNumber);
+                            updateInfos(playerData, receivedLikes.length, reciprocalLikes.length, name, phoneNumber);
+                          });
+                      } else {
+                        updateInfos(playerData, receivedLikes.length, reciprocalLikes.length);
+                      }
                     }
                   });
               });
@@ -296,8 +311,7 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 });
 
-// 🔄 Mettre à jour les infos DOM
-function updateInfos(playerData, likesCount, matchesCount) {
+function updateInfos(playerData, likesCount, matchesCount, lastMatchName = null, phoneNumber = null) {
   document.getElementById("supervisor").innerHTML =
     `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
   document.getElementById("likes").innerHTML =
@@ -305,7 +319,7 @@ function updateInfos(playerData, likesCount, matchesCount) {
   document.getElementById("matches").innerHTML =
     `<b>NUMBER OF MATCHES:</b> ${matchesCount}`;
   document.getElementById("move").innerHTML =
-    `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+    `<b>MAKE THE MOVE:</b> ${lastMatchName ? "Say hi to " + lastMatchName + "!" + "(" + phoneNumber +")" : (playerData.move || 'Stay chill')}`;
 }
 
 // 🔄 File d'attente

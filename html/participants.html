@@ -567,16 +567,44 @@
                             </div>
                             `;
                           // 👉 Ajoute le comportement au clic
-                          document
-                            .getElementById("superCrushBtn")
-                            .addEventListener("click", () => {
-                              db.ref(`/likes/${fromUserId}/${toUserId}`)
-                                .set(true)
-                                .then(() => {
-                                  console.log("🔥 Firebase updated !");
-                                })
-                                .catch(console.error);
-                            });
+                        document
+                          .getElementById("superCrushBtn")
+                          .addEventListener("click", () => {
+                            // 1️⃣ Enregistre le like
+                            db.ref(`/likes/${fromUserId}/${toUserId}`)
+                              .set(true)
+                              .then(() => {
+                                console.log("🔥 Like enregistré");
+
+                                // 2️⃣ Vérifie si réciproque
+                                return db.ref(`/likes/${toUserId}/${fromUserId}`).once("value");
+                              })
+                              .then((recipSnap) => {
+                                const isReciprocal = recipSnap.val() === true;
+                                if (isReciprocal) {
+                                  console.log("💘 C'est un MATCH!");
+
+                                  // 3️⃣ Marque comme notifié
+                                  return db
+                                    .ref(`/notifiedMatches/${fromUserId}/${toUserId}`)
+                                    .set(true)
+                                    .then(() => {
+                                      // 4️⃣ Récupère les infos du participant pour l'affichage
+                                      return db.ref(`/players/${participantId}`).once("value");
+                                    })
+                                    .then((playerSnap) => {
+                                      const data = playerSnap.val();
+                                      const name = data ? data.Name || "Unknown" : "Unknown";
+
+                                      // 5️⃣ Affiche la modal
+                                      showMatchModal(name);
+                                    });
+                                } else {
+                                  console.log("Pas de réciprocité.");
+                                }
+                              })
+                              .catch(console.error);
+                          });
                         });
                     });
                 });
@@ -636,6 +664,44 @@
           }
         });
       });
+
+      function showMatchModal(name) {
+  const modal = document.createElement("div");
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.width = "100%";
+  modal.style.height = "100%";
+  modal.style.background = "rgba(0,0,0,0.6)";
+  modal.style.display = "flex";
+  modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
+  modal.style.zIndex = "9999";
+
+  const content = document.createElement("div");
+  content.style.background = "white";
+  content.style.padding = "20px";
+  content.style.borderRadius = "10px";
+  content.style.textAlign = "center";
+  content.style.maxWidth = "300px";
+
+  content.innerHTML = `
+    <h2>💘 New Match!</h2>
+    <p>You’ve matched with <b>${name}</b>!</p>
+  `;
+
+  const button = document.createElement("button");
+  button.textContent = "OK";
+  button.style.marginTop = "10px";
+  button.addEventListener("click", () => {
+    document.body.removeChild(modal);
+  });
+
+  content.appendChild(button);
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+}
+
     </script>
   </body>
 </html>
