@@ -35,6 +35,12 @@ main {
   margin-bottom: 1rem;
 }
 
+.info-container {
+  width: 90vw;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .data-container {
   text-align: left;
   padding-left: 1rem;
@@ -532,6 +538,6 @@ span.time {
   }
 
   .photo-container {
-    width: 40vw;
+    min-width: 45%;         
   }
 }
