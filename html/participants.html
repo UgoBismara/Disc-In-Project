@@ -94,7 +94,7 @@
         ❤️ <span>SOMEONE IS CRUSHING ON YOU</span> ❤️
       </div>
 
-      <div class="col">
+      <div class="col" id="schedule-container">
         <h4 class="mg-btm hide">SCHEDULE</h4>
         <div class="carousel-wrapper">
           <div class="carousel">
@@ -436,6 +436,13 @@
           showCrushPopup();
         }
         if (data) {
+          // Masquer le schedule si pas Player
+          const scheduleContainer = document.getElementById("schedule-container");
+          if (data.role && data.role !== "Player") {
+            scheduleContainer.style.display = "none";
+          } else {
+            scheduleContainer.style.display = "block";
+          }
           const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
           participantInfoDiv.innerHTML = `
               <div class="info-container">
@@ -475,7 +482,6 @@
 
       database.ref(`/players/${participantId}`).on("value", (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
         if (data) {
           participantBadgesDiv.innerHTML = `
             <div class="badge-grid">
@@ -574,7 +580,6 @@
                             db.ref(`/likes/${fromUserId}/${toUserId}`)
                               .set(true)
                               .then(() => {
-                                console.log("🔥 Like enregistré");
 
                                 // 2️⃣ Vérifie si réciproque
                                 return db.ref(`/likes/${toUserId}/${fromUserId}`).once("value");
@@ -582,7 +587,6 @@
                               .then((recipSnap) => {
                                 const isReciprocal = recipSnap.val() === true;
                                 if (isReciprocal) {
-                                  console.log("💘 C'est un MATCH!");
 
                                   // 3️⃣ Marque comme notifié
                                   return db
@@ -599,8 +603,6 @@
                                       // 5️⃣ Affiche la modal
                                       showMatchModal(name);
                                     });
-                                } else {
-                                  console.log("Pas de réciprocité.");
                                 }
                               })
                               .catch(console.error);
