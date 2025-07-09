@@ -119,6 +119,7 @@
     </a>
   </div>
 <script>
+  // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCiy-xiOoMMgr4rwBKwGQRsA9fleX1_wT8",
     authDomain: "disc-in-camp.firebaseapp.com",
@@ -130,17 +131,55 @@
     measurementId: "G-Y4KZY16LFF",
   };
 
+  // Initialisation Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.database();
 
+  // Sélecteurs DOM
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const loginBtn = document.getElementById("login-btn");
   const rememberMeCheckbox = document.getElementById("remember");
+  const forgotPasswordLink = document.getElementById("forgot-password");
+  const logoutBtn = document.getElementById("logout-btn");
 
-  document.addEventListener("DOMContentLoaded", () => {
-    // Pré-remplir si rememberMe est actif
+  // ✅ Auto-redirection si l'utilisateur est déjà connecté
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      console.log("Utilisateur connecté automatiquement :", user.email);
+      const userEmail = user.email;
+
+      db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+              const playerData = childSnapshot.val();
+              const playerId = childSnapshot.key;
+
+              localStorage.setItem('playerData', JSON.stringify(playerData));
+              localStorage.setItem('playerId', playerId);
+
+              if (playerData.role === 'Player') {
+                window.location.href = "my-profile-player.html";
+              } else if (playerData.role === 'Volunteer') {
+                window.location.href = "my-profile-volunteer.html";
+              } else {
+                window.location.href = "my-profile-coach.html";
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Erreur chargement profil :", error);
+        });
+    } else {
+      console.log("Aucun utilisateur connecté.");
+    }
+  });
+
+  // ✅ Setup après chargement DOM
+  document.addEventListener("DOMContentLoaded", async () => {
     const savedEmail = localStorage.getItem("savedEmail");
     const rememberMe = localStorage.getItem("rememberMe");
 
@@ -149,34 +188,18 @@
       rememberMeCheckbox.checked = true;
     }
 
-    // Connexion automatique si l'utilisateur est déjà authentifié
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const userEmail = user.email;
-        db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              snapshot.forEach((childSnapshot) => {
-                const playerData = childSnapshot.val();
-                const playerId = childSnapshot.key;
+    // ⚙️ Appliquer la persistance Firebase selon le choix précédent
+    try {
+      await auth.setPersistence(
+        rememberMe === "true"
+          ? firebase.auth.Auth.Persistence.LOCAL
+          : firebase.auth.Auth.Persistence.SESSION
+      );
+    } catch (error) {
+      console.error("Erreur de persistance Firebase :", error);
+    }
 
-                localStorage.setItem('playerData', JSON.stringify(playerData));
-                localStorage.setItem('playerId', playerId);
-
-                if (playerData.role === 'Player') {
-                  window.location.href = "my-profile-player.html";
-                } else if (playerData.role === 'Volunteer') {
-                  window.location.href = "my-profile-volunteer.html";
-                } else {
-                  window.location.href = "my-profile-coach.html";
-                }
-              });
-            }
-          });
-      }
-    });
-
-    // Toggle affichage mot de passe
+    // 👁️ Toggle mot de passe
     const togglePassword = document.querySelector(".toggle-password");
     togglePassword.addEventListener("click", () => {
       const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
@@ -184,93 +207,91 @@
     });
   });
 
+  // ✅ Login utilisateur
   loginBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
-    const email = emailInput.value;
+    const email = emailInput.value.trim();
     const password = passwordInput.value;
 
     if (email && password) {
-      auth.setPersistence(
-        rememberMeCheckbox.checked
-          ? firebase.auth.Auth.Persistence.LOCAL
-          : firebase.auth.Auth.Persistence.SESSION
-      )
-      .then(() => auth.signInWithEmailAndPassword(email, password))
-      .then((userCredential) => {
-        const user = userCredential.user;
-        const userEmail = user.email;
+      // 💾 Mémoriser le choix "Remember me"
+      if (rememberMeCheckbox.checked) {
+        localStorage.setItem("rememberMe", "true");
+        localStorage.setItem("savedEmail", email);
+      } else {
+        localStorage.removeItem("rememberMe");
+        localStorage.removeItem("savedEmail");
+      }
 
-        // Sauvegarde de l'email si "remember me" est coché
-        if (rememberMeCheckbox.checked) {
-          localStorage.setItem("rememberMe", "true");
-          localStorage.setItem("savedEmail", email);
-        } else {
-          localStorage.removeItem("rememberMe");
-          localStorage.removeItem("savedEmail");
-        }
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const userEmail = userCredential.user.email;
 
-        // Récupération des infos joueur par email
-        db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              snapshot.forEach((childSnapshot) => {
-                const playerId = childSnapshot.key;
-                const playerData = childSnapshot.val();
+          db.ref('/players').orderByChild('mail').equalTo(userEmail).once('value')
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                  const playerId = childSnapshot.key;
+                  const playerData = childSnapshot.val();
 
-                localStorage.setItem('playerData', JSON.stringify(playerData));
-                localStorage.setItem('playerId', playerId);
+                  localStorage.setItem('playerData', JSON.stringify(playerData));
+                  localStorage.setItem('playerId', playerId);
 
-                if (playerData.role === 'Player') {
-                  window.location.href = "my-profile-player.html";
-                } else if (playerData.role === 'Volunteer') {
-                  window.location.href = "my-profile-volunteer.html";
-                } else {
-                  window.location.href = "my-profile-coach.html";
-                }
-              });
-            } else {
-              alert("Are you sure you're a Disc In Participant? We didn't recognise that email...");
-            }
-          })
-          .catch((error) => {
-            console.error("Error finding participant :", error);
-            alert("Error finding participant : " + error.message);
-          });
-      })
-      .catch((error) => {
-        alert("Connection's error : " + error.message);
-      });
+                  if (playerData.role === 'Player') {
+                    window.location.href = "my-profile-player.html";
+                  } else if (playerData.role === 'Volunteer') {
+                    window.location.href = "my-profile-volunteer.html";
+                  } else {
+                    window.location.href = "my-profile-coach.html";
+                  }
+                });
+              } else {
+                alert("Are you sure you're a Disc In Participant? We didn't recognise that email...");
+              }
+            })
+            .catch((error) => {
+              console.error("Erreur chargement participant :", error);
+              alert("Erreur chargement participant : " + error.message);
+            });
+        })
+        .catch((error) => {
+          alert("Erreur de connexion : " + error.message);
+        });
     } else {
       alert("Please enter your email and password...");
     }
   });
 
-  // Réinitialisation du mot de passe
-const forgotPasswordLink = document.getElementById("forgot-password");
+  // ✅ Mot de passe oublié
+  forgotPasswordLink.addEventListener("click", (event) => {
+    event.preventDefault();
 
-forgotPasswordLink.addEventListener("click", (event) => {
-  event.preventDefault();
+    const email = emailInput.value.trim();
 
-  const email = emailInput.value.trim();
+    if (!email) {
+      alert("Please enter your email first so we can send you a reset link.");
+      return;
+    }
 
-  if (!email) {
-    alert("Please enter your email first so we can send you a reset link.");
-    return;
-  }
+    auth.sendPasswordResetEmail(email)
+      .then(() => {
+        alert("Reset link sent! Check your inbox (and spam folder just in case).");
+      })
+      .catch((error) => {
+        console.error("Reset error:", error);
+        alert("Error sending reset link: " + error.message);
+      });
+  });
 
-  auth.sendPasswordResetEmail(email)
-    .then(() => {
-      alert("Reset link sent! Check your inbox (and spam folder just in case).");
-    })
-    .catch((error) => {
-      console.error("Reset error:", error);
-      alert("Error sending reset link: " + error.message);
-    });
+  // ✅ Bouton Cancel pour revenir à la page précédente ou la home
+const cancelBtn = document.getElementById("close-login-btn");
+
+cancelBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  // Redirige vers la page d'accueil
+  window.location.href = "../index.html";
 });
-
 </script>
-
-
   </body>
 </html>
