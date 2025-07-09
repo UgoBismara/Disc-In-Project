@@ -471,6 +471,18 @@ span.time {
   animation: fadeIn 1s ease, fadeOut 2s ease 1s;
 }
 
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    /* Spécifique Safari iOS */
+    .carousel-container {
+      padding: 1rem !important;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

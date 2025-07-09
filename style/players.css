@@ -137,6 +137,7 @@ main {
   background-size: cover;
   z-index: 10;
 }
+
 .participant {
   position: relative;
 }

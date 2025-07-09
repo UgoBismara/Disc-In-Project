@@ -39,7 +39,7 @@ h3 {
     position: relative;
     display: flex;
     height:100%;
-    width: 40vw;
+    min-width: 45%;
 }
 
 #participantPhoto {
@@ -273,7 +273,7 @@ span.time {
     flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
     justify-content: flex-start;
     align-items: center;
-    height: 40vh; /* Ajustement pour inclure les dots */
+    height: 50%; /* Ajustement pour inclure les dots */
     width: 90vw;
     max-width : 1000px;
     box-sizing: border-box;
@@ -650,10 +650,23 @@ p#total-amount.amount {
   cursor: pointer;
   transition: transform 0.2s;
 }
+
 .player-card:hover {
   transform: scale(1.02);
 }
 
 ul#player-list {
     padding-left: 0 !important;
+}
+
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    /* Spécifique Safari iOS */
+    .carousel-container {
+      padding: 1rem !important;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+  }
 }
