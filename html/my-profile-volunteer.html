@@ -256,7 +256,7 @@ if (userId) {
       </div>
     </div>`;
 
-    function updateInfos(playerData, likesCount, matchesCount) {
+    function updateInfos(playerData, likesCount, matchesCount, lastMatchName = null, phoneNumber = null) {
   document.getElementById("supervisor").innerHTML =
     `<b>SUPERVISOR:</b> ${playerData.coachSupervisor || 'undefined'}`;
   document.getElementById("likes").innerHTML =
@@ -264,7 +264,7 @@ if (userId) {
   document.getElementById("matches").innerHTML =
     `<b>NUMBER OF MATCHES:</b> ${matchesCount}`;
   document.getElementById("move").innerHTML =
-    `<b>MAKE THE MOVE:</b> ${playerData.move || 'Stay chill'}`;
+    `<b>MAKE THE MOVE:</b> ${lastMatchName || playerData.move || 'Stay chill'}`;
 }
 
   const userRef = db.ref('/players/' + userId);
@@ -332,8 +332,23 @@ firebase.auth().onAuthStateChanged((user) => {
                             }
                           });
                       });
+                      if (reciprocalLikes.length > 0) {
+                        const lastMatchId = reciprocalLikes[reciprocalLikes.length - 1];
+                        const lastMatchPlayerId = lastMatchId.substring(4) - 1;
 
-                      updateInfos(playerData, receivedLikes.length, reciprocalLikes.length);
+                        // Récupérer son nom
+                        db.ref(`/players/${lastMatchPlayerId}`)
+                          .once("value")
+                          .then((snap) => {
+                            const data = snap.val();
+                            const name = data ? data.Name || "Unknown" : "Unknown";
+                            const phoneNumber = data ? "+" + data.phone || "Unknown" : "Unknown";
+                            console.log(phoneNumber);
+                            updateInfos(playerData, receivedLikes.length, reciprocalLikes.length, name, phoneNumber);
+                          });
+                      } else {
+                        updateInfos(playerData, receivedLikes.length, reciprocalLikes.length);
+                      }
                     }
                   });
               });
@@ -378,8 +393,9 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 });
 
+// 🔄 File d'attente
 function showMatchQueue(queue, toUserId) {
-  if (queue.length === 0) return;
+  if (queue.length === 0) return; // Plus rien à faire
 
   const currentMatchId = queue.shift();
   const playerId = currentMatchId.substring(4) - 1;
@@ -391,8 +407,10 @@ function showMatchQueue(queue, toUserId) {
       const name = data ? data.Name || currentMatchId : currentMatchId;
 
       showMatchModal(name, () => {
+        // Marquer comme notifié
         firebase.database().ref(`/notifiedMatches/${toUserId}/${currentMatchId}`).set(true)
           .then(() => {
+            // Ensuite on passe au suivant
             showMatchQueue(queue, toUserId);
           });
       });

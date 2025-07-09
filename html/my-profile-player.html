@@ -319,7 +319,7 @@ function updateInfos(playerData, likesCount, matchesCount, lastMatchName = null,
   document.getElementById("matches").innerHTML =
     `<b>NUMBER OF MATCHES:</b> ${matchesCount}`;
   document.getElementById("move").innerHTML =
-    `<b>MAKE THE MOVE:</b> ${lastMatchName ? "Say hi to " + lastMatchName + "!" + "(" + phoneNumber +")" : (playerData.move || 'Stay chill')}`;
+  `<b>MAKE THE MOVE:</b> ${lastMatchName || playerData.move || 'Stay chill'}`;
 }
 
 // 🔄 File d'attente
