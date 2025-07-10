@@ -18,6 +18,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+      strong {
+        font-size: 1rem;
+      }
+    </style>
   </head>
   <body>
      <!--Header-->
@@ -54,39 +59,38 @@
             <!-- Name -->
             <label for="name">Your Name</label>
             <p style="margin-top: 0 !important;">Optional: check the anonymous box if you prefer not to say.</p>
-            <input type="text" id="name" name="name" placeholder="Your full name...">
+            <input type="text" id="name" name="name" placeholder="Your full name..." autocomplete="name">
 
             <!-- Anonymous -->
             <div class="checkbox-group" style="margin-bottom:4vw; margin-top: 0 !important;">
-            <input type="checkbox" id="anonymous" name="anonymous">
-            <label for="anonymous">I prefer to stay anonymous</label>
+              <input type="checkbox" id="anonymous" name="anonymous">
+              <label for="anonymous">I prefer to stay anonymous</label>
             </div>
 
             <!-- Email / Phone -->
             <label for="contact">Your email / phone:</label>
             <p style="margin-top: 0 !important;">Optional: write it if you want us to contact you by phone or mail.</p>
-            <input type="text" id="contact" name="contact" placeholder="Email or phone number...">
+            <input type="text" id="contact" name="contact" placeholder="Email or phone number..." autocomplete="email">
 
             <!-- Description -->
             <label for="description">Describe the situation:</label>
-            <textarea id="description" name="description" rows="6" placeholder="Where? When? Who? What happened? Anything you wish to share..."></textarea>
+            <textarea id="description" name="description" rows="6" placeholder="Where? When? Who? What happened? Anything you wish to share..." autocomplete="off"></textarea>
 
-            <!-- Preference for follow-up -->
-            <label for="follow-up">What should we do next?</label>
-            <p style="margin-top: 0 !important;">Tell us what do you want us to do, how we should act.</p>
+            <!-- Follow-up section -->
+            <p class="font" style="margin-top: 0 !important;"><strong>What should we do next?</strong><br/>Tell us what do you want us to do, how we should act.</p>
             <div class="radio-group" style="margin-bottom: 4vw;">
-                <label>
-                    <input type="radio" name="followup" value="contact_me">
-                    Contact me first, I need to share
-                </label>
-                <label>
-                    <input type="radio" name="followup" value="talk_to_person">
-                    You can talk directly to the involved person
-                </label>
-                <label>
-                    <input type="radio" name="followup" value="decide">
-                    I don't know yet, I prefer if you decide
-                </label>
+              <label for="followup1">
+                <input type="radio" id="followup1" name="followup" value="contact_me">
+                Contact me first, I need to share
+              </label>
+              <label for="followup2">
+                <input type="radio" id="followup2" name="followup" value="talk_to_person">
+                You can talk directly to the involved person
+              </label>
+              <label for="followup3">
+                <input type="radio" id="followup3" name="followup" value="decide">
+                I don't know yet, I prefer if you decide
+              </label>
             </div>
 
             <button class="official" type="submit">SEND TO SAFE-TEAM<svg xmlns="http://www.w3.org/2000/svg" width="0.8rem" height="0.8rem" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
