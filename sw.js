@@ -12,12 +12,17 @@ self.addEventListener("install", event => {
                 "/style/players.css",
                 "/html/feedback.html",
                 "/html/login.html",
-                "/html/my-profile.html",
+                "/html/my-profile-player.html",
+                "/html/my-profile-volunteer.html",
+                "/html/my-profile-coach.html",
+                "/html/report-issue.html",
+                "/submit-report.php",
                 "/html/news.html",
                 "/html/participants.html",
                 "/html/players.html",
                 "/html/schedule.html",
-                "/image/DiscInLogo.png"
+                "/image/DiscInLogo.png","/manifest.json",
+                "/favicon.ico"
             ]);
         })
     );

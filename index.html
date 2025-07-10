@@ -656,7 +656,7 @@ document.addEventListener("DOMContentLoaded", () => {
       //Mettre en app mobile - fonction sans réseau //
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-          .register("/sw.js")
+          .register("./sw.js")
           .then(() => console.log("Service Worker enregistré !"))
           .catch((error) => console.log("Erreur Service Worker :", error));
       }
