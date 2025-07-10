@@ -26,7 +26,6 @@ self.addEventListener("install", event => {
                 "./html/players.html",
                 "./html/schedule.html",
                 "./image/DiscInLogo.png",
-                "./manifest.json",
                 "./favicon.ico"
 ]);
 
