@@ -73,6 +73,16 @@
             box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
         }
 
+        fieldset {
+            border: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            color: #e78052; 
+            font-size: 0.8rem;
+        }
     </style>
   </head>
   <body class="feedback-page">
@@ -100,7 +110,6 @@
             <select id="coach" name="coach" required>
                 <option value="">Select</option>
                 <option>Alana Archer</option>
-                <option>Aurora Lesnik</option>
                 <option>Carmen Lagala</option>
                 <option>Charlotte Schall</option>
                 <option>Coralie Fouquet</option>
@@ -120,7 +129,6 @@
             <select id="assistant" name="assistant" required>
                 <option value="">Select</option>
                 <option>Alana Archer</option>
-                <option>Aurora Lesnik</option>
                 <option>Carmen Lagala</option>
                 <option>Charlotte Schall</option>
                 <option>Coralie Fouquet</option>
@@ -147,14 +155,21 @@
             <label for="datetime">Session Date and Time</label>
             <input type="datetime-local" id="datetime" name="datetime" required min="2025-07-14T00:00" max="2025-07-19T23:59">
 
-            <label>Rating</label>
-            <div class="stars">
-                <input type="radio" id="star5" name="rating" value="5" required><label for="star5">&#9733;</label>
-                <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
-                <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
-                <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
-                <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+           <fieldset>
+            <legend>Rating</legend>
+            <div class="stars" role="radiogroup" aria-labelledby="rating-label">
+              <input type="radio" id="star5" name="rating" value="5" required>
+              <label for="star5" title="5 stars">&#9733;</label>
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4" title="4 stars">&#9733;</label>
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3" title="3 stars">&#9733;</label>
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2" title="2 stars">&#9733;</label>
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1" title="1 star">&#9733;</label>
             </div>
+          </fieldset>
 
             <label for="comment">Comment</label>
             <textarea id="comment" name="comment" rows="5" placeholder="Your feedback..."></textarea>
