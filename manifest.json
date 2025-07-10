@@ -1,7 +1,7 @@
 {
     "name": "Disc In Camp 2025",
     "short_name": "Disc In Camp",
-    "start_url": "/",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#fffaf7",
     "theme_color": "#e78052",
