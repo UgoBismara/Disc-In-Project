@@ -167,3 +167,9 @@ input[type="password"]::-webkit-clear-button {
 input[type="password"]::-moz-focus-inner {
   display: none;
 }
+
+input[type="password"] {
+  -webkit-user-select: auto;
+  user-select: auto;
+  touch-action: manipulation;
+}
