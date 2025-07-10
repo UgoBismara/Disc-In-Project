@@ -2,9 +2,8 @@ const CACHE_NAME = "v1";
 
 self.addEventListener("install", event => {
     event.waitUntil(
-        (async () => {
-            const cache = await caches.open(CACHE_NAME);
-            await cache.addAll([
+        caches.open(CACHE_NAME).then(cache => {
+            return cache.addAll([
                 "/",
                 "/index.html",
                 "/style/style.css",
@@ -27,22 +26,10 @@ self.addEventListener("install", event => {
                 "/html/schedule.html",
                 "/image/DiscInLogo.png",
                 "/favicon.ico"
-]);
-
-            // Ajout conditionnel du PHP (seulement hors GitHub Pages)
-            if (self.location.hostname !== "ugobismara.github.io") {
-                try {
-                    await cache.add("/submit-report.php");
-                } catch (err) {
-                    console.warn("submit-report.php could not be cached:", err);
-                }
-            }
-
-            self.skipWaiting();
-        })().catch(err => {
-            console.error("SW install failed:", err);
+            ]);
         })
     );
+    self.skipWaiting(); // Permet d’activer immédiatement le nouveau SW
 });
 
 // 📌 Activation du Service Worker
@@ -59,9 +46,7 @@ self.addEventListener("activate", event => {
 
 // 📌 Gestion du cache dynamique + fallback en ligne
 self.addEventListener("fetch", event => {
-    // ❌ Ignore POST and other non-GET requests
     if (event.request.method !== "GET") return;
-
     event.respondWith(
         caches.match(event.request).then(response => {
             return response || fetch(event.request).then(networkResponse => {
