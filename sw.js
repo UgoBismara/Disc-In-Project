@@ -2,31 +2,48 @@ const CACHE_NAME = "v1";
 
 self.addEventListener("install", event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll([
+        (async () => {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.addAll([
                 "/",
                 "/index.html",
                 "/style/style.css",
                 "/style/home.css",
                 "/style/participants.css",
                 "/style/players.css",
+                "/style/login.css",
+                "/style/my-profile.css",
+                "/style/news.css",
+                "/style/schedule.css",
                 "/html/feedback.html",
                 "/html/login.html",
                 "/html/my-profile-player.html",
                 "/html/my-profile-volunteer.html",
                 "/html/my-profile-coach.html",
                 "/html/report-issue.html",
-                "/submit-report.php",
                 "/html/news.html",
                 "/html/participants.html",
                 "/html/players.html",
                 "/html/schedule.html",
-                "/image/DiscInLogo.png","/manifest.json",
+                "/image/DiscInLogo.png",
+                "/manifest.json",
                 "/favicon.ico"
-            ]);
+]);
+
+            // Ajout conditionnel du PHP (seulement hors GitHub Pages)
+            if (self.location.hostname !== "ugobismara.github.io") {
+                try {
+                    await cache.add("/submit-report.php");
+                } catch (err) {
+                    console.warn("submit-report.php could not be cached:", err);
+                }
+            }
+
+            self.skipWaiting();
+        })().catch(err => {
+            console.error("SW install failed:", err);
         })
     );
-    self.skipWaiting(); // Permet d’activer immédiatement le nouveau SW
 });
 
 // 📌 Activation du Service Worker
