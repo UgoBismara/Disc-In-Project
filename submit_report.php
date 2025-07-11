@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Préparer l'e-mail
-    $to = "gavilleto@gmail.com";  // <-- À modifier si besoin
+    $to = "guillaume.espitia@gmail.com, henrik.young@gmail.com";  
     $subject = "New Safe-Team Report (DiscIn.eu)";
 
     $emailContent = "Name: $name\n";
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Envoi
     if (mail($to, $subject, $emailContent, $headers)) {
-        echo "Your report has been successfully sent.";
+        echo "success"; 
     } else {
         echo "An error occurred while sending your report.";
     }

@@ -193,15 +193,19 @@
     const popup = document.getElementById("popup-confirmation");
     const closePopupBtn = document.getElementById("close-popup");
 
-    form.addEventListener("submit", function (event) {
-        // Validation client
+   form.addEventListener("submit", function (event) {
+        event.preventDefault(); // ⛔ Empêche la page de recharger
+
+        // Champs
         const name = document.getElementById("name").value.trim();
         const anonymous = document.getElementById("anonymous").checked;
         const description = document.getElementById("description").value.trim();
         const followup = document.querySelector('input[name="followup"]:checked');
+        const contact = document.getElementById("contact").value.trim();
 
         let errors = [];
 
+        // ✅ Validation côté client
         if (name === "" && !anonymous) {
             errors.push("Please provide your name or check the anonymous box.");
         }
@@ -215,10 +219,35 @@
         }
 
         if (errors.length > 0) {
-            event.preventDefault(); // Stop envoi si erreur
             alert(errors.join("\n"));
             return;
         }
+
+        // ✅ Préparer l'envoi AJAX
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("anonymous", anonymous ? "on" : "");
+        formData.append("contact", contact);
+        formData.append("description", description);
+        formData.append("followup", followup.value);
+        formData.append("website", ""); // honeypot vide
+
+        fetch(form.action, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data.includes("success") || data.includes("successfully")) {
+                popup.style.display = "block";
+            } else {
+                alert("Something went wrong:\n" + data);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while sending your report.");
+        });
     });
 
     // Gestion du bouton "CLOSE"
