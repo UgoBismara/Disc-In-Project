@@ -134,7 +134,16 @@ img.badge {
 /*Buttons like and message*/
 #participant-buttons {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#superCrushBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
 }
 
 .uiverse-btn {
@@ -159,7 +168,7 @@ img.badge {
 }
 
 .uiverse-btn:hover {
-  color: white;
+  color: white !important;
 }
 
 .uiverse-btn::before {
