@@ -42,7 +42,11 @@
           <h3>WELCOME BACK!</h3>
           <form>
             <label for="email">Email Address :</label>
-            <input type="email" id="email" placeholder="example@example.com" required autocomplete="address-level1">
+            <div class="input-with-clear">
+              <input type="email" id="email" placeholder="example@example.com" required autocomplete="email">
+              <span class="clear-input" id="clear-email">&times;</span>
+            </div>
+
 
             <label for="password">Password :</label>
             <div class="password-container">
@@ -168,6 +172,18 @@
     togglePassword.addEventListener("click", () => {
       const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
       passwordInput.setAttribute("type", type);
+    });
+      
+    const clearEmailBtn = document.getElementById("clear-email");
+
+    emailInput.addEventListener("input", () => {
+      clearEmailBtn.style.display = emailInput.value ? "block" : "none";
+    });
+
+    clearEmailBtn.addEventListener("click", () => {
+      emailInput.value = "";
+      clearEmailBtn.style.display = "none";
+      emailInput.focus();
     });
   });
 

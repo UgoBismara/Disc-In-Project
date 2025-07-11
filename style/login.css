@@ -4,7 +4,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 body::before {
@@ -18,13 +18,13 @@ body::before {
     z-index: -1; 
 }
 
-
 main {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
     margin: 0 !important;
+    padding-top: 60px;
 }
 
 h3 {
@@ -85,6 +85,31 @@ input {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.input-with-clear {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-clear input {
+  width: 100%;
+}
+
+.clear-input {
+  position: absolute;
+  right: 10px;
+  padding-bottom: 22px;
+  color: #e78052;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: none;
+  user-select: none;
+}
+
+.clear-input:hover {
+  color: #c45c2d;
 }
 
 /* Aligner la case "Remember me" à gauche du texte */
