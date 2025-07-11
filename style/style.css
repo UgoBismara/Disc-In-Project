@@ -395,9 +395,7 @@ select {
   border-radius: 8px;
 }
 
-button,
-button:active,
-button:focus {
+button {
   color: #1a1a1a !important; /* ou blanc, ou selon le contraste */
   -webkit-appearance: none;
   appearance: none;
