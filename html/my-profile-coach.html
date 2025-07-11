@@ -17,7 +17,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@100;200;300;400;600;700;800;900&family=Gabarito:wght@400..900&display=swap" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   </head>
   <body>
     <!--Header-->
@@ -502,35 +501,6 @@ function showMatchModal(name, onClose) {
             option.value = players[key].Id;
             option.textContent = players[key].Name;
             feedbackPlayerSelect.appendChild(option);
-          });
-
-          // ✅ Initialiser Choices.js ici après que les options soient ajoutées
-          new Choices(feedbackPlayerSelect, {
-            searchEnabled: true,
-            itemSelectText: '',      
-            shouldSort: false,
-            classNames: {
-              containerOuter: '',    
-              containerInner: '',
-              input: '',
-              inputCloned: '',
-              list: '',
-              listDropdown: '',
-              item: '',
-              itemChoice: '',
-              placeholder: '',
-              group: '',
-              itemSelectable: '',
-              selectedState: '',
-              highlightedState: '',
-              disabledState: '',
-              loadingState: '',
-              noResults: '',
-              noChoices: '',
-              directionRtl: '',
-              multiValue: '',
-              multiValueRemove: '',
-            }
           });
         });
 
