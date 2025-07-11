@@ -133,7 +133,7 @@ img.badge {
 
 /*Buttons like and message*/
 #participant-buttons {
-  justify-items: center;
+  justify-items: center !important;
 }
 
 .uiverse-btn {
@@ -145,7 +145,7 @@ img.badge {
   border-radius: 9999px;
   font-weight: 900;
   text-transform: uppercase;
-  color: #e78052;
+  color: #e78052 !important;
   background: transparent;
   cursor: pointer;
   transition: transform 0.2s ease, color 0.3s ease;
@@ -178,6 +178,7 @@ img.badge {
 .uiverse-btn .title,
 .uiverse-btn .icon {
   z-index: 1;
+  color: inherit;
   transition: transform 0.3s ease;
 }
 
@@ -194,7 +195,7 @@ img.badge {
 
 .uiverse-btn:hover .heart-svg {
   transform: scale(1.2);
-  fill: white;
+  fill: white !important;
 }
 
 /* Carrousel Schedule */

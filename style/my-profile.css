@@ -97,8 +97,11 @@ h3 {
 .tab-button {
     color: #1a1a1a !important; 
     display: inline-block;
-    border: none;
+    -webkit-appearance: none;
+    appearance: none;
     background: none;
+    border: none;
+    outline: none;
     font-size: 0.8rem;
     font-weight: normal;
     cursor: pointer;
