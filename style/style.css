@@ -85,7 +85,7 @@ main {
 }
 
 .login-button svg {
-  fill: currentColor; /* Utilise la couleur du parent (.login-button) */
+  fill: currentColor; 
   transition: fill 0.3s ease;
 }
 
@@ -197,7 +197,7 @@ form select {
 }
 
 .safe-team-container {
-  margin: 20px auto 100px; /* top = 20px, bottom = 80px to avoid footer overlap */
+  margin: 20px auto 100px; 
   max-width: 700px;
   text-align: center;
 }
@@ -223,12 +223,8 @@ button.alert {
   justify-items: center;
 }
 
-button.alert:hover {
+button.alert:hover, .green {
   color: #479212 !important;
-}
-
-.green {
-  color: #7fcc48;
 }
 
 .orange {

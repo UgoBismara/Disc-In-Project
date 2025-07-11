@@ -158,7 +158,7 @@ iframe {
 }
 
 .crown-placeholder {
-  height: 24px; /* même hauteur que l’image .crown */
+  height: 24px; 
   margin-bottom: 4px;
 }
 
@@ -216,11 +216,11 @@ p.message {
 
 @media (max-width: 1200px) {
   .participants-grid {
-    grid-template-columns: repeat(4, 1fr); /* Max 3 cartes par ligne */
+    grid-template-columns: repeat(4, 1fr); 
   }
 
   .participant:nth-child(n + 5) {
-    display: none; /* Cache toutes les cartes au-delà de la 3ème */
+    display: none; 
   }
 }
 @media (max-width: 768px) {
@@ -253,12 +253,12 @@ p.message {
 
   .participants-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Max 3 cartes par ligne */
+    grid-template-columns: repeat(3, 1fr);
     gap: 2vw;
     width: 100%;
-    max-width: 900px; /* Empêche les cartes de s'étirer trop */
-    margin: 0 auto; /* Centre la grille */
-    overflow: hidden; /* Cache le dépassement si nécessaire */
+    max-width: 900px; 
+    margin: 0 auto; 
+    overflow: hidden; 
   }
 
   .participant {
@@ -274,6 +274,6 @@ p.message {
   }
 
   .participant:nth-child(n + 4) {
-    display: none; /* Cache toutes les cartes au-delà de la 3ème */
+    display: none; 
   }
 }

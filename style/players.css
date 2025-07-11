@@ -19,7 +19,7 @@ main {
   align-items: center;
   justify-content: center;
   width: 70%;
-  max-width: 100%; /* Ensure the container is fully responsive */
+  max-width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
   padding-top: 1vw;
@@ -30,15 +30,15 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  max-width: 100%; /* Ensure the container is fully responsive */
+  max-width: 100%; 
   box-sizing: border-box;
   padding-bottom: 2vw;
 }
 
 /* Styling the input box for the search bar */
 .search-bar input {
-  width: 90%; /* Full width of the container minus margins */
-  max-width: 400px; /* Optional max width for larger screens */
+  width: 90%; 
+  max-width: 400px;
   padding: 0.5vw 1vw;
   font-size: 1rem !important;
   margin-bottom: 0.8vw;
@@ -70,7 +70,7 @@ main {
 /* Participants grid */
 .participants-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Fully responsive grid */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
   gap: 2vw;
   width: 100%;
   justify-items: center;
@@ -99,7 +99,7 @@ main {
 }
 
 .participant-photo {
-  background-color: #eee; /* gris clair si l'image n’est pas encore chargée */
+  background-color: #eee; 
   transition: filter 0.3s ease;
   filter: blur(10px);
 }
@@ -144,7 +144,7 @@ main {
 
 @media (max-width: 600px) {
   .participants-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two columns for smaller screens */
+    grid-template-columns: repeat(2, 1fr); 
   }
 
   .participant {

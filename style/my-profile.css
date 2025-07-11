@@ -66,8 +66,6 @@ h3 {
     aspect-ratio: 1 / 1;
     border-radius: 15px;
     object-fit: cover;
-    display: block;
-    align-items: center;
 }
 
 .name-overlay {
@@ -84,14 +82,72 @@ h3 {
     z-index: 3;
 }
 
+/* Style des onglets */
+.tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    padding: 1vw 0;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin: 4vw 0;
+}
+
+/* Style des boutons */
+.tab-button {
+    display: inline-block;
+    border: none;
+    background: none;
+    font-size: 0.8rem;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 1vw 6vw;
+    transition: color 0.3s;
+}
+
+/* Ajouter une ligne noire entre chaque bouton sauf le dernier */
+.tab-button:not(:last-child) {
+    border-right: 1px solid #1a1a1a; 
+    padding: 0 6vw; 
+}
+
+/* Style pour l'onglet actif */
+.tab-button.active {
+    color: #e78052;
+    text-decoration: underline;
+    font-weight: bold !important;
+}
+
+/* Sections de contenu */
+.tab-content {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 /* Carrousel Schedule */
 .carousel {
     position: relative;
     width: 100%; 
+    max-width: 400px;
+    margin: auto;
     display: flex;
     align-items: center;
     overflow: hidden;
     margin-top: 0 !important;
+}
+
+.activity {
+    flex: 0 0 100%;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .carousel-inner {
@@ -127,6 +183,7 @@ h3 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
 .session p {
     margin: 0.2rem 0;
 }
@@ -135,11 +192,10 @@ h3 {
     display: flex;
     justify-content: center;
     margin: 1rem 0;
-    align-items: center; /* Assure un bon alignement vertical */
+    align-items: center; 
     gap: 0.5rem;
-    margin-top: 1rem;
-    position: relative; /* Permet un positionnement correct */
-    z-index: 4; /* S'assurer que les dots sont au-dessus du carousel */
+    position: relative; 
+    z-index: 4;
 }
 
 .dots span {
@@ -162,9 +218,9 @@ h3 {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: space-between; /* Place les flèches aux extrémités */
-    align-items: center; /* Centre verticalement les flèches */
-    pointer-events: none; /* Empêche les clics en dehors des boutons */
+    justify-content: space-between; 
+    align-items: center; 
+    pointer-events: none; 
     z-index: 4;
 }
 
@@ -182,6 +238,28 @@ h3 {
     transform: translateY(-50%); 
     z-index: 4; 
     transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Boutons du carousel */
+.prev, .next {
+    background: #e78052;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
 }
 
 #prev {
@@ -234,26 +312,26 @@ h3 {
 }
 
 .session-item span {
-    flex: 1; /* Chaque élément occupe une part égale */
-    text-align: center; /* Centrer le texte dans chaque colonne */
+    flex: 1; 
+    text-align: center; 
 }
 
 .session-item.type {
     position: absolute;
     display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    width: 100%; /* Prend toute la largeur de la cellule */
-    text-align: center; /* Aligne le texte au centre */
-    margin-top: 0.5rem; /* Espacement si nécessaire */  
-    transform: translate(-50%, -50%); /* Centrage parfait */
-    left: 50%; /* Place horizontalement au centre */
-    top: 50%; /* Place verticalement au centre */
-    white-space: nowrap; /* Empêche le texte de se couper */  
+    justify-content: center; 
+    align-items: center; 
+    width: 100%; 
+    text-align: center;
+    margin-top: 0.5rem;
+    transform: translate(-50%, -50%); 
+    left: 50%;
+    top: 50%; 
+    white-space: nowrap; 
 }  
 
 .session-wrapper {
-    margin-bottom: 5px; /* Espacement entre les sessions */
+    margin-bottom: 5px;
     width: 100%;
     height:100%;
     justify-content: space-between;
@@ -264,17 +342,17 @@ span.time {
 }
 
 .session-item.time {
-    flex: 0 0 auto; /* Empêche le texte du temps de s'étendre */
-    text-align: left; /* Aligne le temps à gauche */
-    margin-right: 1rem; /* Ajoute un espace à droite du temps */
+    flex: 0 0 auto; 
+    text-align: left;
+    margin-right: 1rem; 
 }
 
 .carousel-wrapper {
     display: flex;
-    flex-direction: column; /* Organisation en colonne pour avoir les dots sous le carousel */
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 50%; /* Ajustement pour inclure les dots */
+    height: 50%;
     width: 90vw;
     max-width : 1000px;
     box-sizing: border-box;
@@ -287,7 +365,7 @@ span.time {
     padding: 0.5rem;
     background-color: #e78052;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     color: #1a1a1a;
     text-transform: uppercase; 
     text-align:center;
@@ -320,94 +398,6 @@ span.time {
     }
 }
 
-/* Style des onglets */
-.tabs {
-    display: flex;
-    justify-content: center;
-    background-color: #fff;
-    padding: 1vw 0;
-    border-radius: 10px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    margin: 4vw 0;
-}
-
-/* Style des boutons */
-.tab-button {
-    display: inline-block; /* Permet un bon alignement */
-    border: none;
-    background: none;
-    font-size: 0.8rem;
-    font-weight: normal;
-    cursor: pointer;
-    padding: 1vw 6vw;
-    transition: color 0.3s;
-}
-
-/* Ajouter une ligne noire entre chaque bouton sauf le dernier */
-.tab-button:not(:last-child) {
-    border-right: 1px solid #1a1a1a; 
-    padding: 0 6vw; 
-}
-
-/* Style pour l'onglet actif */
-.tab-button.active {
-    color: #e78052;
-    text-decoration: underline;
-    font-weight: bold !important;
-}
-
-
-/* Sections de contenu */
-.tab-content {
-    display: none;
-    text-align: center;
-    margin-top: 20px;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-/* Style du carousel */
-.carousel {
-    display: flex;
-    overflow: hidden;
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
-}
-
-.activity {
-    flex: 0 0 100%;
-    padding: 15px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-/* Boutons du carousel */
-.prev, .next {
-    background: #e78052;
-    border: none;
-    padding: 10px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.prev {
-    left: 10px;
-}
-
-.next {
-    right: 10px;
-}
-
 /*Page consommations players*/
 p#total-amount.amount {
   font-size: 2rem !important;
@@ -434,6 +424,7 @@ p#total-amount.amount {
   justify-content: space-between;
   font-weight: bold;
 }
+
 .spend-item img {
   width: 24px;
   height: 24px;
@@ -455,26 +446,6 @@ p#total-amount.amount {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-top: 1rem;
-}
-
-@media (min-width: 600px) {
-  .products-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .photo-container {
-        width: 20vw;
-    }
-}
-
-@media (min-width: 1024px) {
-  .products-grid {
-    grid-template-columns: repeat(9, 1fr);
-  }
-
-  .photo-container {
-        width: 10vw;
-    }
 }
 
 .product-button {
@@ -636,9 +607,9 @@ p#total-amount.amount {
   color: #E86D2D;
   cursor: pointer;
   text-align: center;
-  user-select: none;           /* Empêche la sélection du texte */
-  outline: none;               /* Supprime la bordure bleue de focus */
-  -webkit-tap-highlight-color: transparent; /* Supprime flash bleu sur mobile */
+  user-select: none; 
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .player-card {
@@ -658,6 +629,26 @@ p#total-amount.amount {
 
 ul#player-list {
     padding-left: 0 !important;
+}
+
+@media (min-width: 600px) {
+  .products-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .photo-container {
+        width: 20vw;
+    }
+}
+
+@media (min-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(9, 1fr);
+  }
+
+  .photo-container {
+        width: 10vw;
+    }
 }
 
 @media not all and (min-resolution: 0.001dpcm) {

@@ -14,8 +14,8 @@ body::before {
     height: 50%;
     background: url(../image/fusee.png) no-repeat center center;
     background-size: contain;
-    opacity: 0.5; /* Opacité réduite */
-    z-index: -1; /* Derrière tout le contenu */
+    opacity: 0.5; 
+    z-index: -1; 
 }
 
 
@@ -41,19 +41,19 @@ label {
 
 /* Conteneur du formulaire de connexion */
 #auth-container {
-    background: rgba(255, 255, 255, 0.9); /* Fond blanc du formulaire */
+    background: rgba(255, 255, 255, 0.9); 
     padding: 2vw 5vw;
     margin: 4vw 0;
     border-radius: 10px;
     text-align: left;
     width: auto;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2); 
 }
 
 /* Champs et bouton */
 input {
     box-sizing: border-box;
-    padding-right: 35px; /* Espace pour l'icône */
+    padding-right: 35px; 
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
