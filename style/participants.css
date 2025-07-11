@@ -133,7 +133,8 @@ img.badge {
 
 /*Buttons like and message*/
 #participant-buttons {
-  justify-items: center !important;
+  display: flex;
+  justify-content: center; 
 }
 
 .uiverse-btn {
