@@ -406,7 +406,6 @@ button:focus {
 .filter-button,
 .tab-button {
   color: #1a1a1a !important; /* ou autre selon fond */
-  font-weight: bold;
 }
 
 @keyframes fadeIn {
