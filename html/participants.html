@@ -373,37 +373,36 @@
         carouselInner.style.transform = `translateX(${offset}px)`;
       }, { passive: false }); 
 
-      // Gestion de la fin du swipe
-      carouselInner.addEventListener("touchend", () => {
-        if (!isSwiping) return;
+carouselInner.addEventListener("touchend", () => {
+  if (!isSwiping) return;
 
-        const diffX = currentX - startX;
-        const threshold = 50; 
+  const diffX = currentX - startX;
+  const threshold = 50;
 
-        // Déterminer la direction du swipe
-        if (Math.abs(diffX) > threshold) {
-          if (diffX > 0) {
-            // Swipe vers la droite
-            index =
-              index > 0
-                ? index - 1
-                : document.querySelectorAll(".carousel-item").length - 1;
-          } else {
-            // Swipe vers la gauche
-            index =
-              index < document.querySelectorAll(".carousel-item").length - 1
-                ? index + 1
-                : 0;
-          }
-        }
+  // Déterminer la direction du swipe
+  if (Math.abs(diffX) > threshold) {
+    if (diffX > 0) {
+      index =
+        index > 0
+          ? index - 1
+          : document.querySelectorAll(".carousel-item").length - 1;
+    } else {
+      index =
+        index < document.querySelectorAll(".carousel-item").length - 1
+          ? index + 1
+          : 0;
+    }
+  }
 
-        // Réinitialisation de la position avec une transition fluide
-        carouselInner.style.transition = "transform 0.5s ease";
-        updateCarousel();
+  // 🔧 Recalage manuel requis sur iOS
+  carouselInner.style.transition = "transform 0.5s ease";
+  carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
-        // Réinitialisation des variables
-        resetSwipe();
-      });
+  // Tu peux garder updateCarousel si ça met à jour les dots ou autres
+  updateCarousel();
+
+  resetSwipe();
+});
 
       // Mise à jour initiale du carrousel
       updateCarousel();
