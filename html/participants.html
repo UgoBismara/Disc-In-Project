@@ -364,24 +364,21 @@
         carouselInner.style.transition = "none";
       });
 
-      // Gestion du mouvement du swipe
       carouselInner.addEventListener("touchmove", (e) => {
         if (!isSwiping) return;
-
+        e.preventDefault(); 
         currentX = e.touches[0].clientX;
         const diffX = currentX - startX;
-
-        // Déplacement temporaire de l'élément
         const offset = -index * carouselInner.offsetWidth + diffX;
         carouselInner.style.transform = `translateX(${offset}px)`;
-      });
+      }, { passive: false }); 
 
       // Gestion de la fin du swipe
       carouselInner.addEventListener("touchend", () => {
         if (!isSwiping) return;
 
         const diffX = currentX - startX;
-        const threshold = 50; // Seuil de déplacement minimum pour valider un swipe
+        const threshold = 50; 
 
         // Déterminer la direction du swipe
         if (Math.abs(diffX) > threshold) {

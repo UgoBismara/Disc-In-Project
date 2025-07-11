@@ -615,10 +615,11 @@ if (userId) {
 
     carouselInner?.addEventListener("touchmove", e => {
       if (!isSwiping) return;
+      e.preventDefault();
       currentX = e.touches[0].clientX;
       const offset = -index * carouselInner.offsetWidth + (currentX - startX);
       carouselInner.style.transform = `translateX(${offset}px)`;
-    });
+    }, { passive: false });
 
     carouselInner?.addEventListener("touchend", () => {
       const diffX = currentX - startX;
