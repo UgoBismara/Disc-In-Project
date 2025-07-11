@@ -291,14 +291,23 @@
             const dayElement = document.createElement("div");
             dayElement.className = "carousel-item";
             dayElement.innerHTML = `
-                            <h5>${day}</h5>
-                            ${createSessionHTML(dayData, day)}
-                        `;
+              <h5>${day}</h5>
+              ${createSessionHTML(dayData, day)}
+            `;
             carouselInner.appendChild(dayElement);
 
             const dot = document.createElement("span");
             dot.className = "dot";
+
+            // 👉 Ajouter gestionnaire de clic au dot
+            const currentIndex = dotsContainer.children.length; // L’index actuel du slide
+            dot.addEventListener("click", () => {
+              index = currentIndex;
+              updateCarousel();
+            });
+
             dotsContainer.appendChild(dot);
+
             updateCarousel();
           }
         });
@@ -703,7 +712,6 @@
   modal.appendChild(content);
   document.body.appendChild(modal);
 }
-
     </script>
   </body>
 </html>

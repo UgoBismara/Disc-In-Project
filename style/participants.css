@@ -253,11 +253,11 @@ img.badge {
   display: flex;
   justify-content: center;
   margin: 1rem 0;
-  align-items: center; /* Assure un bon alignement vertical */
+  align-items: center; 
   gap: 0.5rem;
   margin-top: 1rem;
-  position: relative; /* Permet un positionnement correct */
-  z-index: 4; /* S'assurer que les dots sont au-dessus du carousel */
+  position: relative; 
+  z-index: 4;
 }
 
 .dots span {
@@ -312,9 +312,9 @@ img.badge {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between; /* Place les flèches aux extrémités */
-  align-items: center; /* Centre verticalement les flèches */
-  pointer-events: none; /* Empêche les clics en dehors des boutons */
+  justify-content: space-between; 
+  align-items: center; 
+  pointer-events: none;
   z-index: 4;
 }
 
@@ -468,11 +468,15 @@ span.time {
 @media not all and (min-resolution: 0.001dpcm) {
   @supports (-webkit-appearance: none) {
     /* Spécifique Safari iOS */
-    .carousel-container {
+    .carousel {
       padding: 1rem !important;
       overflow-x: scroll;
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x mandatory;
+    }
+    
+    .carousel-item {
+      scroll-snap-align: start;
     }
 
     #participant-buttons {

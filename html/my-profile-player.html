@@ -583,6 +583,14 @@ if (userId) {
         dotsContainer.appendChild(dot);
       });
       updateCarousel();
+        // 👉 Ajouter des gestionnaires d'événements sur les dots
+        const dots = document.querySelectorAll(".dot");
+        dots.forEach((dot, i) => {
+          dot.addEventListener("click", () => {
+            index = i;
+            updateCarousel();
+          });
+        });
     }
 
     document.getElementById("prev")?.addEventListener("click", () => {
