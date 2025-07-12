@@ -260,18 +260,18 @@ h3 {
 }
 
 .prev {
-    left: 10px;
+    left: 12vw;
 }
 
 .next {
-    right: 10px;
+    right: 12vw;
 }
 
 #prev {
     position: absolute;
     background-color: #fffaf7 !important;
     box-shadow: none;
-    left: 22vw;
+    left: 12vw;
     height: 25px;
     width: 25px;
 }
@@ -280,7 +280,7 @@ h3 {
     position: absolute;
     background-color: #fffaf7 !important;
     box-shadow: none;
-    right: 22vw;
+    right: 12vw;
     height: 25px;
     width: 25px;
 }
