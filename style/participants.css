@@ -331,7 +331,6 @@ img.badge {
 
 .nav-buttons button {
   pointer-events: auto;
-  height: 0;
   border: none;
   color: #1a1a1a;
   font-size: 1.5rem;
@@ -549,14 +548,6 @@ span.time {
     display: flex;
     align-items: center;
     overflow: hidden;
-  }
-
-  .nav-buttons {
-    display: none;
-  }
-
-  .nav-buttons button {
-    top: 8%;
   }
 
   #prev {
