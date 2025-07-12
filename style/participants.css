@@ -348,7 +348,7 @@ img.badge {
   position: absolute;
   background-color: #fffaf7 !important;
   box-shadow: none;
-  left: 22vw;
+  left: 16vw;
   height: 25px;
   width: 25px;
 }
@@ -357,7 +357,7 @@ img.badge {
   position: absolute;
   background-color: #fffaf7 !important;
   box-shadow: none;
-  right: 22vw;
+  right: 16vw;
   height: 25px;
   width: 25px;
 }
@@ -552,14 +552,14 @@ span.time {
 
   #prev {
     left: 16vw;
-    height: 25px;
-    width: 25px;
+    height: 22px;
+    width: 22px;
   }
 
   #next {
     right: 16vw;
-    height: 25px;
-    width: 25px;
+    height: 22px;
+    width: 22px;
   }
 
   .photo-container {
