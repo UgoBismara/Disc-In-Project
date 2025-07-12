@@ -303,10 +303,12 @@
             const currentIndex = dotsContainer.children.length; // L’index actuel du slide
             dot.addEventListener("click", () => {
               index = currentIndex;
+              updateCarousel();
             });
 
             dotsContainer.appendChild(dot);
 
+            updateCarousel();
           }
         });
       }
@@ -314,16 +316,96 @@
       // Fetch and display data for all days
       daysOfWeek.forEach(fetchDayData);
 
-carouselInner.addEventListener("scroll", () => {
-  const items = document.querySelectorAll(".carousel-item");
-  const scrollLeft = carouselInner.scrollLeft;
-  const itemWidth = carouselInner.clientWidth;
+      // Carousel navigation
+      let index = 0;
 
-  const newIndex = Math.round(scrollLeft / itemWidth);
+      function updateCarousel() {
+        const items = document.querySelectorAll(".carousel-item");
+        const dots = document.querySelectorAll(".dot");
+        carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((dot, i) => dot.classList.toggle("active", i === newIndex));
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+      }
+
+      document.getElementById("prev").addEventListener("click", () => {
+        index =
+          index > 0
+            ? index - 1
+            : document.querySelectorAll(".carousel-item").length - 1;
+        updateCarousel();
+      });
+
+      document.getElementById("next").addEventListener("click", () => {
+        index =
+          index < document.querySelectorAll(".carousel-item").length - 1
+            ? index + 1
+            : 0;
+        updateCarousel();
+      });
+
+      // Variables globales
+      let startX = 0;
+      let currentX = 0;
+      let isSwiping = false;
+
+      // Fonction pour réinitialiser le swipe
+      function resetSwipe() {
+        startX = 0;
+        currentX = 0;
+        isSwiping = false;
+      }
+
+      // Détection du début du swipe
+      carouselInner.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+        isSwiping = true;
+
+        // Désactiver la transition pour un déplacement fluide
+        carouselInner.style.transition = "none";
+      });
+
+      carouselInner.addEventListener("touchmove", (e) => {
+        if (!isSwiping) return;
+        e.preventDefault(); 
+        currentX = e.touches[0].clientX;
+        const diffX = currentX - startX;
+        const offset = -index * carouselInner.offsetWidth + diffX;
+        carouselInner.style.transform = `translateX(${offset}px)`;
+      }, { passive: false }); 
+
+carouselInner.addEventListener("touchend", () => {
+  if (!isSwiping) return;
+
+  const diffX = currentX - startX;
+  const threshold = 50;
+
+  // Déterminer la direction du swipe
+  if (Math.abs(diffX) > threshold) {
+    if (diffX > 0) {
+      index =
+        index > 0
+          ? index - 1
+          : document.querySelectorAll(".carousel-item").length - 1;
+    } else {
+      index =
+        index < document.querySelectorAll(".carousel-item").length - 1
+          ? index + 1
+          : 0;
+    }
+  }
+
+  // 🔧 Recalage manuel requis sur iOS
+  carouselInner.style.transition = "transform 0.5s ease";
+  carouselInner.style.transform = `translateX(-${index * 100}%)`;
+
+  // Tu peux garder updateCarousel si ça met à jour les dots ou autres
+  updateCarousel();
+
+  resetSwipe();
 });
+
+      // Mise à jour initiale du carrousel
+      updateCarousel();
 
       closeModal.onclick = () => {
         modal.style.display = "none";
@@ -383,7 +465,7 @@ carouselInner.addEventListener("scroll", () => {
                         }</div>
                     </div>
                     <div class="data-container">
-                      <h4 class="mg-btm">INFORMATIONS TEST 6</h4>
+                      <h4 class="mg-btm">INFORMATIONS</h4>
                       <p><b>POSITION:</b> ${data.position}</p>
                       <p><b>ULTIMATE YEARS:</b> ${data.ultimateXP}</p>
                       <p><b>PALMARES:</b> ${data.palmares}</p>
@@ -589,21 +671,6 @@ carouselInner.addEventListener("scroll", () => {
           }
         });
       });
-
-      document.getElementById("prev").addEventListener("click", () => {
-  carouselInner.scrollBy({
-    left: -carouselInner.clientWidth,
-    behavior: "smooth"
-  });
-});
-
-document.getElementById("next").addEventListener("click", () => {
-  carouselInner.scrollBy({
-    left: carouselInner.clientWidth,
-    behavior: "smooth"
-  });
-});
-
 
       function showMatchModal(name) {
   const modal = document.createElement("div");

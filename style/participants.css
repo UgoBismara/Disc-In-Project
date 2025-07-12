@@ -210,14 +210,11 @@ img.badge {
 
 /* Carrousel Schedule */
 .carousel {
+  position: relative;
+  width: 100%;
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.carousel-inner {
-  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .badge-section {
@@ -226,10 +223,16 @@ img.badge {
   margin-top: 4vw;
 }
 
+.carousel-inner {
+  display: flex;
+  flex-direction: row;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
 .carousel-item {
   display: flex;
   flex: 0 0 100%;
-  scroll-snap-align: start;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -471,6 +474,28 @@ span.time {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 5;
   animation: fadeIn 1s ease, fadeOut 2s ease 1s;
+}
+
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    /* Spécifique Safari iOS */
+    .carousel {
+      padding: 1rem !important;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+    
+    .carousel-item {
+      scroll-snap-align: start;
+    }
+
+    #participant-buttons {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
 }
 
 @keyframes fadeIn {
