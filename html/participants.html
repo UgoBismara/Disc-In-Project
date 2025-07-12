@@ -395,6 +395,8 @@ carouselInner.addEventListener("touchend", () => {
   }
 
   // 🔧 Recalage manuel requis sur iOS
+  carouselInner.style.transition = "none";
+  carouselInner.offsetHeight;
   carouselInner.style.transition = "transform 0.5s ease";
   carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
