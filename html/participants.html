@@ -396,11 +396,11 @@ carouselInner.addEventListener("touchend", () => {
 
   // 🔧 Recalage manuel requis sur iOS
   carouselInner.style.transition = "none";
-  carouselInner.style.transition = "transform 0.5s ease";
   carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
   // Tu peux garder updateCarousel si ça met à jour les dots ou autres
   updateCarousel();
+
   resetSwipe();
 });
 
@@ -465,7 +465,7 @@ carouselInner.addEventListener("touchend", () => {
                         }</div>
                     </div>
                     <div class="data-container">
-                      <h4 class="mg-btm">INFORMATIONS TEST 4</h4>
+                      <h4 class="mg-btm">INFORMATIONS TEST 3</h4>
                       <p><b>POSITION:</b> ${data.position}</p>
                       <p><b>ULTIMATE YEARS:</b> ${data.ultimateXP}</p>
                       <p><b>PALMARES:</b> ${data.palmares}</p>
