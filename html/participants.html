@@ -224,6 +224,7 @@
       const modalImage = document.getElementById("modalImage");
       const closeModal = document.getElementById("closeModal");
       const carouselInner = document.querySelector(".carousel-inner");
+      carouselInner.style.touchAction = "none";
       const dotsContainer = document.querySelector(".dots");
 
       const daysOfWeek = [
@@ -322,7 +323,6 @@
       function updateCarousel() {
         const items = document.querySelectorAll(".carousel-item");
         const dots = document.querySelectorAll(".dot");
-        carouselInner.style.touchAction = "none";
         carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
         dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
@@ -428,7 +428,7 @@ carouselInner.addEventListener("touchend", (e) => {
                         }</div>
                     </div>
                     <div class="data-container">
-                      <h4 class="mg-btm">INFORMATIONS TEST 4</h4>
+                      <h4 class="mg-btm">INFORMATIONS TEST 5</h4>
                       <p><b>POSITION:</b> ${data.position}</p>
                       <p><b>ULTIMATE YEARS:</b> ${data.ultimateXP}</p>
                       <p><b>PALMARES:</b> ${data.palmares}</p>
