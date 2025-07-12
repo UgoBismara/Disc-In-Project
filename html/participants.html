@@ -453,7 +453,7 @@ carouselInner.addEventListener("touchend", () => {
           const roundedMoney = parseFloat(data.Money).toFixed(2); // Arrondi au centième
           participantInfoDiv.innerHTML = `
               <div class="info-container">
-                  <h1>${data.Name + test1}</h1>
+                  <h1>${data.Name}</h1>
                   <div class="container">
                     <div class="photo-container">
                         <img src="${data.Picture}" alt="Photo of ${
@@ -467,7 +467,7 @@ carouselInner.addEventListener("touchend", () => {
                         }</div>
                     </div>
                     <div class="data-container">
-                      <h4 class="mg-btm">INFORMATIONS</h4>
+                      <h4 class="mg-btm">INFORMATIONS TEST 1</h4>
                       <p><b>POSITION:</b> ${data.position}</p>
                       <p><b>ULTIMATE YEARS:</b> ${data.ultimateXP}</p>
                       <p><b>PALMARES:</b> ${data.palmares}</p>
