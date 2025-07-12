@@ -320,28 +320,24 @@
       let index = 0;
 
       function updateCarousel() {
-        const items = document.querySelectorAll(".carousel-item");
-        const dots = document.querySelectorAll(".dot");
-        carouselInner.style.transform = `translateX(-${index * 100}%)`;
-
-        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+    const items = document.querySelectorAll(".carousel-item");
+    const dots = document.querySelectorAll(".dot");
+    if (!items.length) return;
+    carouselInner.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
       }
 
-      document.getElementById("prev").addEventListener("click", () => {
-        index =
-          index > 0
-            ? index - 1
-            : document.querySelectorAll(".carousel-item").length - 1;
-        updateCarousel();
-      });
+    document.getElementById("prev")?.addEventListener("click", () => {
+      const items = document.querySelectorAll(".carousel-item");
+      index = index > 0 ? index - 1 : items.length - 1;
+      updateCarousel();
+    });
 
-      document.getElementById("next").addEventListener("click", () => {
-        index =
-          index < document.querySelectorAll(".carousel-item").length - 1
-            ? index + 1
-            : 0;
-        updateCarousel();
-      });
+    document.getElementById("next")?.addEventListener("click", () => {
+      const items = document.querySelectorAll(".carousel-item");
+      index = index < items.length - 1 ? index + 1 : 0;
+      updateCarousel();
+    });
 
       // Variables globales
       let startX = 0;
@@ -465,7 +461,7 @@ carouselInner.addEventListener("touchend", () => {
                         }</div>
                     </div>
                     <div class="data-container">
-                      <h4 class="mg-btm">INFORMATIONS</h4>
+                      <h4 class="mg-btm">INFORMATIONS test 1</h4>
                       <p><b>POSITION:</b> ${data.position}</p>
                       <p><b>ULTIMATE YEARS:</b> ${data.ultimateXP}</p>
                       <p><b>PALMARES:</b> ${data.palmares}</p>
