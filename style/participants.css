@@ -215,6 +215,9 @@ img.badge {
   display: flex;
   align-items: center;
   overflow: hidden;
+    overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 .badge-section {
@@ -240,6 +243,7 @@ img.badge {
   height: 100%;
   box-sizing: border-box;
   padding-top: 1rem;
+  scroll-snap-align: start;
   text-align: center;
   gap: 1vh;
 }

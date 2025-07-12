@@ -234,6 +234,31 @@
         "FRIDAY",
       ];
 
+      function createDots() {
+  const items = document.querySelectorAll(".carousel-item");
+  items.forEach((item, index) => {
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.addEventListener("click", () => {
+      carouselInner.scrollTo({
+        left: index * carouselInner.clientWidth,
+        behavior: "smooth"
+      });
+    });
+    dotsContainer.appendChild(dot);
+  });
+}
+
+function updateDots() {
+  const scrollLeft = carouselInner.scrollLeft;
+  const index = Math.round(scrollLeft / carouselInner.clientWidth);
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+}
+
+carouselInner.addEventListener("scroll", updateDots);
+
+
       function createSessionHTML(dayData, day) {
         const sessions = [
           {
@@ -303,45 +328,36 @@
             const currentIndex = dotsContainer.children.length; // L’index actuel du slide
             dot.addEventListener("click", () => {
               index = currentIndex;
-              updateCarousel();
+              
             });
 
             dotsContainer.appendChild(dot);
 
-            updateCarousel();
+            
           }
         });
       }
 
       // Fetch and display data for all days
       daysOfWeek.forEach(fetchDayData);
+      createDots();
+updateDots();
 
-      // Carousel navigation
-      let index = 0;
-
-      function updateCarousel() {
-        const items = document.querySelectorAll(".carousel-item");
-        const dots = document.querySelectorAll(".dot");
-        carouselInner.style.transform = `translateX(-${index * 100}%)`;
-
-        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
-      }
 
       document.getElementById("prev").addEventListener("click", () => {
-        index =
-          index > 0
-            ? index - 1
-            : document.querySelectorAll(".carousel-item").length - 1;
-        updateCarousel();
-      });
+  carouselInner.scrollBy({
+    left: -carouselInner.clientWidth,
+    behavior: "smooth"
+  });
+});
 
-      document.getElementById("next").addEventListener("click", () => {
-        index =
-          index < document.querySelectorAll(".carousel-item").length - 1
-            ? index + 1
-            : 0;
-        updateCarousel();
-      });
+document.getElementById("next").addEventListener("click", () => {
+  carouselInner.scrollBy({
+    left: carouselInner.clientWidth,
+    behavior: "smooth"
+  });
+});
+
 
       // Variables globales
       let startX = 0;
@@ -399,13 +415,13 @@ carouselInner.addEventListener("touchend", () => {
   carouselInner.style.transform = `translateX(-${index * 100}%)`;
 
   // Tu peux garder updateCarousel si ça met à jour les dots ou autres
-  updateCarousel();
+  
 
   resetSwipe();
 });
 
       // Mise à jour initiale du carrousel
-      updateCarousel();
+      
 
       closeModal.onclick = () => {
         modal.style.display = "none";
@@ -465,7 +481,7 @@ carouselInner.addEventListener("touchend", () => {
                         }</div>
                     </div>
                     <div class="data-container">
-                      <h4 class="mg-btm">INFORMATIONS</h4>
+                      <h4 class="mg-btm">INFORMATIONS TEST 1</h4>
                       <p><b>POSITION:</b> ${data.position}</p>
                       <p><b>ULTIMATE YEARS:</b> ${data.ultimateXP}</p>
                       <p><b>PALMARES:</b> ${data.palmares}</p>
